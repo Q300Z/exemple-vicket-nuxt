@@ -1,23 +1,15 @@
 export default defineAppConfig({
   ui: {
-    colors: {
-      primary: 'indigo',
-      neutral: 'slate'
-    },
-    // Global component styling (OCP: Extending without modifying components)
-    card: {
-      slots: {
-        root: 'subtle-gradient luminous-border shadow-sm rounded-2xl'
-      }
-    },
-    modal: {
-      slots: {
-        content: 'glass-effect luminous-border shadow-2xl ring-0'
-      }
-    },
+    primary: 'indigo',
+    neutral: 'zinc',
     button: {
       slots: {
-        root: 'transition-all duration-200 active:scale-95'
+        base: 'cursor-pointer transition-all duration-200'
+      }
+    },
+    card: {
+      slots: {
+        root: 'transition-all duration-300'
       }
     }
   }
