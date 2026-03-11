@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'blue',
+      primary: 'indigo',
       neutral: 'slate'
     },
     // Global component styling (OCP: Extending without modifying components)

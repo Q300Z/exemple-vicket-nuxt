@@ -136,7 +136,7 @@ watch(
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
             Suivi en direct actif
           </span>
         </div>
@@ -226,7 +226,7 @@ watch(
               :key="answer.id"
               class="space-y-1.5"
             >
-              <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">
                 {{ answer.question_label || "Question" }}
               </p>
               <div class="text-sm text-gray-700 dark:text-gray-300">
@@ -333,14 +333,14 @@ watch(
                 <div class="flex items-center gap-3 px-4 py-1.5 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm">
                   <UIcon
                     name="i-lucide-info"
-                    class="w-3.5 h-3.5 text-gray-400"
+                    class="w-3.5 h-3.5 text-gray-500"
                   />
                   <!-- eslint-disable-next-line vue/no-v-html -->
                   <div
                     class="text-[11px] font-medium text-gray-500 italic"
                     v-html="message.content"
                   />
-                  <span class="text-[9px] text-gray-400 font-bold uppercase ml-1">
+                  <span class="text-[9px] text-gray-500 font-bold uppercase ml-1">
                     {{ formatDate(message.created_at) }}
                   </span>
                 </div>
@@ -368,7 +368,7 @@ watch(
                     <span class="text-xs font-bold text-gray-900 dark:text-white">
                       {{ AUTHOR_LABELS[message.author_type] || message.author_type }}
                     </span>
-                    <span class="text-[10px] text-gray-400 font-medium">
+                    <span class="text-[10px] text-gray-500 font-medium">
                       {{ formatDate(message.created_at) }}
                     </span>
                   </div>

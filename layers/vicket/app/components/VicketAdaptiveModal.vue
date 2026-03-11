@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /**
- * Component responsible for adaptive modal rendering (SRP).
+ * Component responsible for adaptive modal structure (SRP).
  * Renders as a Bottom Sheet on mobile and a standard Modal on desktop.
+ * Uses host project's default UModal styling.
  */
 interface Props {
   open?: boolean
@@ -12,8 +13,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   open: false,
-  modelValue: false,
-  description: 'Support Dialog'
+  modelValue: false
 })
 const emit = defineEmits(['update:open', 'update:modelValue', 'close'])
 
@@ -27,9 +27,9 @@ const isOpen = computed({
   }
 })
 
-// Logic to handle mobile-first ergonomics (Bottom Sheet vs centered Modal)
+// Functional layout only
 const modalUi = computed(() => ({
-  content: device.isMobile ? 'sm:max-w-none w-full !rounded-b-none !rounded-t-3xl' : 'rounded-2xl',
+  content: device.isMobile ? 'sm:max-w-none w-full !rounded-b-none' : '',
   container: device.isMobile ? 'flex items-end' : 'flex items-center justify-center'
 }))
 </script>
@@ -42,7 +42,7 @@ const modalUi = computed(() => ({
     :ui="modalUi"
   >
     <template #body>
-      <div class="overflow-y-auto max-h-[85vh] sm:max-h-none p-1">
+      <div class="overflow-y-auto max-h-[85vh] sm:max-h-none">
         <slot />
       </div>
     </template>

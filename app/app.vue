@@ -78,7 +78,9 @@ useSeoMeta({
           variant="ghost"
           color="neutral"
           class="hidden md:flex"
-        />
+        >
+          <span class="sr-only">Site officiel Vicket</span>
+        </UButton>
       </template>
     </UHeader>
 
@@ -93,7 +95,7 @@ useSeoMeta({
             <AppLogo class="w-auto h-4 opacity-50" />
             <span class="text-sm font-medium text-gray-500">Demo</span>
           </div>
-          <p class="text-xs text-gray-400">
+          <p class="text-xs text-gray-500">
             Propulsé par Nuxt UI v4 & Vicket • © {{ new Date().getFullYear() }}
           </p>
         </div>
@@ -108,7 +110,9 @@ useSeoMeta({
             color="neutral"
             variant="ghost"
             size="sm"
-          />
+          >
+            <span class="sr-only">Documentation Vicket</span>
+          </UButton>
           <UButton
             to="https://github.com/vicket-app"
             target="_blank"
@@ -116,7 +120,9 @@ useSeoMeta({
             color="neutral"
             variant="ghost"
             size="sm"
-          />
+          >
+            <span class="sr-only">Vicket sur GitHub</span>
+          </UButton>
         </div>
       </template>
     </UFooter>

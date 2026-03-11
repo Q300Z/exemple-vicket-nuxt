@@ -6,7 +6,7 @@ describe('Search Providers (LSP)', () => {
     { id: '1', title: 'How to install', slug: 'install', category: 'General' },
     { id: '2', title: 'Payment issues', slug: 'payment', category: 'Billing' },
     { id: '3', title: 'Technical guide', slug: 'tech', category: 'Technical' }
-  ] as any
+  ] as unknown
 
   it('MiniSearchProvider should find items by query', async () => {
     const provider = new MiniSearchProvider()

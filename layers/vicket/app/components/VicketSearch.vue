@@ -53,7 +53,7 @@ const useHistory = (q: string) => {
       v-if="(history?.length || 0) > 0 && !searchQuery"
       class="flex items-center gap-3 animate-in fade-in duration-500"
     >
-      <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Récent :</span>
+      <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Récent :</span>
       <div class="flex flex-wrap gap-2">
         <UButton
           v-for="q in history"

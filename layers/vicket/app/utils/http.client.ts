@@ -1,25 +1,34 @@
 /**
  * Generic HTTP Client responsible for low-level network operations (SRP).
  * Agnostic of any specific business logic.
+ * Features: Timeouts, Generic Error Parsing, FormData support.
  */
 export class HttpClient {
   private baseUrl: string
+  private defaultTimeout: number
 
-  constructor(baseUrl: string) {
+  constructor(baseUrl: string, timeout = 10000) {
     this.baseUrl = baseUrl.replace(/\/+$/, '')
+    this.defaultTimeout = timeout
   }
 
   /**
-   * Performs a generic request.
+   * Performs a generic request with timeout support.
    */
   private async request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const url = `${this.baseUrl}/${path.replace(/^\/+/, '')}`
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), this.defaultTimeout)
 
     try {
-      const response = await fetch(url, options)
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
-        // Generic error parsing
         let errorData
         try {
           errorData = await response.json()
@@ -31,7 +40,11 @@ export class HttpClient {
 
       return await response.json() as T
     } catch (err) {
-      if (err instanceof Error) throw err
+      clearTimeout(timeoutId)
+      if (err instanceof Error) {
+        if (err.name === 'AbortError') throw new Error('Request timeout')
+        throw err
+      }
       throw new Error('Unknown network error')
     }
   }

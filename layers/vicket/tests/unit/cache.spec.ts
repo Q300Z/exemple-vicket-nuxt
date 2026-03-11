@@ -5,7 +5,7 @@ describe('MemoryCacheProvider', () => {
   it('should store and retrieve items', async () => {
     const cache = new MemoryCacheProvider<string>()
     await cache.set('key', 'value', 10)
-    
+
     const result = await cache.get('key')
     expect(result).toBe('value')
   })
@@ -13,7 +13,7 @@ describe('MemoryCacheProvider', () => {
   it('should return null for expired items', async () => {
     const cache = new MemoryCacheProvider<string>()
     await cache.set('key', 'value', -1) // Already expired
-    
+
     const result = await cache.get('key')
     expect(result).toBeNull()
   })
@@ -22,7 +22,7 @@ describe('MemoryCacheProvider', () => {
     const cache = new MemoryCacheProvider<string>()
     await cache.set('key', 'value')
     await cache.delete('key')
-    
+
     const result = await cache.get('key')
     expect(result).toBeNull()
   })

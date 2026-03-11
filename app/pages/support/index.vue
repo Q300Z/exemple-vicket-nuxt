@@ -73,7 +73,7 @@ const retryAll = (recover: () => Promise<void>) => {
         <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
           Comment pouvons-nous vous <span class="primary-gradient-text italic">aider ?</span>
         </h1>
-        <p class="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg sm:text-xl">
+        <p class="text-gray-500 dark:text-gray-500 max-w-2xl mx-auto text-lg sm:text-xl">
           Consultez notre base de connaissances ou contactez notre équipe de support pour une assistance personnalisée.
         </p>
 
@@ -165,7 +165,7 @@ const retryAll = (recover: () => Promise<void>) => {
                   </p>
                 </div>
               </div>
-              <p class="hidden sm:block text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <p class="hidden sm:block text-xs font-bold text-gray-500 uppercase tracking-widest">
                 {{ articles.length }} articles
               </p>
             </div>
@@ -187,7 +187,7 @@ const retryAll = (recover: () => Promise<void>) => {
                     variant="soft"
                     class="rounded-lg px-2.5 py-1"
                   >{{ article.category }}</UBadge>
-                  <div class="p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-400 group-hover:text-primary transition-colors">
+                  <div class="p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors">
                     <UIcon
                       name="i-lucide-arrow-right"
                       class="w-4 h-4 transform group-hover:translate-x-1"
@@ -205,7 +205,7 @@ const retryAll = (recover: () => Promise<void>) => {
                   />
                 </div>
 
-                <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 leading-relaxed">
+                <div class="text-sm text-gray-500 dark:text-gray-500 line-clamp-3 leading-relaxed">
                   <VicketHighlightedText
                     :text="stripHtml(article.content)"
                     :query="searchQuery"
@@ -243,7 +243,7 @@ const retryAll = (recover: () => Promise<void>) => {
               :ui="{
                 item: 'transition-all hover:bg-gray-50/50 dark:hover:bg-gray-800/50',
                 trigger: 'p-6 font-bold text-gray-900 dark:text-white text-base',
-                content: 'px-6 pb-6 text-gray-600 dark:text-gray-400 leading-relaxed'
+                content: 'px-6 pb-6 text-gray-600 dark:text-gray-500 leading-relaxed'
               }"
             >
               <template #item="{ item }">

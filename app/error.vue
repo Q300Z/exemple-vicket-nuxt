@@ -51,7 +51,7 @@ const errorConfig = computed(() => {
             <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
               {{ errorConfig.title }}
             </h1>
-            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+            <p class="text-gray-500 dark:text-gray-500 text-sm leading-relaxed">
               {{ errorConfig.description }}
             </p>
           </div>

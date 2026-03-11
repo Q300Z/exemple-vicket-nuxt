@@ -27,7 +27,7 @@ test.describe('Vicket Full Support Journey', () => {
     // 5. Form Step 1: Identification
     await expect(page.locator('text=Votre adresse email')).toBeVisible()
     await page.locator('input[type="email"]').fill('tester@example.com')
-    
+
     // If there are multiple templates, select the first one
     const templates = await page.locator('input[type="radio"]').all()
     if (templates.length > 0) {
@@ -39,7 +39,7 @@ test.describe('Vicket Full Support Journey', () => {
     // 6. Form Step 2: Details
     await expect(page.locator('text=Sujet de la demande')).toBeVisible()
     await page.getByPlaceholder(/Ex: Problème de connexion/i).fill('E2E Test Ticket')
-    
+
     // Fill dynamic questions if they exist (Factory check)
     const textareas = await page.locator('textarea').all()
     for (const area of textareas) {
@@ -53,7 +53,7 @@ test.describe('Vicket Full Support Journey', () => {
     // Increase timeout for API latency
     await expect(page.locator('text=Ticket créé avec succès')).toBeVisible({ timeout: 15000 })
     await expect(page.locator('text=Un lien sécurisé vous a été envoyé')).toBeVisible()
-    
+
     // Close modal
     await page.getByRole('button', { name: /Fermer la fenêtre/i }).click()
     await expect(page.locator('text=Ticket créé avec succès')).not.toBeVisible()

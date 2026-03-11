@@ -3,12 +3,15 @@ import type { INavigable } from '../types/ui'
 
 /**
  * Component responsible for automatic breadcrumb navigation (SRP/ISP).
+ * Decoupled from domain: only cares about INavigable objects.
  */
 const route = useRoute()
 
 const breadcrumbs = computed<INavigable[]>(() => {
   const path = route?.path || ''
   const parts = path.split('/').filter(Boolean)
+
+  // Base item
   const items: INavigable[] = [{ label: 'Accueil', to: '/', icon: 'i-lucide-home' }]
 
   let currentPath = ''
@@ -18,11 +21,14 @@ const breadcrumbs = computed<INavigable[]>(() => {
     let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' ')
     if (part === 'support') label = 'Centre de Support'
 
-    items.push({
+    // Explicit interface fulfillment (ISP)
+    const navigable: INavigable = {
       label,
       to: currentPath,
       icon: part === 'support' ? 'i-lucide-life-buoy' : undefined
-    })
+    }
+
+    items.push(navigable)
   })
 
   return items

@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       data: article
     }
   } catch (error: unknown) {
-    const err = error as any
+    const err = error as { statusCode?: number, statusMessage?: string, message?: string }
     throw createError({
       statusCode: err.statusCode || 500,
       statusMessage: err.statusMessage || err.message

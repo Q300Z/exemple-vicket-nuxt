@@ -46,7 +46,7 @@ const formattedSize = computed(() => {
       <p class="text-sm font-bold truncate text-gray-900 dark:text-white">
         {{ file.name }}
       </p>
-      <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">
+      <p class="text-[10px] font-medium text-gray-500 uppercase tracking-wider">
         {{ formattedSize }}
       </p>
     </div>

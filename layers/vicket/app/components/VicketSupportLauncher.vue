@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
- * Component responsible for the Floating Action Button launcher (SRP).
+ * Component responsible for the Support launcher (SRP).
+ * Logic-focused, style-agnostic.
  */
 const { openDialog } = useSupportState()
 const { fetchInit, websiteName } = useSupportData()
@@ -9,16 +10,10 @@ const { stripHtml } = useContent()
 const isOpen = ref(false)
 const searchQuery = ref('')
 
-// --- DATA FETCHING (DIP: Using Repository) ---
 const { data: articlesData, refresh: refreshArticles } = await useAsyncData(
   'launcher-articles',
   () => $fetch('/api/vicket/articles', { params: { q: searchQuery.value } }),
-  {
-    immediate: false, // Fetch only when opened
-    getCachedData(key, nuxtApp) {
-      return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-    }
-  }
+  { immediate: false }
 )
 
 const articles = computed(() => articlesData.value?.data || [])
@@ -36,15 +31,11 @@ const goToArticle = (slug: string) => {
   isOpen.value = false
   navigateTo(`/support/${slug}`)
 }
-
-const onSearch = () => {
-  refreshArticles()
-}
 </script>
 
 <template>
   <div class="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
-    <!-- Mini Help Center Popover -->
+    <!-- Popover Center -->
     <Transition
       enter-active-class="transition duration-200 ease-out"
       enter-from-class="translate-y-4 opacity-0 scale-95"
@@ -53,101 +44,77 @@ const onSearch = () => {
       leave-from-class="translate-y-0 opacity-100 scale-100"
       leave-to-class="translate-y-4 opacity-0 scale-95"
     >
-      <div
+      <UCard
         v-if="isOpen"
-        class="w-[350px] max-w-[calc(100vw-2rem)] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col ring-1 ring-black/5"
+        class="w-[350px] max-w-[calc(100vw-2rem)] shadow-xl ring-1 ring-neutral-200 dark:ring-neutral-800"
+        :ui="{ body: 'p-0 flex flex-col', rounded: 'rounded-2xl' }"
       >
         <!-- Header -->
-        <div class="p-6 bg-primary-600 text-white space-y-1">
-          <div class="flex items-center justify-between">
-            <h3 class="font-bold text-lg">
-              {{ websiteName }} Aide
-            </h3>
-            <UButton
-              icon="i-lucide-x"
-              variant="ghost"
-              color="white"
-              size="xs"
-              class="rounded-full"
-              @click="isOpen = false"
-            />
-          </div>
-          <p class="text-xs text-white/80">
-            Recherchez une réponse ou contactez-nous.
-          </p>
+        <div class="p-4 bg-primary text-primary-foreground flex items-center justify-between">
+          <span class="font-bold">{{ websiteName }} Aide</span>
+          <UButton
+            icon="i-lucide-x"
+            variant="ghost"
+            color="neutral"
+            size="xs"
+            @click="isOpen = false"
+          />
         </div>
 
         <!-- Search -->
-        <div class="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-950/50">
+        <div class="p-3 border-b border-neutral-100 dark:border-neutral-800">
           <UInput
             v-model="searchQuery"
             icon="i-lucide-search"
-            placeholder="Comment pouvons-nous aider ?"
-            size="md"
-            class="w-full"
-            :ui="{ rounded: 'rounded-xl' }"
-            @keyup.enter="onSearch"
-            @blur="onSearch"
+            placeholder="Rechercher..."
+            size="sm"
+            @keyup.enter="refreshArticles"
           />
         </div>
 
         <!-- Content -->
-        <div class="flex-1 overflow-y-auto max-h-[300px] p-4 space-y-4">
-          <div
-            v-if="(displayArticles?.length || 0) > 0"
-            class="space-y-2"
+        <div class="overflow-y-auto max-h-[300px] p-2 space-y-1">
+          <button
+            v-for="article in displayArticles"
+            :key="article.id"
+            class="w-full text-left p-3 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+            @click="goToArticle(article.slug)"
           >
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2">
-              {{ searchQuery ? 'Résultats de recherche' : 'Articles suggérés' }}
+            <p class="text-sm font-semibold truncate">
+              {{ article.title }}
             </p>
-            <div class="space-y-1">
-              <button
-                v-for="article in displayArticles"
-                :key="article.id"
-                class="w-full text-left p-3 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-colors group"
-                @click="goToArticle(article.slug)"
-              >
-                <p class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors line-clamp-1">
-                  {{ article.title }}
-                </p>
-                <p class="text-xs text-gray-500 line-clamp-1 mt-0.5">
-                  {{ stripHtml(article.content) }}
-                </p>
-              </button>
-            </div>
-          </div>
-
+            <p class="text-xs text-neutral-500 truncate mt-0.5">
+              {{ stripHtml(article.content) }}
+            </p>
+          </button>
           <div
-            v-else
-            class="py-8 text-center"
+            v-if="displayArticles.length === 0"
+            class="py-8 text-center text-xs text-neutral-500"
           >
-            <p class="text-sm text-gray-500">
-              Aucun résultat trouvé.
-            </p>
+            Aucun résultat.
           </div>
         </div>
 
-        <!-- Footer Actions -->
-        <div class="p-4 bg-gray-50 dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800">
+        <!-- Footer -->
+        <div class="p-3 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-100 dark:border-neutral-800">
           <UButton
             block
-            label="Envoyer un message"
+            label="Ouvrir un ticket"
             icon="i-lucide-message-square"
-            size="lg"
-            class="rounded-xl shadow-lg shadow-primary-500/10"
             @click="openDialog"
           />
         </div>
-      </div>
+      </UCard>
     </Transition>
 
-    <!-- FAB Button -->
+    <!-- FAB -->
     <UButton
       icon="i-lucide-life-buoy"
       size="xl"
-      class="rounded-full w-14 h-14 shadow-2xl shadow-primary-500/40 transform hover:scale-110 active:scale-95 transition-all"
-      :class="{ 'rotate-90': isOpen }"
+      class="rounded-full shadow-lg"
       @click="handleOpen"
-    />
+    >
+      <span class="sr-only">Support</span>
+    </UButton>
   </div>
 </template>

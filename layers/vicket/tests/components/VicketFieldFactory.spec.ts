@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import VicketFieldFactory from '../../app/components/VicketFieldFactory.vue'
 import VicketFieldText from '../../app/components/fields/VicketFieldText.vue'
@@ -12,7 +12,7 @@ describe('VicketFieldFactory', () => {
         question: { id: 'q1', type: 'TEXT', label: 'Name' }
       }
     })
-    
+
     expect(wrapper.findComponent(VicketFieldText).exists()).toBe(true)
   })
 
@@ -23,7 +23,7 @@ describe('VicketFieldFactory', () => {
         question: { id: 'q2', type: 'SELECT', label: 'Choice', options: [] }
       }
     })
-    
+
     expect(wrapper.findComponent(VicketFieldSelect).exists()).toBe(true)
   })
 })

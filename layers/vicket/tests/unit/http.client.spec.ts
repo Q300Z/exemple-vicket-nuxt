@@ -18,7 +18,7 @@ describe('HttpClient', () => {
     } as Response)
 
     const result = await client.get('/test')
-    
+
     expect(fetch).toHaveBeenCalledWith(`${baseUrl}/test`, expect.objectContaining({ method: 'GET' }))
     expect(result).toEqual(mockData)
   })
@@ -31,7 +31,7 @@ describe('HttpClient', () => {
     } as Response)
 
     const result = await client.post('/test', { name: 'Vicket' })
-    
+
     expect(fetch).toHaveBeenCalledWith(`${baseUrl}/test`, expect.objectContaining({
       method: 'POST',
       body: JSON.stringify({ name: 'Vicket' })

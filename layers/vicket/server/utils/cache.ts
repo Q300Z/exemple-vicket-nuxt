@@ -54,7 +54,17 @@ export class StorageCacheProvider<T> implements ICacheProvider<T> {
 }
 
 /**
- * Singleton instance.
- * Switch between MemoryCacheProvider and StorageCacheProvider here.
+ * Factory to create the appropriate cache provider based on env (OCP/LSP).
  */
-export const serverCache = new MemoryCacheProvider<unknown>()
+function createCacheProvider(): ICacheProvider<unknown> {
+  // If we are in production or have a dedicated storage configured
+  if (process.env.NODE_ENV === 'production' || process.env.VICKET_USE_STORAGE === 'true') {
+    return new StorageCacheProvider()
+  }
+  return new MemoryCacheProvider()
+}
+
+/**
+ * Singleton instance.
+ */
+export const serverCache = createCacheProvider()

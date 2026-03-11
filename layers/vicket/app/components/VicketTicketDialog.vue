@@ -110,7 +110,7 @@ const onSubmit = async () => {
     notifications.celebrate()
   } catch (submitError) {
     notifications.error(
-      'Erreur', 
+      'Erreur',
       submitError instanceof Error ? submitError.message : 'Impossible de créer le ticket.'
     )
   } finally {
@@ -130,8 +130,8 @@ watch(
 </script>
 
 <template>
-  <VicketAdaptiveModal 
-    :open="isOpen" 
+  <VicketAdaptiveModal
+    :open="isOpen"
     :title="modalTitle"
     @update:open="isOpen = $event"
     @close="resetAndClose"
@@ -157,7 +157,7 @@ watch(
     >
       <div
         class="p-4 rounded-full mx-auto w-16 h-16 flex items-center justify-center"
-        :class="loadError ? 'bg-error-50 dark:bg-error-950/20 text-error' : 'bg-gray-50 dark:bg-gray-800 text-gray-400'"
+        :class="loadError ? 'bg-error-50 dark:bg-error-950/20 text-error' : 'bg-gray-50 dark:bg-gray-800 text-gray-500'"
       >
         <UIcon
           :name="loadError ? 'i-lucide-alert-circle' : 'i-lucide-message-square-off'"

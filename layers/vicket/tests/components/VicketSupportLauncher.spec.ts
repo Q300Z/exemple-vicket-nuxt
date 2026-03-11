@@ -14,14 +14,14 @@ describe('VicketSupportLauncher', () => {
     }))
 
     const wrapper = await mountSuspended(VicketSupportLauncher)
-    
+
     // Initially closed
     expect(wrapper.find('.fixed').exists()).toBe(true)
-    
+
     // Find the FAB button (usually the only UButton in root)
     const button = wrapper.find('button')
     await button.trigger('click')
-    
+
     // Check if transition/popover is visible (looking for text in header)
     expect(wrapper.text()).toContain('Support Aide')
   })
