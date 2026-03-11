@@ -1,0 +1,92 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "Accueil" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e7]
+        - navigation [ref=e15]:
+          - list [ref=e17]:
+            - listitem [ref=e18]:
+              - link "Support" [ref=e19] [cursor=pointer]:
+                - /url: /support
+                - generic [ref=e20]: Support
+      - generic [ref=e21]:
+        - generic [ref=e26]: Tous les systèmes sont opérationnels
+        - button "Nouveau Ticket" [active] [ref=e27]:
+          - generic [ref=e29]: Nouveau Ticket
+        - button "blue" [ref=e30]:
+          - generic [ref=e32]: blue
+        - button "Switch to dark mode" [ref=e33]
+        - link [ref=e35] [cursor=pointer]:
+          - /url: https://vicket.app
+  - main [ref=e37]:
+    - generic [ref=e38]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Vicket + Nuxt 4 Demo" [level=1] [ref=e43]
+          - generic [ref=e44]: Découvrez l'intégration fluide de Vicket, la solution de support client moderne, dans un projet Nuxt 4 ultra-performant.
+        - generic [ref=e46]:
+          - link "Tester le support" [ref=e47] [cursor=pointer]:
+            - /url: /support
+            - generic [ref=e48]: Tester le support
+          - link "Documentation Vicket" [ref=e50] [cursor=pointer]:
+            - /url: https://vicket.app/fr/docs
+            - generic [ref=e52]: Documentation Vicket
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - heading "Pourquoi choisir Vicket pour votre projet Nuxt ?" [level=2] [ref=e57]
+          - generic [ref=e58]: Une solution de support clé en main qui respecte votre identité visuelle et s'intègre en quelques minutes.
+        - list [ref=e60]:
+          - listitem [ref=e61]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Marque blanche totale
+              - generic [ref=e66]: Personnalisez chaque pixel. Vos clients restent dans votre univers, sans redirection externe.
+          - listitem [ref=e67]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: Multilingue natif
+              - generic [ref=e72]: Offrez un support dans la langue de vos utilisateurs sans effort supplémentaire.
+          - listitem [ref=e73]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: Performance Nuxt 4
+              - generic [ref=e78]: Profitez de la nouvelle structure de dossiers et des optimisations de Nuxt 4 pour un support ultra-rapide.
+          - listitem [ref=e79]:
+            - generic [ref=e82]:
+              - generic [ref=e83]: Proxy Sécurisé
+              - generic [ref=e84]: Vos clés API sont protégées grâce au proxy backend intégré dans server/api/vicket.
+          - listitem [ref=e85]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: Composants Nuxt UI
+              - generic [ref=e90]: Utilisez la puissance de Nuxt UI pour une interface cohérente et accessible.
+          - listitem [ref=e91]:
+            - generic [ref=e94]:
+              - generic [ref=e95]: Installation Instantanée
+              - generic [ref=e96]: Générez vos pages de support en une commande avec le scaffold officiel Vicket.
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "Prêt à améliorer votre support client ?" [level=2] [ref=e103]
+          - generic [ref=e104]: Rejoignez les développeurs qui choisissent la simplicité et la performance avec Vicket et Nuxt.
+        - generic [ref=e106]:
+          - link "Essayer gratuitement" [ref=e107] [cursor=pointer]:
+            - /url: https://vicket.app/fr
+            - generic [ref=e108]: Essayer gratuitement
+          - link "Voir l'intégration" [ref=e110] [cursor=pointer]:
+            - /url: /support
+            - generic [ref=e112]: Voir l'intégration
+  - contentinfo [ref=e113]:
+    - generic [ref=e114]:
+      - generic [ref=e116]:
+        - link [ref=e117] [cursor=pointer]:
+          - /url: https://vicket.app/fr/docs
+        - link [ref=e119] [cursor=pointer]:
+          - /url: https://github.com/vicket-app
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - img [ref=e124]
+          - generic [ref=e132]: Demo
+        - paragraph [ref=e133]: Propulsé par Nuxt UI v4 & Vicket • © 2026
+  - button [ref=e135]
+```

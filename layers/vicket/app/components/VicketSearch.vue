@@ -1,0 +1,72 @@
+<script setup lang="ts">
+/**
+ * Component responsible for search input UI and history (SRP).
+ */
+interface Props {
+  modelValue: string
+  placeholder?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: 'Rechercher...',
+  size: 'md'
+})
+
+const emit = defineEmits(['update:modelValue', 'search'])
+
+const { history, addToHistory } = useSearchHistory()
+
+const searchQuery = computed({
+  get: () => props.modelValue,
+  set: val => emit('update:modelValue', val)
+})
+
+const onEnter = () => {
+  if (searchQuery.value.trim()) {
+    addToHistory(searchQuery.value)
+    emit('search', searchQuery.value)
+  }
+}
+
+const useHistory = (q: string) => {
+  searchQuery.value = q
+  emit('search', q)
+}
+</script>
+
+<template>
+  <div class="space-y-4 w-full">
+    <UInput
+      v-model="searchQuery"
+      icon="i-lucide-search"
+      :placeholder="placeholder"
+      :size="size"
+      class="w-full"
+      :ui="{ rounded: 'rounded-2xl' }"
+      @keyup.enter="onEnter"
+      @blur="onEnter"
+    />
+
+    <!-- Search History (Internal UI logic) -->
+    <div
+      v-if="(history?.length || 0) > 0 && !searchQuery"
+      class="flex items-center gap-3 animate-in fade-in duration-500"
+    >
+      <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Récent :</span>
+      <div class="flex flex-wrap gap-2">
+        <UButton
+          v-for="q in history"
+          :key="q"
+          size="xs"
+          variant="subtle"
+          color="neutral"
+          class="rounded-full px-3"
+          @click="useHistory(q)"
+        >
+          {{ q }}
+        </UButton>
+      </div>
+    </div>
+  </div>
+</template>

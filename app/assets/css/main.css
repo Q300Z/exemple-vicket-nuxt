@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ────────────────────────────────────────────── */
+/*  SOLID Design Tokens (SRP)                     */
+/* ────────────────────────────────────────────── */
+
+:root {
+  --vk-glass-blur: blur(12px);
+  --vk-glass-opacity: 0.7;
+}
+
+/* Base Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(4px);
+}
+
+/* Glassmorphism utility (Tailwind 4 syntax) */
+@utility glass-effect {
+  @apply backdrop-blur-[var(--vk-glass-blur)] bg-white/70 dark:bg-gray-900/70 border-white/20 dark:border-gray-800/20;
+}
+
+/* Luminous borders for dark mode */
+@utility luminous-border {
+  @apply border border-gray-200 dark:border-white/10;
+}
+
+/* Subtle SaaS Gradients */
+@utility subtle-gradient {
+  @apply bg-linear-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-950/50;
+}
+
+@utility primary-gradient-text {
+  @apply bg-linear-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent font-extrabold;
+}
+
+/* Improved Prose */
+.prose {
+  @apply max-w-none leading-relaxed text-gray-600 dark:text-gray-400;
+}
+
+/* Global resets for Nuxt UI components via CSS if not possible in app.config */
+.u-modal-content {
+  @apply backdrop-blur-[var(--vk-glass-blur)] bg-white/70 dark:bg-gray-900/70 border-white/20 dark:border-gray-800/20 shadow-2xl ring-1 ring-black/5 dark:ring-white/10;
+}
+
+/* Animations */
+.badge-pulse {
+  @apply relative;
+}
+.badge-pulse::after {
+  content: '';
+  @apply absolute inset-0 rounded-full animate-ping bg-current opacity-20;
+}
+
+/* View Transitions Optimization */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
