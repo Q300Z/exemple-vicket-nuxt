@@ -21,6 +21,13 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  colorMode: {
+    preference: 'system',
+    fallback: 'light',
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode'
+  },
+
   runtimeConfig: {
     public: {
       vicketApiKey: '' // Overwritten by NUXT_PUBLIC_VICKET_API_KEY
