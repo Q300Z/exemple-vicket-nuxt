@@ -1,14 +1,20 @@
 <script setup>
-import { SUPPORT_REPOSITORY_KEY } from '../layers/vicket/app/types/repository'
+import { 
+  KNOWLEDGE_REPOSITORY_KEY, 
+  TICKET_REPOSITORY_KEY, 
+  ENGAGEMENT_REPOSITORY_KEY 
+} from '../layers/vicket/app/types/repository'
 import { NOTIFICATION_SERVICE_KEY } from '../layers/vicket/app/types/interaction'
 
 const { isDialogOpen, templates, openDialog } = useSupportState()
-const supportRepository = useSupportData()
+const { knowledge, tickets, engagement } = useSupportData()
 const notificationService = useNotificationService()
 const { locale, locales, setLocale } = useI18n()
 
-// Provide for DIP
-provide(SUPPORT_REPOSITORY_KEY, supportRepository)
+// Provide for DIP (Specialized interfaces)
+provide(KNOWLEDGE_REPOSITORY_KEY, knowledge)
+provide(TICKET_REPOSITORY_KEY, tickets)
+provide(ENGAGEMENT_REPOSITORY_KEY, engagement)
 provide(NOTIFICATION_SERVICE_KEY, notificationService)
 
 useHead({
@@ -53,6 +59,7 @@ const items = computed(() => [
               color="neutral"
               icon="i-lucide-languages"
               class="rounded-full"
+              aria-label="Changer la langue"
             />
           </UDropdownMenu>
 
@@ -83,7 +90,19 @@ const items = computed(() => [
       </template>
     </UFooter>
 
-    <VicketSupportLauncher />
+    <VicketSupportLauncher>
+      <template #actions>
+        <UButton
+          block
+          size="lg"
+          label="Ouvrir un ticket"
+          icon="i-lucide-message-square"
+          class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
+          :ui="{ label: 'text-inverted font-bold' }"
+          @click="isDialogOpen = true; if (templates.length === 0) openDialog()"
+        />
+      </template>
+    </VicketSupportLauncher>
     <VicketTicketDialog
       :open="isDialogOpen"
       :templates="templates"

@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/repository'
+
 /**
- * Advanced Support Launcher Component (SRP).
- * 100% Nuxt UI v4 compliant.
- * Follows "Nuxt UI First" style (Neutral surfaces, Primary accents).
+ * Advanced Support Launcher Component (SRP/OCP).
+ * Now using specialized repositories (ISP).
+ * Extensible via slots (OCP).
  */
-const { openDialog } = useSupportState()
-const { fetchInit, websiteName } = useSupportData()
+const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
+const tickets = inject(TICKET_REPOSITORY_KEY)
+
+// Robust fallback for website name (KISS)
+const websiteName = computed(() => tickets?.websiteName.value || 'Vicket')
+
 const { stripHtml } = useContent()
 
 const isOpen = ref(false)
@@ -13,18 +19,18 @@ const searchQuery = ref('')
 
 const { data: articlesData, status, refresh: refreshArticles } = await useAsyncData(
   'launcher-articles',
-  () => $fetch('/api/vicket/articles', { params: { q: searchQuery.value } }),
+  () => knowledge ? knowledge.fetchArticles(searchQuery.value).then(res => res.data) : Promise.resolve({ data: [] }),
   { immediate: false }
 )
 
-const articles = computed(() => articlesData.value?.data || [])
-const displayArticles = computed(() => (articles.value || []).slice(0, 5))
+const articles = computed(() => (articlesData.value?.data || []))
+const displayArticles = computed(() => articles.value.slice(0, 5))
 const isLoading = computed(() => status.value === 'pending')
 
 const handleOpen = async () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
-    await fetchInit()
+    if (tickets) await tickets.fetchInit()
     await refreshArticles()
   }
 }
@@ -36,7 +42,10 @@ const goToArticle = (slug: string) => {
 </script>
 
 <template>
-  <div class="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
+  <aside 
+    class="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4"
+    aria-label="Support et Aide"
+  >
     <!-- Popover Container -->
     <Transition
       enter-active-class="transition duration-200 ease-out"
@@ -54,9 +63,9 @@ const goToArticle = (slug: string) => {
           root: 'ring-1 ring-[var(--ui-border)] bg-[var(--ui-bg)] rounded-2xl' 
         }"
       >
-        <!-- Header: Standard Nuxt UI Primary bg -->
+        <!-- Header -->
         <div class="p-4 bg-[var(--ui-primary)] flex items-center justify-between shadow-sm">
-          <span class="font-bold text-inverted">{{ websiteName || 'Vicket' }} Aide</span>
+          <span class="font-bold text-inverted">{{ websiteName }} Aide</span>
           <UButton
             icon="i-lucide-x"
             variant="ghost"
@@ -66,7 +75,7 @@ const goToArticle = (slug: string) => {
           />
         </div>
 
-        <!-- Search: Standard Neutral Field -->
+        <!-- Search -->
         <div class="p-3 border-b border-[var(--ui-border)]">
           <UInput
             v-model="searchQuery"
@@ -80,7 +89,7 @@ const goToArticle = (slug: string) => {
           />
         </div>
 
-        <!-- Content: Neutral Surface with Primary Hover -->
+        <!-- Content -->
         <div class="overflow-y-auto max-h-[350px] p-2 space-y-1 bg-[var(--ui-bg-accented)]/30">
           <button
             v-for="article in displayArticles"
@@ -105,22 +114,14 @@ const goToArticle = (slug: string) => {
           </div>
         </div>
 
-        <!-- Footer: Clean Nuxt UI Buttons -->
+        <!-- Footer (OCP: Customizable via slot) -->
         <div class="p-4 bg-[var(--ui-bg)] border-t border-[var(--ui-border)]">
-          <UButton
-            block
-            size="lg"
-            label="Ouvrir un ticket"
-            icon="i-lucide-message-square"
-            class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
-            :ui="{ label: 'text-inverted font-bold' }"
-            @click="openDialog"
-          />
+          <slot name="actions" />
         </div>
       </UCard>
     </Transition>
 
-    <!-- FAB: Floating Action Button -->
+    <!-- FAB -->
     <UButton
       size="xl"
       class="rounded-full w-14 h-14 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-transform shadow-[color-mix(in_srgb,var(--ui-primary)_30%,transparent)]"
@@ -132,5 +133,5 @@ const goToArticle = (slug: string) => {
       />
       <span class="sr-only">Besoin d'aide ?</span>
     </UButton>
-  </div>
+  </aside>
 </template>

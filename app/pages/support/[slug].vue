@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { SUPPORT_REPOSITORY_KEY } from '../../../layers/vicket/app/types/repository'
+import { KNOWLEDGE_REPOSITORY_KEY } from '../../../layers/vicket/app/types/repository'
 
 /**
  * Article Detail page (Scalable Repository strategy).
- * Enhanced UI with Injected Repository (DIP).
- * Color variables drive progress bar and interactions.
+ * Orchestrator Page (Clean Code).
  */
-const support = inject(SUPPORT_REPOSITORY_KEY)
-if (!support) throw new Error('Support Repository not provided')
+const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
+if (!knowledge) throw new Error('Knowledge Repository not provided')
 
-const { fetchArticle } = support
+const { fetchArticle } = knowledge
 const route = useRoute()
+const { scrollProgress } = useReadingProgress()
 const { openDialog, templates } = useSupportState()
 
 const slug = computed(() => String(route.params.slug))
@@ -20,27 +20,11 @@ const { data: response, status } = await fetchArticle(slug.value)
 
 const article = computed(() => response.value?.data || null)
 const isLoading = computed(() => status.value === 'pending')
-
-/* ── Reading Progress Logic (SRP) ── */
-const scrollProgress = ref(0)
-const onScroll = () => {
-  const winScroll = document.documentElement.scrollTop
-  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight
-  scrollProgress.value = (winScroll / height) * 100
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', onScroll)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-})
 </script>
 
 <template>
   <div class="relative transition-colors duration-500">
-    <!-- Reading Progress Bar (Driven by primary) -->
+    <!-- Reading Progress Bar -->
     <div
       class="fixed top-[var(--ui-header-height)] left-0 h-1 z-50 transition-all duration-150 ease-out"
       :style="{ width: `${scrollProgress}%`, backgroundColor: 'var(--ui-primary)' }"
@@ -51,213 +35,51 @@ onUnmounted(() => {
 
       <NuxtErrorBoundary>
         <!-- Loading -->
-        <div
-          v-if="isLoading"
-          class="max-w-3xl mx-auto space-y-10 animate-pulse"
-        >
+        <div v-if="isLoading" class="max-w-3xl mx-auto space-y-10 animate-pulse">
           <div class="space-y-4">
             <USkeleton class="h-16 w-full rounded-2xl" />
             <USkeleton class="h-6 w-1/3 rounded-lg" />
           </div>
           <div class="space-y-4">
-            <USkeleton
-              v-for="i in 12"
-              :key="i"
-              class="h-4 w-full rounded-md"
-            />
+            <USkeleton v-for="i in 12" :key="i" class="h-4 w-full rounded-md" />
           </div>
         </div>
 
         <!-- Not Found -->
-        <div
-          v-else-if="!article"
-          class="py-20"
-        >
-          <VicketEmptyState
-            title="Article introuvable"
-            description="Désolé, nous ne trouvons pas l'article que vous recherchez."
-            icon="i-lucide-file-question"
-          >
+        <div v-else-if="!article" class="py-20">
+          <VicketEmptyState title="Article introuvable" description="Désolé, nous ne trouvons pas l'article." icon="i-lucide-file-question">
             <template #actions>
-              <UButton
-                to="/support"
-                variant="subtle"
-                color="neutral"
-                class="rounded-full px-8"
-              >
-                Retour au centre de support
-              </UButton>
+              <UButton to="/support" variant="subtle" color="neutral" class="rounded-full px-8">Retour au support</UButton>
             </template>
           </VicketEmptyState>
         </div>
 
-        <!-- Article Detail -->
-        <div
-          v-else
-          class="grid grid-cols-1 lg:grid-cols-4 gap-16"
-        >
-          <!-- Main Content -->
+        <!-- Article Detail Orchestration -->
+        <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-16">
           <div class="lg:col-span-3 space-y-12">
-            <!-- Header -->
-            <header class="space-y-8">
-              <div class="space-y-4">
-                <UBadge
-                  v-if="article.category"
-                  size="md"
-                  variant="subtle"
-                  class="rounded-full px-4"
-                >
-                  {{ article.category }}
-                </UBadge>
-                <h1
-                  class="text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--ui-text-highlighted)] leading-[1.1]"
-                  :style="{ viewTransitionName: `article-title-${slug}` }"
-                >
-                  {{ article.title }}
-                </h1>
-              </div>
+            <SupportArticleHeader
+              :title="article.title"
+              :category="article.category"
+              :slug="slug"
+            />
 
-              <div class="flex flex-wrap items-center justify-between gap-6 py-6 border-y border-[var(--ui-border)]">
-                <div class="flex items-center gap-6 text-sm text-[var(--ui-text-muted)] font-medium">
-                  <div class="flex items-center gap-2">
-                    <div class="p-1.5 rounded-lg bg-[var(--ui-bg-accented)]">
-                      <UIcon
-                        name="i-lucide-calendar"
-                        class="w-4 h-4 text-[var(--ui-primary)]"
-                      />
-                    </div>
-                    <span>Mis à jour récemment</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="p-1.5 rounded-lg bg-[var(--ui-bg-accented)]">
-                      <UIcon
-                        name="i-lucide-clock"
-                        class="w-4 h-4 text-[var(--ui-primary)]"
-                      />
-                    </div>
-                    <span>3 min de lecture</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center gap-2">
-                  <UButton
-                    icon="i-lucide-link"
-                    variant="ghost"
-                    color="neutral"
-                    class="rounded-full hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
-                    aria-label="Copier le lien de l'article"
-                  />
-                  <UButton
-                    icon="i-lucide-share-2"
-                    variant="ghost"
-                    color="neutral"
-                    class="rounded-full hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
-                    aria-label="Partager l'article"
-                  />
-                </div>
-              </div>
-            </header>
-
-            <!-- Article Body -->
-            <article class="relative prose prose-lg max-w-none">
-              <VicketContentRenderer :content="article.content" />
-            </article>
-
-            <!-- Feedback -->
-            <div class="glass-effect p-8 rounded-3xl border border-[var(--ui-border)] shadow-sm">
-              <VicketArticleFeedback :article-id="article.id" />
-            </div>
-
-            <!-- Bottom Navigation -->
-            <div class="space-y-12 pt-12 border-t border-[var(--ui-border)]">
-              <!-- New Interactive CTA Bridge (UX Improvement) -->
-              <div class="bg-[var(--ui-bg-accented)] p-8 rounded-3xl border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="space-y-1 text-center md:text-left">
-                  <p class="text-xl font-bold text-[var(--ui-text-highlighted)]">Cet article n'a pas répondu à votre question ?</p>
-                  <p class="text-[var(--ui-text-muted)]">Nos experts sont là pour vous accompagner 24/7.</p>
-                </div>
-                <UButton
-                  v-if="templates.length > 0"
-                  label="Contacter le support"
-                  icon="i-lucide-message-square"
-                  size="xl"
-                  class="rounded-2xl px-8 shadow-md"
-                  @click="openDialog"
-                />
-              </div>
-
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
-                <UButton
-                  to="/support"
-                  icon="i-lucide-arrow-left"
-                  variant="ghost"
-                  color="neutral"
-                  label="Retour aux articles"
-                  class="rounded-full px-6 hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
-                />
-              </div>
-            </div>
-
+            <SupportArticleContent
+              :article-id="article.id"
+              :content="article.content"
+              :templates="templates"
+              @open-ticket="openDialog"
+            />
           </div>
 
-          <!-- Sidebar (Sticky) -->
-          <aside class="hidden lg:block">
-            <div class="sticky top-28 space-y-12">
-              <!-- Sommaire -->
-              <div class="glass-effect p-6 rounded-3xl border border-[var(--ui-border)] shadow-sm">
-                <VicketArticleTOC :content="article.content" />
-              </div>
-
-              <!-- Related Articles -->
-              <VicketSidebarArticles :current-article-id="article.id" />
-
-              <!-- CTA Support -->
-              <div
-                class="p-8 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden group transition-all"
-                :style="{ 
-                  backgroundColor: 'var(--ui-primary)', 
-                  '--tw-shadow-color': 'color-mix(in srgb, var(--ui-primary) 30%, transparent)' 
-                }"
-              >
-                <!-- Dynamic background pattern -->
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-
-                <div class="p-3.5 rounded-2xl bg-white/20 w-fit backdrop-blur-md">
-                  <UIcon
-                    name="i-lucide-headset"
-                    class="w-7 h-7 text-white"
-                  />
-                </div>
-                <div class="space-y-2 relative z-10 text-white">
-                  <p class="font-bold text-xl leading-tight">
-                    Vous n'avez pas trouvé votre réponse ?
-                  </p>
-                  <p class="text-sm opacity-80 leading-relaxed">
-                    Nos experts sont à votre disposition pour vous aider.
-                  </p>
-                </div>
-                <UButton
-                  block
-                  color="white"
-                  variant="solid"
-                  size="lg"
-                  class="rounded-2xl font-bold shadow-lg transition-transform hover:scale-[1.02]"
-                  :style="{ color: 'var(--ui-primary)' }"
-                  :ui="{ label: 'text-gray-950 font-bold' }"
-                  @click="openDialog"
-                >
-                  Ouvrir un ticket
-                </UButton>
-              </div>
-            </div>
-          </aside>
+          <SupportArticleSidebar
+            :article-id="article.id"
+            :content="article.content"
+            @open-ticket="openDialog"
+          />
         </div>
 
         <template #error="{ error, recover }">
-          <VicketErrorFallback
-            :error="error"
-            @retry="recover"
-          />
+          <VicketErrorFallback :error="error" @retry="recover" />
         </template>
       </NuxtErrorBoundary>
     </UContainer>

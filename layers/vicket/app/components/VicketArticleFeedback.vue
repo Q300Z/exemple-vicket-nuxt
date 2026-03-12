@@ -1,27 +1,35 @@
 <script setup lang="ts">
 import { NOTIFICATION_SERVICE_KEY } from '../types/interaction'
+import { ENGAGEMENT_REPOSITORY_KEY } from '../types/repository'
 
 /**
  * Component responsible for article feedback logic (SRP).
  * 100% Nuxt UI v4 compliant with semantic tokens.
  */
-defineProps<{
+const props = defineProps<{
   articleId: string
 }>()
 
 const notifications = inject(NOTIFICATION_SERVICE_KEY)
+const engagement = inject(ENGAGEMENT_REPOSITORY_KEY)
+
 const voted = ref(false)
 const feedback = ref<'positive' | 'negative' | null>(null)
 
-const handleVote = (type: 'positive' | 'negative') => {
+const handleVote = async (type: 'positive' | 'negative') => {
   voted.value = true
   feedback.value = type
+
+  if (engagement) {
+    await engagement.submitFeedback(props.articleId, type === 'positive')
+  }
 
   notifications?.success(
     'Merci !',
     'Votre avis nous aide à améliorer notre support.'
   )
 }
+
 </script>
 
 <template>

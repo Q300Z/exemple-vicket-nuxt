@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SUPPORT_REPOSITORY_KEY } from '../types/repository'
+import { KNOWLEDGE_REPOSITORY_KEY } from '../types/repository'
 import type { ArticleSummary } from '../composables/useVicket'
 import type { INavigable } from '../types/ui'
 
@@ -13,11 +13,12 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const support = inject(SUPPORT_REPOSITORY_KEY)
+const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 
-const { data: relatedArticles } = support
-  ? await support.fetchRelatedArticles(props.currentArticleId)
+const { data: relatedArticles } = knowledge
+  ? await knowledge.fetchRelatedArticles(props.currentArticleId)
   : { data: ref([]) }
+
 
 /**
  * ISP: Converting ArticleSummary to INavigable.

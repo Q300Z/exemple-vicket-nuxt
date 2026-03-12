@@ -1,42 +1,45 @@
 import type { Ref, ComputedRef, InjectionKey } from 'vue'
 import type { AsyncData } from '#app'
-
 import type { ArticleSummary, ArticleFull } from '../composables/useVicket'
 
+export interface SupportFaq {
+  id: string
+  question: string
+  answer: string
+}
+
 /**
- * Interface defining the contract for Support Data operations (DIP).
+ * ISP: Repository for Knowledge Base (Articles, Categories, FAQ)
  */
-export interface ISupportRepository {
-  websiteName: Ref<string>
+export interface IKnowledgeRepository {
   categories: ComputedRef<string[]>
-
-  /**
-   * Fetches initial configuration.
-   */
-  fetchInit(): Promise<unknown>
-
-  /**
-   * Fetches a list of article summaries (ISP: Optimized for lists).
-   */
   fetchArticles(query?: string, category?: string): AsyncData<{ success: boolean, data: ArticleSummary[] }, unknown>
-
-  /**
-   * Fetches a full article by slug.
-   */
   fetchArticle(slug: string): AsyncData<{ success: boolean, data: ArticleFull }, unknown>
-
-  /**
-   * Fetches frequently asked questions.
-   */
-  fetchFaqs(): AsyncData<unknown, unknown>
-
-  /**
-   * Fetches related article summaries.
-   */
+  fetchFaqs(query?: string): AsyncData<{ success: boolean, data: SupportFaq[] }, unknown>
   fetchRelatedArticles(currentId: string, limit?: number): AsyncData<ArticleSummary[], unknown>
 }
 
 /**
- * Injection Key for the Support Repository.
+ * ISP: Repository for Ticket Operations
  */
-export const SUPPORT_REPOSITORY_KEY = Symbol('SUPPORT_REPOSITORY') as InjectionKey<ISupportRepository>
+export interface ITicketRepository {
+  websiteName: Ref<string>
+  fetchInit(): Promise<unknown>
+  createTicket(payload: Record<string, unknown>): Promise<unknown>
+  fetchTemplates(): Promise<TicketTemplate[]>
+}
+
+/**
+ * ISP: Repository for User Engagement (Feedbacks, Ratings)
+ */
+export interface IEngagementRepository {
+  submitFeedback(articleId: string, helpful: boolean): Promise<unknown>
+}
+
+/**
+ * Injection Keys for Decoupled Repositories (DIP)
+ * Using Symbol.for to ensure consistent identity across layers and tests.
+ */
+export const KNOWLEDGE_REPOSITORY_KEY = Symbol.for('KNOWLEDGE_REPOSITORY') as InjectionKey<IKnowledgeRepository>
+export const TICKET_REPOSITORY_KEY = Symbol.for('TICKET_REPOSITORY') as InjectionKey<ITicketRepository>
+export const ENGAGEMENT_REPOSITORY_KEY = Symbol.for('ENGAGEMENT_REPOSITORY') as InjectionKey<IEngagementRepository>

@@ -79,7 +79,7 @@ const handleClose = (val: boolean) => {
     :open="open"
     @update:open="handleClose"
   >
-    <div class="p-1">
+    <section class="vk-dialog-content p-1" aria-label="Formulaire de support">
       <!-- STEP: CATEGORY -->
       <div v-if="step === 'category'" class="p-6 space-y-6">
         <div class="text-center">
@@ -158,6 +158,6 @@ const handleClose = (val: boolean) => {
         <h2 class="text-2xl font-bold">Demande envoyée !</h2>
         <UButton label="Fermer" block class="rounded-xl" @click="handleClose(false)" />
       </div>
-    </div>
+    </section>
   </UModal>
 </template>
