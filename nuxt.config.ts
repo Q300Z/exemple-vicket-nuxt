@@ -3,53 +3,74 @@ export default defineNuxtConfig({
   extends: ['./layers/vicket'],
 
   modules: [
+    '@nuxt/ui',
     '@nuxt/eslint',
-    '@nuxtjs/seo'
+    '@nuxtjs/seo',
+    '@nuxtjs/i18n',
+    '@nuxtjs/color-mode'
   ],
 
-  imports: {
-    dirs: ['layers/vicket/app/utils']
+  // --- OPTIMISATION ICONES ULTIME : Remote API ---
+  icon: {
+    serverBundle: 'none'
   },
 
-  devtools: {
-    enabled: true
+  // --- Nuxt UI v4 Ultra-Optimized ---
+  ui: {
+    // @ts-expect-error - Nuxt UI v4 type detection
+    scan: true
   },
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
-    layoutTransition: { name: 'layout', mode: 'out-in' }
+
+  site: {
+    url: 'https://demo-vicket.app',
+    name: 'Vicket Showcase',
+    description: 'Démonstration industrielle du support client Vicket avec Nuxt 4.',
+    defaultLocale: 'fr'
+  },
+
+  seo: {
+    fallbackTitle: false,
+    automaticTitles: true,
+    redirectToCanonicalSiteUrl: true
+  },
+
+  sitemap: {
+    // @ts-expect-error - ZeroRuntime type in sitemap module
+    zeroRuntime: true,
+    autoLastmod: true,
+    sources: ['/api/vicket/sitemap-urls']
+  },
+
+  ogImage: { enabled: false },
+
+  imports: {
+    dirs: [
+      'layers/vicket/app/utils',
+      'layers/vicket/app/composables'
+    ]
   },
 
   css: ['~/assets/css/main.css'],
 
-  colorMode: {
-    preference: 'system',
-    fallback: 'light',
-    classSuffix: '',
-    storageKey: 'nuxt-color-mode'
-  },
-
-  runtimeConfig: {
-    public: {
-      vicketApiKey: '' // Overwritten by NUXT_PUBLIC_VICKET_API_KEY
+  i18n: {
+    locales: [
+      { code: 'fr', language: 'fr-FR', name: 'Français' },
+      { code: 'en', language: 'en-US', name: 'English' }
+    ],
+    defaultLocale: 'fr',
+    strategy: 'no_prefix',
+    bundle: {
+      runtimeOnly: true,
+      fullInstall: false
     }
   },
 
-  routeRules: {
-    // Static generation for the home page (Performance)
-    '/': { prerender: true },
-    // SWR: Cache support list for 1 hour, serve stale while revalidating in background (Scalability)
-    '/support': { swr: 3600 },
-    // SWR: Cache articles individually for 1 hour
-    '/support/**': { swr: 3600 },
-    // No SSR for ticket thread as it's private and live (Security/Live)
-    '/ticket': { ssr: false }
-  },
-
-  future: {
-    compatibilityVersion: 4
-  },
+  colorMode: { classSuffix: '' },
+  future: { compatibilityVersion: 4 },
   experimental: {
-    viewTransition: true
+    viewTransition: true,
+    componentDetection: true,
+    payloadExtraction: true 
   },
 
   compatibilityDate: '2025-01-15',
@@ -57,15 +78,6 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       '@tailwindcss/postcss': {}
-    }
-  },
-
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
     }
   }
 })

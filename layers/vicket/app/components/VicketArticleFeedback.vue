@@ -3,6 +3,7 @@ import { NOTIFICATION_SERVICE_KEY } from '../types/interaction'
 
 /**
  * Component responsible for article feedback logic (SRP).
+ * 100% Nuxt UI v4 compliant with semantic tokens.
  */
 defineProps<{
   articleId: string
@@ -20,14 +21,12 @@ const handleVote = (type: 'positive' | 'negative') => {
     'Merci !',
     'Votre avis nous aide à améliorer notre support.'
   )
-
-  // In a real app, send this to the Vicket API or your own backend
 }
 </script>
 
 <template>
-  <div class="mt-12 py-8 border-t border-gray-100 dark:border-gray-800 text-center space-y-4">
-    <p class="text-sm font-bold text-gray-500 uppercase tracking-widest">
+  <div class="mt-12 py-8 border-t border-[var(--ui-border)] text-center space-y-4">
+    <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
       Cet article vous a-t-il aidé ?
     </p>
 
@@ -55,13 +54,16 @@ const handleVote = (type: 'positive' | 'negative') => {
         v-else
         class="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-300"
       >
-        <div class="p-3 rounded-full bg-primary-100 dark:bg-primary-900/40 text-primary shadow-inner">
+        <div 
+          class="p-3 rounded-full shadow-inner"
+          :style="{ backgroundColor: 'color-mix(in srgb, var(--ui-primary) 10%, transparent)', color: 'var(--ui-primary)' }"
+        >
           <UIcon
             :name="feedback === 'positive' ? 'i-lucide-heart' : 'i-lucide-message-square'"
             class="w-6 h-6"
           />
         </div>
-        <p class="text-sm font-medium text-gray-900 dark:text-white">
+        <p class="text-sm font-bold text-[var(--ui-text-highlighted)]">
           Merci pour votre retour !
         </p>
       </div>

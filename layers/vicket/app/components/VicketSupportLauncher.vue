@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /**
- * Component responsible for the Support launcher (SRP).
- * Logic-focused, style-agnostic.
+ * Advanced Support Launcher Component (SRP).
+ * 100% Nuxt UI v4 compliant.
+ * Follows "Nuxt UI First" style (Neutral surfaces, Primary accents).
  */
 const { openDialog } = useSupportState()
 const { fetchInit, websiteName } = useSupportData()
@@ -10,7 +11,7 @@ const { stripHtml } = useContent()
 const isOpen = ref(false)
 const searchQuery = ref('')
 
-const { data: articlesData, refresh: refreshArticles } = await useAsyncData(
+const { data: articlesData, status, refresh: refreshArticles } = await useAsyncData(
   'launcher-articles',
   () => $fetch('/api/vicket/articles', { params: { q: searchQuery.value } }),
   { immediate: false }
@@ -18,6 +19,7 @@ const { data: articlesData, refresh: refreshArticles } = await useAsyncData(
 
 const articles = computed(() => articlesData.value?.data || [])
 const displayArticles = computed(() => (articles.value || []).slice(0, 5))
+const isLoading = computed(() => status.value === 'pending')
 
 const handleOpen = async () => {
   isOpen.value = !isOpen.value
@@ -35,7 +37,7 @@ const goToArticle = (slug: string) => {
 
 <template>
   <div class="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4">
-    <!-- Popover Center -->
+    <!-- Popover Container -->
     <Transition
       enter-active-class="transition duration-200 ease-out"
       enter-from-class="translate-y-4 opacity-0 scale-95"
@@ -46,75 +48,89 @@ const goToArticle = (slug: string) => {
     >
       <UCard
         v-if="isOpen"
-        class="w-[350px] max-w-[calc(100vw-2rem)] shadow-xl ring-1 ring-neutral-200 dark:ring-neutral-800"
-        :ui="{ body: 'p-0 flex flex-col', rounded: 'rounded-2xl' }"
+        class="w-[350px] max-w-[calc(100vw-2rem)] shadow-2xl overflow-hidden"
+        :ui="{ 
+          body: 'p-0 flex flex-col', 
+          root: 'ring-1 ring-[var(--ui-border)] bg-[var(--ui-bg)] rounded-2xl' 
+        }"
       >
-        <!-- Header -->
-        <div class="p-4 bg-primary text-primary-foreground flex items-center justify-between">
-          <span class="font-bold">{{ websiteName }} Aide</span>
+        <!-- Header: Standard Nuxt UI Primary bg -->
+        <div class="p-4 bg-[var(--ui-primary)] flex items-center justify-between shadow-sm">
+          <span class="font-bold text-inverted">{{ websiteName || 'Vicket' }} Aide</span>
           <UButton
             icon="i-lucide-x"
             variant="ghost"
-            color="neutral"
+            class="text-inverted hover:bg-white/20"
             size="xs"
             @click="isOpen = false"
           />
         </div>
 
-        <!-- Search -->
-        <div class="p-3 border-b border-neutral-100 dark:border-neutral-800">
+        <!-- Search: Standard Neutral Field -->
+        <div class="p-3 border-b border-[var(--ui-border)]">
           <UInput
             v-model="searchQuery"
             icon="i-lucide-search"
-            placeholder="Rechercher..."
+            placeholder="Rechercher une solution..."
             size="sm"
+            variant="subtle"
+            class="w-full"
+            :loading="isLoading"
             @keyup.enter="refreshArticles"
           />
         </div>
 
-        <!-- Content -->
-        <div class="overflow-y-auto max-h-[300px] p-2 space-y-1">
+        <!-- Content: Neutral Surface with Primary Hover -->
+        <div class="overflow-y-auto max-h-[350px] p-2 space-y-1 bg-[var(--ui-bg-accented)]/30">
           <button
             v-for="article in displayArticles"
             :key="article.id"
-            class="w-full text-left p-3 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+            class="w-full text-left p-3 rounded-xl hover:bg-[var(--ui-bg)] border border-transparent hover:border-[var(--ui-border)] transition-all group"
             @click="goToArticle(article.slug)"
           >
-            <p class="text-sm font-semibold truncate">
+            <p class="text-sm font-bold text-[var(--ui-text-highlighted)] group-hover:text-[var(--ui-primary)] transition-colors truncate">
               {{ article.title }}
             </p>
-            <p class="text-xs text-neutral-500 truncate mt-0.5">
+            <p class="text-xs text-[var(--ui-text-muted)] truncate mt-1">
               {{ stripHtml(article.content) }}
             </p>
           </button>
+
           <div
-            v-if="displayArticles.length === 0"
-            class="py-8 text-center text-xs text-neutral-500"
+            v-if="displayArticles.length === 0 && !isLoading"
+            class="py-12 text-center"
           >
-            Aucun résultat.
+            <UIcon name="i-lucide-search-x" class="w-8 h-8 text-[var(--ui-text-muted)] mx-auto mb-2 opacity-20" />
+            <p class="text-xs text-[var(--ui-text-muted)]">Aucun article trouvé.</p>
           </div>
         </div>
 
-        <!-- Footer -->
-        <div class="p-3 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-100 dark:border-neutral-800">
+        <!-- Footer: Clean Nuxt UI Buttons -->
+        <div class="p-4 bg-[var(--ui-bg)] border-t border-[var(--ui-border)]">
           <UButton
             block
+            size="lg"
             label="Ouvrir un ticket"
             icon="i-lucide-message-square"
+            class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
+            :ui="{ label: 'text-inverted font-bold' }"
             @click="openDialog"
           />
         </div>
       </UCard>
     </Transition>
 
-    <!-- FAB -->
+    <!-- FAB: Floating Action Button -->
     <UButton
-      icon="i-lucide-life-buoy"
       size="xl"
-      class="rounded-full shadow-lg"
+      class="rounded-full w-14 h-14 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-transform shadow-[color-mix(in_srgb,var(--ui-primary)_30%,transparent)]"
       @click="handleOpen"
     >
-      <span class="sr-only">Support</span>
+      <UIcon 
+        :name="isOpen ? 'i-lucide-chevron-down' : 'i-lucide-life-buoy'" 
+        class="w-7 h-7 text-inverted" 
+      />
+      <span class="sr-only">Besoin d'aide ?</span>
     </UButton>
   </div>
 </template>

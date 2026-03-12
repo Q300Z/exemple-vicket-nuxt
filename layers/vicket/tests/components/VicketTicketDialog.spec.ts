@@ -1,43 +1,25 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import VicketTicketDialog from '../../app/components/VicketTicketDialog.vue'
-import { NOTIFICATION_SERVICE_KEY } from '../../app/types/interaction'
 
 describe('VicketTicketDialog', () => {
-  const mockNotifications = {
-    success: vi.fn(),
-    error: vi.fn(),
-    celebrate: vi.fn(),
-    warn: vi.fn()
-  }
-
   const mockTemplates = [
-    { id: 't1', name: 'Technical', description: 'Tech desc', questions: [] }
+    { id: '1', label: 'Tech Support', fields: [] }
   ]
 
-  beforeEach(() => {
-    // Force mock behavior for internal composables
-    vi.stubGlobal('useSupportState', () => ({
-      isLoading: ref(false),
-      loadError: ref(null)
-    }))
+  it('mounts without crashing', async () => {
+    const wrapper = await mountSuspended(VicketTicketDialog, {
+      props: { open: true, templates: mockTemplates }
+    })
+    expect(wrapper.exists()).toBe(true)
   })
 
-  it('should render identification step initially', async () => {
+  it('renders categories when open', async () => {
     const wrapper = await mountSuspended(VicketTicketDialog, {
-      props: { open: true, templates: mockTemplates },
-      global: {
-        stubs: {
-          // Disable teleport to keep content in the test wrapper
-          Teleport: true
-        },
-        provide: {
-          [NOTIFICATION_SERVICE_KEY as unknown]: mockNotifications
-        }
-      }
+      props: { open: true, templates: mockTemplates }
     })
-
-    // With teleport disabled and suspended mounting, we should find the text
-    expect(wrapper.html()).toBeTruthy()
+    // Check if the title is visible
+    expect(wrapper.text()).toContain('Besoin d\'aide ?')
+    expect(wrapper.text()).toContain('Tech Support')
   })
 })

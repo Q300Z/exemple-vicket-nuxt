@@ -4,81 +4,39 @@
 @theme {
   --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;
   
-  /* Overriding Primary Color for better accessibility (WCAG AA Contrast) */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #0a6cff; /* Compliant with white text */
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  /* Standard Nuxt UI v4 mappings */
+  --color-primary: var(--ui-primary);
+  --color-neutral: var(--ui-neutral);
 }
 
 /* ────────────────────────────────────────────── */
-/*  SOLID Design Tokens (SRP)                     */
+/*  Nuxt UI v4 Standard Adaptation                */
 /* ────────────────────────────────────────────── */
 
-:root {
-  --vk-glass-blur: blur(12px);
-  --vk-glass-opacity: 0.7;
+body {
+  background-color: var(--ui-bg);
+  color: var(--ui-text-default);
+  font-family: var(--font-sans);
+  /* Smooth transition for theme switching */
+  transition: background-color 0.3s ease;
 }
 
-/* Base Page Transitions */
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-  filter: blur(4px);
-}
-
-/* Glassmorphism utility (Tailwind 4 syntax) */
+/* 100% Nuxt UI Glassmorphism Utility */
 @utility glass-effect {
-  @apply backdrop-blur-[var(--vk-glass-blur)] bg-white/70 dark:bg-gray-900/70 border-white/20 dark:border-gray-800/20;
+  @apply backdrop-blur-md bg-[var(--ui-bg)]/80 border border-[var(--ui-border)];
 }
 
-/* Luminous borders for dark mode */
-@utility luminous-border {
-  @apply border border-gray-200 dark:border-white/10;
-}
-
-/* Subtle SaaS Gradients */
-@utility subtle-gradient {
-  @apply bg-linear-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-950/50;
-}
-
+/* Optimized Gradient Text using primary tokens */
 @utility primary-gradient-text {
-  @apply bg-linear-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent font-extrabold;
+  @apply bg-linear-to-r from-[var(--ui-primary)] to-[color-mix(in_srgb,var(--ui-primary)_70%,var(--ui-text-highlighted))] bg-clip-text text-transparent;
 }
 
-/* Improved Prose */
-.prose {
-  @apply max-w-none leading-relaxed text-gray-600 dark:text-gray-500;
+/* Nuxt UI Native Scrollbar Pattern */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb {
+  background: var(--ui-border);
+  border-radius: var(--ui-radius);
 }
-
-/* Global resets for Nuxt UI components via CSS if not possible in app.config */
-.u-modal-content {
-  @apply backdrop-blur-[var(--vk-glass-blur)] bg-white/70 dark:bg-gray-900/70 border-white/20 dark:border-gray-800/20 shadow-2xl ring-1 ring-black/5 dark:ring-white/10;
-}
-
-/* Animations */
-.badge-pulse {
-  @apply relative;
-}
-.badge-pulse::after {
-  content: '';
-  @apply absolute inset-0 rounded-full animate-ping bg-current opacity-20;
-}
-
-/* View Transitions Optimization */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.3s;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ui-primary);
 }

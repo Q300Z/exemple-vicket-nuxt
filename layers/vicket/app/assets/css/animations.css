@@ -1,0 +1,27 @@
+/* ── Vicket Global Animations (SRP) ── */
+
+@keyframes vk-fade-in { 
+  from { opacity: 0; } 
+  to { opacity: 1; } 
+}
+
+@keyframes vk-slide-up { 
+  from { opacity: 0; transform: translateY(12px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+@keyframes vk-spin { 
+  to { transform: rotate(360deg); } 
+}
+
+.vk-animate-in {
+  animation: vk-fade-in 0.3s ease-out;
+}
+
+.vk-slide-up {
+  animation: vk-slide-up 0.35s ease-out both;
+}
+
+.vk-spinner {
+  animation: vk-spin 0.6s linear infinite;
+}

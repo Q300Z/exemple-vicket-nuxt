@@ -1,7 +1,8 @@
 import confetti from 'canvas-confetti'
 
 /**
- * Composable handling visual effects to keep components clean (SRP).
+ * Composable handling visual effects (SRP).
+ * Simplified import (KISS) as it's a minor part of the bundle.
  */
 export const useVisualEffects = () => {
   const fireSuccessConfetti = () => {
@@ -11,7 +12,7 @@ export const useVisualEffects = () => {
 
     const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min
 
-    const interval = setInterval(function () {
+    const interval = setInterval(() => {
       const timeLeft = animationEnd - Date.now()
 
       if (timeLeft <= 0) {

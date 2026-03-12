@@ -1,21 +1,10 @@
-import type { Highlighter } from 'shiki'
-import { createHighlighter } from 'shiki'
-
-let highlighter: Highlighter | null = null
-
 /**
- * Server-side code highlighting utility (SRP).
- * Keeps heavy Shiki library off the client bundle.
+ * Lightweight Server-side content processor (SRP).
+ * Shiki removed for build optimization.
+ * Still handles TOC ID generation.
  */
 export const highlightCodeServer = async (content: string) => {
-  if (!content || !content.includes('```')) return content
-
-  if (!highlighter) {
-    highlighter = await createHighlighter({
-      themes: ['github-light', 'github-dark'],
-      langs: ['javascript', 'typescript', 'vue', 'bash', 'json', 'css', 'html', 'python', 'markdown']
-    })
-  }
+  if (!content) return content
 
   // Add IDs to headings for TOC
   const headingRegex = /<h([23])>(.*?)<\/h\1>/gi
@@ -24,23 +13,11 @@ export const highlightCodeServer = async (content: string) => {
     return `<h${level} id="${id}">${text}</h${level}>`
   })
 
-  // Highlight code blocks
+  // Basic fallback for code blocks (since shiki is removed)
   const codeRegex = /```(\w+)?\n([\s\S]*?)```/g
-  const matches = [...newContent.matchAll(codeRegex)]
-
-  for (const match of matches) {
-    const lang = match[1] || 'text'
-    const code = match[2]
-    try {
-      const highlighted = highlighter.codeToHtml(code, {
-        lang,
-        theme: 'github-dark' // Default to dark for the demo, or handle based on context
-      })
-      newContent = newContent.replace(match[0], highlighted)
-    } catch (e) {
-      console.error(`[Shiki Server] Error highlighting ${lang}:`, e)
-    }
-  }
+  newContent = newContent.replace(codeRegex, (match, lang, code) => {
+    return `<pre class="vk-code-block"><code class="language-${lang || 'text'}">${code}</code></pre>`
+  })
 
   return newContent
 }

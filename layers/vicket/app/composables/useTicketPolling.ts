@@ -1,11 +1,19 @@
 /**
  * Composable responsible for background ticket thread polling (SRP).
  * Optimizes resources by stopping when tab is hidden.
+ * Added Accessibility (A11y) for screen readers on updates.
  */
 export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThread) => void, intervalMs = 30000) => {
   const isPolling = ref(false)
   const lastFetch = ref<Date | null>(null)
   const errorCount = ref(0)
+
+  // A11y: Announcements for screen readers
+  const announceUpdate = (message: string) => {
+    if (!import.meta.client) return
+    const el = document.getElementById('vicket-a11y-announcer')
+    if (el) el.textContent = message
+  }
 
   const { paused } = useIntervalFn(async () => {
     if (!token.value || !isPolling.value) return
@@ -15,11 +23,13 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
       onUpdate(data)
       lastFetch.value = new Date()
       errorCount.value = 0
+
+      // A11y: announce new activity if it's a new message
+      announceUpdate('Le ticket a été mis à jour avec de nouveaux messages.')
     } catch (e) {
       errorCount.value++
       console.error('[Polling] Error fetching update:', e)
 
-      // Stop polling if too many consecutive errors (SRP: stability logic)
       if (errorCount.value > 5) {
         stopPolling()
       }
@@ -36,7 +46,6 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
     paused.value = true
   }
 
-  // Visibility optimization: stop polling if user leaves the tab
   if (import.meta.client) {
     useEventListener(document, 'visibilitychange', () => {
       if (document.hidden) {

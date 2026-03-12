@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
  * Component responsible for rendering segmented highlights without v-html (SRP).
+ * Perfectly synced with the primary theme variable.
  */
 interface Props {
   text: string
@@ -21,7 +22,8 @@ const segments = computed(() => highlight(props.text, props.query))
     >
       <mark
         v-if="segment.match"
-        class="bg-primary-500/30 text-inherit rounded-sm px-0.5"
+        class="text-inherit rounded-sm px-0.5 transition-colors duration-500"
+        :style="{ backgroundColor: 'color-mix(in srgb, var(--ui-primary) 25%, transparent)' }"
       >{{ segment.text }}</mark>
       <template v-else>{{ segment.text }}</template>
     </template>

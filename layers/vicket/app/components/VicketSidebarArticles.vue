@@ -6,6 +6,7 @@ import type { INavigable } from '../types/ui'
 /**
  * Component responsible for displaying related articles (SRP/ISP).
  * Maps domain data (ArticleSummary) to UI interface (INavigable).
+ * 100% Nuxt UI v4 compliant with semantic tokens.
  */
 interface Props {
   currentArticleId: string
@@ -20,7 +21,6 @@ const { data: relatedArticles } = support
 
 /**
  * ISP: Converting ArticleSummary to INavigable.
- * The template below only depends on the INavigable interface attributes.
  */
 const navItems = computed<INavigable[]>(() => {
   const articles = (relatedArticles?.value || []) as ArticleSummary[]
@@ -37,12 +37,12 @@ const navItems = computed<INavigable[]>(() => {
     v-if="navItems.length > 0"
     class="space-y-4"
   >
-    <div class="flex items-center gap-2 text-primary">
+    <div class="flex items-center gap-2 text-[var(--ui-primary)]">
       <UIcon
         name="i-lucide-sparkles"
         class="w-4 h-4"
       />
-      <span class="text-xs font-extrabold uppercase tracking-widest text-gray-500">Articles suggérés</span>
+      <span class="text-[10px] font-extrabold uppercase tracking-widest text-[var(--ui-text-muted)]">Articles suggérés</span>
     </div>
 
     <div class="space-y-3">
@@ -50,12 +50,12 @@ const navItems = computed<INavigable[]>(() => {
         v-for="item in navItems"
         :key="item.to"
         :to="item.to"
-        class="block p-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-primary-500/30 hover:shadow-lg hover:shadow-primary-500/5 transition-all group"
+        class="block p-4 rounded-[var(--ui-radius)] bg-[var(--ui-bg)] border border-[var(--ui-border)] hover:border-[color-mix(in_srgb,var(--ui-primary)_40%,var(--ui-border))] hover:shadow-lg hover:shadow-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] transition-all group"
       >
-        <p class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors line-clamp-2">
+        <p class="text-sm font-bold text-[var(--ui-text-highlighted)] group-hover:text-[var(--ui-primary)] transition-colors line-clamp-2">
           {{ item.label }}
         </p>
-        <div class="flex items-center gap-1 mt-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+        <div class="flex items-center gap-1 mt-2 text-[9px] font-bold text-[var(--ui-text-muted)] uppercase tracking-wider">
           <span>Lire la suite</span>
           <UIcon
             v-if="item.icon"

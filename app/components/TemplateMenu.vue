@@ -40,7 +40,7 @@
       trailing-icon="i-lucide-chevron-down"
       size="xs"
       class="-mb-[6px] font-semibold rounded-full truncate"
-      :class="[open && 'bg-primary/15']"
+      :class="[open && 'bg-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]']"
       :ui="{
         trailingIcon: ['transition-transform duration-200', open ? 'rotate-180' : undefined].filter(Boolean).join(' ')
       }"

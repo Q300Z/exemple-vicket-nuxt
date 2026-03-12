@@ -1,57 +1,44 @@
 <script setup lang="ts">
 /**
- * Component responsible for adaptive modal structure (SRP).
- * Renders as a Bottom Sheet on mobile and a standard Modal on desktop.
- * Uses host project's default UModal styling.
+ * Component responsible for adaptive modal/drawer transitions (OCP).
+ * Switches between Modal (Desktop) and Drawer (Mobile) automatically.
  */
 interface Props {
-  open?: boolean
-  modelValue?: boolean
+  open: boolean
   title: string
   description?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  open: false,
-  modelValue: false
+  description: ''
 })
-const emit = defineEmits(['update:open', 'update:modelValue', 'close'])
 
-const device = useDevice()
+const emit = defineEmits(['update:open'])
+const { isMobile } = useDevice()
 
 const isOpen = computed({
-  get: () => props.open || props.modelValue,
-  set: (val) => {
-    emit('update:open', val)
-    emit('update:modelValue', val)
-  }
+  get: () => props.open,
+  set: (val) => emit('update:open', val)
 })
-
-// Functional layout only
-const modalUi = computed(() => ({
-  content: device.isMobile ? 'sm:max-w-none w-full !rounded-b-none' : '',
-  container: device.isMobile ? 'flex items-end' : 'flex items-center justify-center'
-}))
 </script>
 
 <template>
-  <UModal
-    v-model:open="isOpen"
-    :title="title"
-    :description="description"
-    :ui="modalUi"
-  >
-    <template #body>
-      <div class="overflow-y-auto max-h-[85vh] sm:max-h-none">
-        <slot />
-      </div>
-    </template>
-
-    <template
-      v-if="$slots.footer"
-      #footer
+  <template v-if="isMobile">
+    <UDrawer
+      v-model:open="isOpen"
+      :title="title"
+      :description="description"
     >
-      <slot name="footer" />
-    </template>
-  </UModal>
+      <slot />
+    </UDrawer>
+  </template>
+  <template v-else>
+    <UModal
+      v-model:open="isOpen"
+      :title="title"
+      :description="description"
+    >
+      <slot />
+    </UModal>
+  </template>
 </template>

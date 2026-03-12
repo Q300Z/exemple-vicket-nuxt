@@ -1,39 +1,50 @@
 @import "tailwindcss";
 
-/* ── Functional Layout ── */
-.vk-animate-in {
-  animation: vk-fade-in 0.3s ease-out;
+/**
+ * Specialized Article Content Styling (KISS).
+ * Targeted at raw HTML/Markdown content without heavy Prose modules.
+ */
+.vk-prose {
+  @apply text-[var(--ui-text-default)] leading-relaxed space-y-4;
 }
 
-.vk-slide-up {
-  animation: vk-slide-up 0.35s ease-out both;
+.vk-prose h2 {
+  @apply text-xl font-bold text-[var(--ui-text-highlighted)] mt-8 mb-4 border-b border-[var(--ui-border)] pb-2;
 }
 
-@keyframes vk-fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes vk-slide-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes vk-spin { to { transform: rotate(360deg); } }
-
-.vk-spinner {
-  animation: vk-spin 0.6s linear infinite;
+.vk-prose h3 {
+  @apply text-lg font-semibold text-[var(--ui-text-highlighted)] mt-6 mb-2;
 }
 
-/* ── Content Rendering Logic (Minimal Markup Styling) ── */
-.vicket-content {
-  line-height: 1.6;
+.vk-prose ul {
+  @apply list-disc list-inside space-y-2 ml-4;
 }
 
-.vicket-content p { margin-bottom: 1rem; }
-.vicket-content ul, .vicket-content ol { margin: 1rem 0 1rem 1.5rem; }
-.vicket-content pre {
-  overflow-x: auto;
-  padding: 1rem;
-  border-radius: var(--ui-radius);
-  margin: 1.5rem 0;
-  background-color: var(--ui-bg-accent); /* Inherits from host */
+.vk-prose ol {
+  @apply list-decimal list-inside space-y-2 ml-4;
 }
 
-/* ── Functional Utilities ── */
-.vk-required::after {
-  content: " *";
-  color: var(--ui-error);
+.vk-prose blockquote {
+  @apply border-l-4 border-[var(--ui-primary)] bg-[color-mix(in-srgb,var(--ui-primary)_5%,transparent)] p-4 italic rounded-r-xl my-6;
+}
+
+.vk-prose table {
+  @apply w-full border-collapse border border-[var(--ui-border)] rounded-xl overflow-hidden my-6;
+}
+
+.vk-prose th {
+  @apply bg-[var(--ui-bg-accented)] text-left p-3 font-semibold border border-[var(--ui-border)];
+}
+
+.vk-prose td {
+  @apply p-3 border border-[var(--ui-border)];
+}
+
+.vk-prose a {
+  @apply text-[var(--ui-primary)] underline hover:text-[var(--ui-primary-highlighted)] transition-colors;
+}
+
+/* Fallback for code blocks */
+.vk-code-block {
+  @apply bg-neutral-900 text-neutral-100 p-4 rounded-xl font-mono text-sm overflow-x-auto my-6 border border-neutral-800 shadow-inner;
 }

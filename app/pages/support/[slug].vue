@@ -4,6 +4,7 @@ import { SUPPORT_REPOSITORY_KEY } from '../../../layers/vicket/app/types/reposit
 /**
  * Article Detail page (Scalable Repository strategy).
  * Enhanced UI with Injected Repository (DIP).
+ * Color variables drive progress bar and interactions.
  */
 const support = inject(SUPPORT_REPOSITORY_KEY)
 if (!support) throw new Error('Support Repository not provided')
@@ -14,7 +15,7 @@ const { openDialog, templates } = useSupportState()
 
 const slug = computed(() => String(route.params.slug))
 
-// --- DATA FETCHING (DIP: Using Injected Service) ---
+// --- DATA FETCHING ---
 const { data: response, status } = await fetchArticle(slug.value)
 
 const article = computed(() => response.value?.data || null)
@@ -38,11 +39,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative">
-    <!-- Reading Progress Bar -->
+  <div class="relative transition-colors duration-500">
+    <!-- Reading Progress Bar (Driven by primary) -->
     <div
-      class="fixed top-[var(--ui-header-height)] left-0 h-1 bg-primary-500 z-50 transition-all duration-150 ease-out"
-      :style="{ width: `${scrollProgress}%` }"
+      class="fixed top-[var(--ui-header-height)] left-0 h-1 z-50 transition-all duration-150 ease-out"
+      :style="{ width: `${scrollProgress}%`, backgroundColor: 'var(--ui-primary)' }"
     />
 
     <UContainer class="py-12 sm:py-16">
@@ -74,7 +75,7 @@ onUnmounted(() => {
         >
           <VicketEmptyState
             title="Article introuvable"
-            description="Désolé, nous ne trouvons pas l'article que vous recherchez. Il a peut-être été déplacé ou supprimé."
+            description="Désolé, nous ne trouvons pas l'article que vous recherchez."
             icon="i-lucide-file-question"
           >
             <template #actions>
@@ -109,29 +110,29 @@ onUnmounted(() => {
                   {{ article.category }}
                 </UBadge>
                 <h1
-                  class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.1]"
+                  class="text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--ui-text-highlighted)] leading-[1.1]"
                   :style="{ viewTransitionName: `article-title-${slug}` }"
                 >
                   {{ article.title }}
                 </h1>
               </div>
 
-              <div class="flex flex-wrap items-center justify-between gap-6 py-6 border-y border-gray-100 dark:border-gray-800">
-                <div class="flex items-center gap-6 text-sm text-gray-500 font-medium">
+              <div class="flex flex-wrap items-center justify-between gap-6 py-6 border-y border-[var(--ui-border)]">
+                <div class="flex items-center gap-6 text-sm text-[var(--ui-text-muted)] font-medium">
                   <div class="flex items-center gap-2">
-                    <div class="p-1.5 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <div class="p-1.5 rounded-lg bg-[var(--ui-bg-accented)]">
                       <UIcon
                         name="i-lucide-calendar"
-                        class="w-4 h-4 text-primary"
+                        class="w-4 h-4 text-[var(--ui-primary)]"
                       />
                     </div>
                     <span>Mis à jour récemment</span>
                   </div>
                   <div class="flex items-center gap-2">
-                    <div class="p-1.5 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <div class="p-1.5 rounded-lg bg-[var(--ui-bg-accented)]">
                       <UIcon
                         name="i-lucide-clock"
-                        class="w-4 h-4 text-primary"
+                        class="w-4 h-4 text-[var(--ui-primary)]"
                       />
                     </div>
                     <span>3 min de lecture</span>
@@ -143,77 +144,95 @@ onUnmounted(() => {
                     icon="i-lucide-link"
                     variant="ghost"
                     color="neutral"
-                    class="rounded-full hover:bg-primary-50 dark:hover:bg-primary-950/20"
+                    class="rounded-full hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
+                    aria-label="Copier le lien de l'article"
                   />
                   <UButton
                     icon="i-lucide-share-2"
                     variant="ghost"
                     color="neutral"
-                    class="rounded-full hover:bg-primary-50 dark:hover:bg-primary-950/20"
+                    class="rounded-full hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
+                    aria-label="Partager l'article"
                   />
                 </div>
               </div>
             </header>
 
             <!-- Article Body -->
-            <article class="relative prose prose-lg dark:prose-invert max-w-none">
+            <article class="relative prose prose-lg max-w-none">
               <VicketContentRenderer :content="article.content" />
             </article>
 
             <!-- Feedback -->
-            <div class="glass-effect p-8 rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm">
+            <div class="glass-effect p-8 rounded-3xl border border-[var(--ui-border)] shadow-sm">
               <VicketArticleFeedback :article-id="article.id" />
             </div>
 
             <!-- Bottom Navigation -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-gray-100 dark:border-gray-800">
-              <UButton
-                to="/support"
-                icon="i-lucide-arrow-left"
-                variant="ghost"
-                color="neutral"
-                label="Tous les articles"
-                class="rounded-full px-6 hover:bg-primary-50 dark:hover:bg-primary-950/20"
-              />
+            <div class="space-y-12 pt-12 border-t border-[var(--ui-border)]">
+              <!-- New Interactive CTA Bridge (UX Improvement) -->
+              <div class="bg-[var(--ui-bg-accented)] p-8 rounded-3xl border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-1 text-center md:text-left">
+                  <p class="text-xl font-bold text-[var(--ui-text-highlighted)]">Cet article n'a pas répondu à votre question ?</p>
+                  <p class="text-[var(--ui-text-muted)]">Nos experts sont là pour vous accompagner 24/7.</p>
+                </div>
+                <UButton
+                  v-if="templates.length > 0"
+                  label="Contacter le support"
+                  icon="i-lucide-message-square"
+                  size="xl"
+                  class="rounded-2xl px-8 shadow-md"
+                  @click="openDialog"
+                />
+              </div>
 
-              <UButton
-                v-if="templates.length > 0"
-                label="Besoin d'aide supplémentaire ?"
-                variant="link"
-                color="primary"
-                class="font-bold text-base"
-                @click="openDialog"
-              />
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <UButton
+                  to="/support"
+                  icon="i-lucide-arrow-left"
+                  variant="ghost"
+                  color="neutral"
+                  label="Retour aux articles"
+                  class="rounded-full px-6 hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
+                />
+              </div>
             </div>
+
           </div>
 
           <!-- Sidebar (Sticky) -->
           <aside class="hidden lg:block">
             <div class="sticky top-28 space-y-12">
               <!-- Sommaire -->
-              <div class="glass-effect p-6 rounded-3xl border border-gray-100 dark:border-white/10 shadow-sm">
+              <div class="glass-effect p-6 rounded-3xl border border-[var(--ui-border)] shadow-sm">
                 <VicketArticleTOC :content="article.content" />
               </div>
 
-              <!-- Related Articles (OCP: New Section) -->
+              <!-- Related Articles -->
               <VicketSidebarArticles :current-article-id="article.id" />
 
               <!-- CTA Support -->
-              <div class="p-8 rounded-3xl bg-primary-600 text-white space-y-6 shadow-2xl shadow-primary-500/30 relative overflow-hidden group">
-                <!-- Abstract background pattern -->
+              <div
+                class="p-8 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden group transition-all"
+                :style="{ 
+                  backgroundColor: 'var(--ui-primary)', 
+                  '--tw-shadow-color': 'color-mix(in srgb, var(--ui-primary) 30%, transparent)' 
+                }"
+              >
+                <!-- Dynamic background pattern -->
                 <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
 
                 <div class="p-3.5 rounded-2xl bg-white/20 w-fit backdrop-blur-md">
                   <UIcon
                     name="i-lucide-headset"
-                    class="w-7 h-7"
+                    class="w-7 h-7 text-white"
                   />
                 </div>
-                <div class="space-y-2 relative z-10">
+                <div class="space-y-2 relative z-10 text-white">
                   <p class="font-bold text-xl leading-tight">
                     Vous n'avez pas trouvé votre réponse ?
                   </p>
-                  <p class="text-sm text-white/80 leading-relaxed">
+                  <p class="text-sm opacity-80 leading-relaxed">
                     Nos experts sont à votre disposition pour vous aider.
                   </p>
                 </div>
@@ -222,7 +241,9 @@ onUnmounted(() => {
                   color="white"
                   variant="solid"
                   size="lg"
-                  class="rounded-2xl text-primary-600 font-bold shadow-lg transition-transform hover:scale-[1.02]"
+                  class="rounded-2xl font-bold shadow-lg transition-transform hover:scale-[1.02]"
+                  :style="{ color: 'var(--ui-primary)' }"
+                  :ui="{ label: 'text-gray-950 font-bold' }"
                   @click="openDialog"
                 >
                   Ouvrir un ticket
