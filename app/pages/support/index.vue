@@ -9,7 +9,7 @@ const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 if (!knowledge) throw new Error('Knowledge Repository not provided')
 
 useHead({
-  title: "Centre d'aide"
+  title: 'Centre d\'aide'
 })
 
 const { fetchArticles, fetchFaqs } = knowledge
