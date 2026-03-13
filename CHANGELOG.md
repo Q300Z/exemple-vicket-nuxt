@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.0.2](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.0.1...v1.0.2) (2026-03-13)
+
 ## [1.0.1](https://github.com/Q300Z/exemple-vicket-nuxt/compare/vv1.0.0...v1.0.1) (2026-03-13)
 
 # [v1.0.0](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v0.2.0...vv1.0.0) (2026-03-13)
