@@ -22,7 +22,7 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://demo-vicket.app',
+    url: 'https://vicket.qalpuch.cc',
     name: 'Vicket Showcase',
     description: 'Démonstration industrielle du support client Vicket avec Nuxt 4.',
     defaultLocale: 'fr'
@@ -42,6 +42,11 @@ export default defineNuxtConfig({
   },
 
   ogImage: { enabled: false },
+
+  robots: {
+    disallow: ['/api'],
+    allow: ['/']
+  },
 
   css: ['~/assets/css/main.css'],
 
