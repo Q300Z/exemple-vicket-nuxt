@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # Nuxt 4 can read secrets from files if configured or via custom init script
+      # Here we assume the app reads them from /run/secrets/
+      - VICKET_API_KEY_FILE=/run/secrets/vicket_api_key
+      - NUXT_SESSION_PASSWORD_FILE=/run/secrets/nuxt_session_password
+    secrets:
+      - vicket_api_key
+      - nuxt_session_password
+    restart: always
+
+secrets:
+  vicket_api_key:
+    file: ./secrets/vicket_api_key.txt
+  nuxt_session_password:
+    file: ./secrets/nuxt_session_password.txt

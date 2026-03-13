@@ -1,0 +1,24 @@
+# Node
+node_modules
+npm-debug.log
+pnpm-debug.log
+
+# Nuxt
+.nuxt
+.output
+.data
+.cache
+dist
+
+# Environment
+.env
+.env.*
+
+# Git
+.git
+.gitignore
+
+# Tests
+test-results
+playwright-report
+coverage
