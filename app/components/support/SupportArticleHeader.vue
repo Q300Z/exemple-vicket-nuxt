@@ -16,7 +16,6 @@ const readingTime = computed(() => calculateReadingTime(props.content || ''))
 
 // --- COPY LOGIC ---
 const { copy, copied } = useClipboard()
-const config = useAppConfig()
 
 const onCopy = () => {
   const url = `${window.location.origin}/support/${props.slug}`

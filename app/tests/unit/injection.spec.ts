@@ -5,7 +5,7 @@ import { useVicketInjection } from '../../composables/useVicketInjection'
 describe('useVicketInjection', () => {
   it('provides all repositories and services', () => {
     // Mock Nuxt built-ins
-    vi.stubGlobal('useState', (_key: string, init: any) => ref(init()))
+    vi.stubGlobal('useState', (_key: string, init: () => unknown) => ref(init()))
     vi.stubGlobal('useFetch', () => ({ data: ref(null), status: ref('idle'), refresh: vi.fn() }))
     vi.stubGlobal('provide', vi.fn())
 

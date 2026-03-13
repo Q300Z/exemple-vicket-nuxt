@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ArticleSummary } from '~/layers/vicket/app/composables/useVicket'
 import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 
 /**
@@ -9,7 +8,7 @@ import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 if (!knowledge) throw new Error('Knowledge Repository not provided')
 
-const { categories, fetchArticles, fetchFaqs } = knowledge
+const { fetchArticles, fetchFaqs } = knowledge
 const { openDialog, templates } = useSupportState()
 
 const searchQuery = ref('')

@@ -17,8 +17,8 @@ describe('VicketArticleFeedback', () => {
       props: { articleId: '123' },
       global: {
         provide: {
-          [NOTIFICATION_SERVICE_KEY as any]: mockNotification,
-          [ENGAGEMENT_REPOSITORY_KEY as any]: mockEngagement
+          [NOTIFICATION_SERVICE_KEY as unknown as string]: mockNotification,
+          [ENGAGEMENT_REPOSITORY_KEY as unknown as string]: mockEngagement
         }
       }
     })
@@ -32,8 +32,8 @@ describe('VicketArticleFeedback', () => {
       props: { articleId: '123' },
       global: {
         provide: {
-          [NOTIFICATION_SERVICE_KEY as any]: mockNotification,
-          [ENGAGEMENT_REPOSITORY_KEY as any]: mockEngagement
+          [NOTIFICATION_SERVICE_KEY as unknown as string]: mockNotification,
+          [ENGAGEMENT_REPOSITORY_KEY as unknown as string]: mockEngagement
         }
       }
     })
