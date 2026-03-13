@@ -1,12 +1,7 @@
 services:
   app:
     container_name: vicket-showcase
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        # Build-time variables from .env
-        - NUXT_PUBLIC_VICKET_API_URL=${NUXT_PUBLIC_VICKET_API_URL}
+    image: ghcr.io/q300z/exemple-vicket-nuxt:latest
     ports:
       - "3000:3000"
     # Unified configuration via .env
@@ -27,6 +22,5 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_LABEL_ENABLE=true
       - WATCHTOWER_POLL_INTERVAL=300
-    # This ensures watchtower only watches containers with the enable label
     command: --interval 300 --cleanup --label-enable
     restart: always
