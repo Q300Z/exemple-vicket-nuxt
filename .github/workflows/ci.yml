@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VICKET_API_KEY: "ci_test_key"
+      VICKET_API_URL: "https://api.vicket.app/api/v1"
       NUXT_PUBLIC_VICKET_API_URL: "http://localhost:3000/api/vicket"
       NUXT_SESSION_PASSWORD: "ci_session_password_32_chars_long_!!_"
     steps:
@@ -34,6 +35,11 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      VICKET_API_KEY: "ci_build_key"
+      VICKET_API_URL: "https://api.vicket.app/api/v1"
+      NUXT_PUBLIC_VICKET_API_URL: "https://vicket.qalpuch.cc/api/vicket"
+      NUXT_SESSION_PASSWORD: "ci_build_password_32_chars_long_!!"
     steps:
       - uses: actions/checkout@v4
       - name: Lowercase repo
