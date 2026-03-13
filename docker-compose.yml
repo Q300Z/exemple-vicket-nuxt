@@ -3,20 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Build-time variables from .env
+        - NUXT_PUBLIC_VICKET_API_URL=${NUXT_PUBLIC_VICKET_API_URL}
     ports:
       - "3000:3000"
+    # Unified configuration via .env
+    env_file:
+      - .env
     environment:
-      # Nuxt 4 can read secrets from files if configured or via custom init script
-      # Here we assume the app reads them from /run/secrets/
-      - VICKET_API_KEY_FILE=/run/secrets/vicket_api_key
-      - NUXT_SESSION_PASSWORD_FILE=/run/secrets/nuxt_session_password
-    secrets:
-      - vicket_api_key
-      - nuxt_session_password
+      - NODE_ENV=production
     restart: always
-
-secrets:
-  vicket_api_key:
-    file: ./secrets/vicket_api_key.txt
-  nuxt_session_password:
-    file: ./secrets/nuxt_session_password.txt

@@ -96,12 +96,13 @@ Le projet vise un standard de qualité "Industrial Grade" avec une couverture au
 ## 🚢 Déploiement Docker
 
 Le projet est livré avec une configuration Docker optimisée (98.2% d'efficacité) :
-- **Sécurité** : Utilisation des **Docker Secrets** pour les clés d'API.
+- **Simplicité** : Toutes les variables sont gérées via le fichier `.env`.
 - **Optimisation** : Image multi-stage `node:20-slim`.
 
-**Note importante** : Avant de lancer `docker compose up`, assurez-vous que les fichiers secrets existent dans le dossier `./secrets/` :
-- `./secrets/vicket_api_key.txt`
-- `./secrets/nuxt_session_password.txt`
+**Lancement rapide** :
+```bash
+docker compose up --build -d
+```
 
 ---
 
