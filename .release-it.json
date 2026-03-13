@@ -2,8 +2,8 @@
   "git": {
     "commitMessage": "chore: release v${version}",
     "tagName": "v${version}",
-    "push": false,
-    "requireUpstream": false
+    "push": true,
+    "requireUpstream": true
   },
   "github": {
     "release": false

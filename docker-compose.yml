@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: vicket-showcase
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,4 +14,19 @@ services:
       - .env
     environment:
       - NODE_ENV=production
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: vicket-watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_POLL_INTERVAL=300
+    # This ensures watchtower only watches containers with the enable label
+    command: --interval 300 --cleanup --label-enable
     restart: always

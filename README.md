@@ -95,8 +95,8 @@ Le projet vise un standard de qualité "Industrial Grade" avec une couverture au
 
 ## 🚢 Déploiement Docker
 
-Le projet est livré avec une configuration Docker optimisée (98.2% d'efficacité) :
-- **Simplicité** : Toutes les variables sont gérées via le fichier `.env`.
+Le projet est livré avec une configuration Docker optimisée (98.2% d'efficacité) conçue pour un showcase rapide :
+- **Simplicité** : Gestion centralisée via le fichier `.env`.
 - **Optimisation** : Image multi-stage `node:20-slim`.
 
 **Lancement rapide** :
@@ -109,8 +109,6 @@ docker compose up --build -d
 ## 🤝 Contribution
 
 Nous suivons la convention [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) pour les messages de commit. Cela permet d'automatiser la génération du changelog et la montée de version via `release-it`.
-
-*Exemple : `feat: add calendar support`, `fix: resolving hydration mismatch`.*
 
 ---
 
