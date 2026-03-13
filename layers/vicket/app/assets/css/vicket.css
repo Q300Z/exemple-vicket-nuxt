@@ -14,12 +14,12 @@
   --vk-bg-accented: var(--ui-bg-accented);
   --vk-text: var(--ui-text-default);
   --vk-text-highlighted: var(--ui-text-highlighted);
-  --vk-text-muted: color-mix(in srgb, var(--ui-text-muted) 80%, black);
+  --vk-text-muted: #52525b; /* Zinc-600 for high contrast on light backgrounds */
 }
 
 /* Force Dark Mode inheritance for Nuxt Islands */
 .dark {
-  --vk-text-muted: color-mix(in srgb, var(--ui-text-muted) 80%, white);
+  --vk-text-muted: #a1a1aa; /* Zinc-400 for high contrast on dark backgrounds */
   --vk-text: var(--ui-text-default);
   --vk-text-highlighted: var(--ui-text-highlighted);
   --vk-border: var(--ui-border);

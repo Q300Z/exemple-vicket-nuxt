@@ -28,6 +28,15 @@ export default defineNuxtConfig({
     defaultLocale: 'fr'
   },
 
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'fr'
+      },
+      title: 'Vicket Support'
+    }
+  },
+
   seo: {
     fallbackTitle: false,
     automaticTitles: true,

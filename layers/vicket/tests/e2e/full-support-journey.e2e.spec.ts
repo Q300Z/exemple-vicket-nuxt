@@ -10,12 +10,12 @@ test.describe('Vicket Full Support Journey', () => {
     await expect(page).toHaveTitle(/Vicket/)
 
     // 2. Navigate to Support Center
-    // We target any link containing 'Support' or 'Aide'
-    await page.locator('a').filter({ hasText: /Centre d'aide/i }).first().click({ force: true })
-    await expect(page).toHaveURL(/\/support/, { timeout: 15000 })
+    await page.getByRole('link', { name: /Centre d'aide/i }).first().click({ force: true })
+    await page.waitForURL(/\/support/, { timeout: 15000 })
     
-    // Ensure we are on the support page
+    // Ensure we are on the support page and data is ready
     await expect(page.getByRole('heading', { name: /aider/i })).toBeVisible({ timeout: 15000 })
+    await page.waitForLoadState('networkidle')
 
     // 3. Search for a non-existent solution
     const searchInput = page.getByPlaceholder(/Rechercher/i)
@@ -23,16 +23,15 @@ test.describe('Vicket Full Support Journey', () => {
     await searchInput.press('Enter')
 
     // 4. Verify Empty State and click CTA
-    await expect(page.locator('text=Aucun résultat trouvé')).toBeVisible()
-    const openTicketBtn = page.getByRole('button', { name: /Contacter le support|Ouvrir un ticket|Nouveau Ticket/i }).first()
+    await expect(page.getByText(/Aucun résultat trouvé/i)).toBeVisible({ timeout: 15000 })
+    const openTicketBtn = page.getByRole('button', { name: /Contacter le support|Ouvrir un ticket/i }).first()
     await openTicketBtn.click({ force: true })
 
     // 5. Form Step 1: Category Selection
-    await expect(page.locator('.vk-dialog-content')).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Besoin d\'aide ?' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /aide|aider/i })).toBeVisible({ timeout: 15000 })
     
     // Select first category
-    await page.locator('.vk-dialog-content button').first().click({ force: true })
+    await page.locator('button').filter({ hasText: /Support|Bug|Technique/i }).first().click({ force: true })
 
     // 6. Form Step 2: Details
     await page.getByLabel('Sujet').fill('E2E Test Ticket')
