@@ -14,7 +14,7 @@ services:
     restart: always
 
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: vicket-watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
