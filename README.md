@@ -23,6 +23,19 @@ Le projet est hébergé et consultable en direct à l'adresse suivante :
 
 ---
 
+## ✨ Fonctionnalités de Vicket
+
+[Vicket](https://vicket.app) est une plateforme de support moderne conçue pour s'intégrer nativement dans vos produits. Voici ses principaux atouts :
+
+- **Support en Marque Blanche** : Personnalisation totale des composants pour garantir une expérience visuelle cohérente avec votre marque.
+- **Système de Workflows Avancé** : Automatisation des processus de support avec des déclencheurs temporels et manuels (ex: relances automatiques, changements de statut).
+- **Scoring Intelligent des Tickets** : Priorisation automatique des demandes basée sur des algorithmes intelligents pour agir sur les vrais signaux d'urgence.
+- **Visibilité par Équipe** : Gestion fine des accès et des portées (scopes) pour organiser le support entre Engineering, Sales, et Support L1.
+- **Intégration Rapide** : Conçu pour les développeurs, avec des composants prêts à l'emploi s'intégrant en quelques minutes.
+- **Base de Connaissances Intégrée** : Système de self-service pour réduire le volume de tickets entrants.
+
+---
+
 ## 🏗️ Structure du Projet
 
 L'architecture suit une stratégie de **Layered Architecture** propre à Nuxt, permettant une séparation stricte entre la logique métier du support et l'application hôte.
