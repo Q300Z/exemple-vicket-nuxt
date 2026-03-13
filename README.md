@@ -5,7 +5,7 @@
 
 Ce projet est une **démonstration technique de haut niveau** illustrant comment intégrer la couche de support [Vicket](https://vicket.app) dans une application moderne utilisant **Nuxt 4**. 
 
-Il sert de modèle d'implémentation industrielle, mettant l'accent sur l'architecture SOLID, la testabilité (Vitest + Playwright) et une expérience utilisateur "Ultra-Premium".
+Il sert de modèle d'implémentation industrielle, mettant l'accent sur l'architecture SOLID, la testabilité et une expérience utilisateur "Ultra-Premium".
 
 ---
 
@@ -25,93 +25,91 @@ Le projet est hébergé et consultable en direct à l'adresse suivante :
 
 ## ✨ Fonctionnalités de Vicket
 
-[Vicket](https://vicket.app) est une plateforme de support moderne conçue pour s'intégrer nativement dans vos produits. Voici ses principaux atouts :
+[Vicket](https://vicket.app) est une plateforme de support moderne conçue pour s'intégrer nativement dans vos produits :
 
-- **Support en Marque Blanche** : Personnalisation totale des composants pour garantir une expérience visuelle cohérente avec votre marque.
-- **Système de Workflows Avancé** : Automatisation des processus de support avec des déclencheurs temporels et manuels (ex: relances automatiques, changements de statut).
-- **Scoring Intelligent des Tickets** : Priorisation automatique des demandes basée sur des algorithmes intelligents pour agir sur les vrais signaux d'urgence.
-- **Visibilité par Équipe** : Gestion fine des accès et des portées (scopes) pour organiser le support entre Engineering, Sales, et Support L1.
-- **Intégration Rapide** : Conçu pour les développeurs, avec des composants prêts à l'emploi s'intégrant en quelques minutes.
-- **Base de Connaissances Intégrée** : Système de self-service pour réduire le volume de tickets entrants.
+- **Support en Marque Blanche** : Personnalisation totale pour une cohérence de marque parfaite.
+- **Système de Workflows Avancé** : Automatisation des processus (déclencheurs temporels et manuels).
+- **Scoring Intelligent des Tickets** : Priorisation automatique basée sur des signaux réels.
+- **Visibilité par Équipe** : Gestion fine des accès (Engineering, Sales, Support).
 
 ---
 
-## 🏗️ Structure du Projet
+## 🏗️ Architecture & Concepts
 
-L'architecture suit une stratégie de **Layered Architecture** propre à Nuxt, permettant une séparation stricte entre la logique métier du support et l'application hôte.
+### Stratégie DIP (Dependency Inversion Principle)
+Le projet utilise l'injection de dépendances via les **Typed Injection Keys** de Vue. Cette approche permet de découpler totalement les composants UI de la logique de données.
+- **Flexibilité** : Vous pouvez remplacer le backend Vicket par un service de mock ou un autre fournisseur sans modifier un seul composant.
+- **Testabilité** : Permet d'injecter des repositories simulés durant les tests unitaires et de composants.
 
-### 📁 `layers/vicket/` (Le Cœur du Support)
-C'est ici que réside toute la logique réutilisable du support.
-- `app/components/` : Composants atomiques et orchestrateurs (Recherche, TicketDialog, Sidebar).
-- `app/composables/` : Logique métier encapsulée (`useVicket`, `useSupportData`, `useSupportState`).
-- `app/utils/` : Transformateurs de données, client HTTP typé, et schémas de validation Zod.
-- `app/types/` : Définitions TypeScript et clés d'injection DIP.
-- `server/` : API Proxy et utilitaires de cache/recherche côté serveur.
-- `tests/` : Suite complète de tests unitaires, de composants et E2E (Playwright).
-
-### 📁 `app/` (L'Application Showcase)
-L'implémentation visuelle de la démonstration.
-- `pages/` : Pages de destination et Centre d'aide orchestrant les composants du layer.
-- `app.vue` : Point d'entrée principal gérant l'injection globale (DIP).
-- `app.config.ts` : Configuration du branding (couleurs, labels, endpoints).
-
-### ⚙️ Fichiers de Configuration
-- `Dockerfile` & `docker-compose.yml` : Configuration de déploiement optimisée (98% d'efficacité) avec gestion des secrets.
-- `.release-it.json` : Automatisation des versions et du CHANGELOG.
-- `playwright.config.ts` : Configuration des tests E2E et audits d'accessibilité.
-- `nuxt.config.ts` : Configuration Nuxt 4 avec support View Transitions et mode Island.
+### Schéma de Communication
+```mermaid
+graph TD
+    subgraph "Host Application (App)"
+        P[Pages] --> C[Components]
+        App[app.vue] -- "injects" --> V[useVicketInjection]
+    end
+    subgraph "Vicket Layer"
+        V -- "provides" --> KR[Knowledge Repository]
+        V -- "provides" --> TR[Ticket Repository]
+        KR --> API[Vicket API Client]
+        TR --> API
+    end
+    API --> WEB[Vicket Backend]
+```
 
 ---
 
 ## 🛠️ Démarrage Local
 
-### Prérequis
+### 1. Prérequis
 - **Node.js 22+**
 - **pnpm** (recommandé)
 
-### Installation
+### 2. Configuration
+Copiez le fichier d'exemple et remplissez vos clés API :
 ```bash
-# Installation des dépendances
+cp .env.example .env
+```
+**Variables requises :**
+- `VICKET_API_KEY` : Votre clé secrète Vicket (utilisée côté serveur uniquement).
+- `NUXT_PUBLIC_VICKET_API_URL` : L'URL de l'API publique pour le client.
+
+### 3. Installation & Lancement
+```bash
 pnpm install
-
-# Préparation de l'environnement Nuxt
-pnpm run postinstall
-```
-
-### Développement
-```bash
-# Lancement du serveur de dev
 pnpm run dev
-```
-
-### Qualité & Tests
-```bash
-# Linter (ESLint)
-pnpm run lint
-
-# Tests Unitaires & Composants (Vitest)
-pnpm run test
-
-# Tests E2E (Playwright)
-pnpm run test:e2e
-```
-
-### Build Production
-```bash
-# Compilation
-pnpm run build
-
-# Preview locale du build
-pnpm run preview
 ```
 
 ---
 
-## 🛡️ Sécurité & Déploiement
+## 🧪 Qualité & Tests
 
-Le projet est prêt pour Docker. Pour une mise en production sécurisée :
-1. Créez vos fichiers de secrets dans `./secrets/` (cf. `docker-compose.yml`).
-2. Utilisez la CI/CD intégrée qui publie automatiquement vers GHCR lors de la création d'un tag.
+Le projet vise un standard de qualité "Industrial Grade" avec une couverture automatisée :
+
+- **Linter & Typecheck** : Respect strict des standards Nuxt 4.
+- **Tests Unitaires (Vitest)** : Validation de la logique métier et des transformateurs.
+- **Tests E2E (Playwright)** : Validation des parcours critiques.
+- **Audits d'Accessibilité** : Inclus dans la suite E2E via **Axe-core** pour garantir la conformité **WCAG 2.2 Level AA**.
+
+---
+
+## 🚢 Déploiement Docker
+
+Le projet est livré avec une configuration Docker optimisée (98.2% d'efficacité) :
+- **Sécurité** : Utilisation des **Docker Secrets** pour les clés d'API.
+- **Optimisation** : Image multi-stage `node:20-slim`.
+
+**Note importante** : Avant de lancer `docker compose up`, assurez-vous que les fichiers secrets existent dans le dossier `./secrets/` :
+- `./secrets/vicket_api_key.txt`
+- `./secrets/nuxt_session_password.txt`
+
+---
+
+## 🤝 Contribution
+
+Nous suivons la convention [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) pour les messages de commit. Cela permet d'automatiser la génération du changelog et la montée de version via `release-it`.
+
+*Exemple : `feat: add calendar support`, `fix: resolving hydration mismatch`.*
 
 ---
 
