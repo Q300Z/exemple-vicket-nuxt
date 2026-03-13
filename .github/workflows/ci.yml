@@ -9,6 +9,10 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    env:
+      VICKET_API_KEY: "ci_test_key"
+      NUXT_PUBLIC_VICKET_API_URL: "http://localhost:3000/api/vicket"
+      NUXT_SESSION_PASSWORD: "ci_session_password_32_chars_long_!!_"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
