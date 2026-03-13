@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import VicketContentRenderer from '../../app/components/VicketContentRenderer.vue'
+import VicketContentRenderer from '../../app/components/VicketContentRenderer.server.vue'
 
 describe('VicketContentRenderer', () => {
   it('should render the provided HTML content', async () => {

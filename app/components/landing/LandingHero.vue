@@ -16,7 +16,7 @@ defineEmits(['open-ticket'])
     </div>
 
     <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-[var(--ui-text-highlighted)] leading-[0.9] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700 motion-safe:delay-150">
-      Le support client <br>
+      Le support client <br/>
       <span class="text-transparent bg-clip-text bg-linear-to-r from-[var(--ui-primary)] to-[color-mix(in_srgb,var(--ui-primary)_70%,var(--ui-text-highlighted))]">
         sans compromis.
       </span>

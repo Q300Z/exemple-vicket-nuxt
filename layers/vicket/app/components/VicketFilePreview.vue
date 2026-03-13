@@ -27,7 +27,7 @@ const formattedSize = computed(() => {
         :src="previewUrl"
         class="w-full h-full object-cover"
         :alt="file.name"
-      >
+      />
     </div>
 
     <!-- Generic Icon -->

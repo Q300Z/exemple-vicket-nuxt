@@ -6,9 +6,17 @@ describe('useSupportState', () => {
     // Isolated logic test (avoiding global context issues)
     vi.stubGlobal('useState', (_key: string, init: () => unknown) => ref(init()))
 
-    const { isDialogOpen, templates } = useSupportState()
+    const { isDialogOpen, templates, openDialog, handleClose } = useSupportState()
 
     expect(isDialogOpen.value).toBe(false)
     expect(templates.value).toEqual([])
+
+    // Test openDialog
+    openDialog()
+    expect(isDialogOpen.value).toBe(true)
+
+    // Test closing
+    isDialogOpen.value = false
+    expect(isDialogOpen.value).toBe(false)
   })
 })

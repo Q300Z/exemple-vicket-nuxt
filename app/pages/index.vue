@@ -4,36 +4,25 @@
  * Strictly coordinates domain blocks and global state.
  */
 const { openDialog } = useSupportState()
+const appConfig = useAppConfig()
 
-const features = [
-  {
-    title: 'Intégration en < 15 min',
-    desc: 'Un Nuxt Layer prêt à l\'emploi pour déployer votre centre d\'aide instantanément.',
-    icon: 'i-lucide-zap'
-  },
-  {
-    title: 'Marque Blanche Totale',
-    desc: 'Zéro logo externe. L\'expérience reste 100% fidèle à votre identité visuelle.',
-    icon: 'i-lucide-shield-check'
-  },
-  {
-    title: 'Automatisation IA',
-    desc: 'Réduisez vos délais de réponse grâce aux workflows intelligents.',
-    icon: 'i-lucide-bot'
-  }
-]
+const features = computed(() => appConfig.landing?.features || [])
+const stats = computed(() => appConfig.landing?.stats || [])
 
-const stats = [
-  { label: 'Gain de temps', value: '-40%' },
-  { label: 'Satisfaction client', value: '98%' },
-  { label: 'Setup technique', value: 'Simple' }
-]
+// --- SEO (Nuxt 4 Best Practices) ---
+useSeoMeta({
+  title: 'Vicket - Le Support Client Nouvelle Génération',
+  description: 'Découvrez l\'implémentation de référence Vicket pour Nuxt 4. Une architecture SOLID, une marque blanche totale et une performance inégalée.',
+  ogTitle: 'Vicket Showcase - Nuxt 4 Industrial Grade',
+  ogDescription: 'Le futur du support client est ici. Intégrez Vicket en moins de 15 minutes.',
+  ogImage: '/og-image.png'
+})
 </script>
 
 <template>
   <div class="relative min-h-screen font-sans antialiased overflow-x-hidden transition-colors duration-500">
-    <!-- Fully Dynamic Atmosphere (Abstracted Logic) -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Fully Dynamic Atmosphere (Optimized for Mobile Performance) -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
       <div
         class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full blur-[140px] animate-pulse"
         :style="{ backgroundColor: 'color-mix(in srgb, var(--ui-primary) 15%, transparent)' }"
@@ -48,32 +37,42 @@ const stats = [
     <UContainer class="relative z-10 pt-20 pb-32 sm:pt-24">
       <LandingHero @open-ticket="openDialog" />
       
-      <LandingStats :stats="stats" />
+      <LandingStats :stats="stats" :style="{ marginTop: 'calc(var(--section-spacing) / 2)' }" />
 
-      <LandingFeatures :features="features" />
+      <LandingFeatures :features="features" :style="{ marginTop: 'var(--section-spacing)' }" />
 
-      <LandingTechSection />
-
-      <!-- High-End Quote Footer (Last orchestration block) -->
-      <footer class="mt-48 text-center space-y-8 border-t border-[var(--ui-border)] pt-24 pb-12">
-        <h2 class="text-3xl font-bold text-[var(--ui-text-highlighted)] italic">
-          "Le support client nouvelle génération."
-        </h2>
-        <div class="flex items-center justify-center gap-4">
-          <UButton
-            variant="ghost"
-            color="neutral"
-            label="Découvrir Vicket.app"
-            icon="i-lucide-external-link"
-            size="lg"
-            to="https://vicket.app/fr"
-            target="_blank"
-          />
-        </div>
-        <p class="text-xs text-[var(--ui-text-muted)] font-medium tracking-widest uppercase mt-12">
-          © 2026 Vicket Showcase • Driven by CSS Variables
-        </p>
-      </footer>
+      <LandingTechSection :style="{ marginTop: 'var(--section-spacing)' }" />
     </UContainer>
+
+    <!-- High-End Quote Section (Pre-footer) -->
+    <section class="mt-48 py-24 bg-linear-to-b from-transparent to-[color-mix(in_srgb,var(--ui-bg-accented)_50%,transparent)]">
+      <UContainer>
+        <div class="text-center space-y-8 max-w-4xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-bold text-[var(--ui-text-highlighted)] italic">
+            "Le support client nouvelle génération."
+          </h2>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <UButton
+              variant="ghost"
+              color="neutral"
+              label="Découvrir Vicket.app"
+              icon="i-lucide-external-link"
+              size="lg"
+              class="rounded-xl"
+              to="https://vicket.app/fr"
+              target="_blank"
+            />
+            <UButton
+              variant="subtle"
+              color="primary"
+              label="Documentation API"
+              icon="i-lucide-book"
+              size="lg"
+              class="rounded-xl"
+            />
+          </div>
+        </div>
+      </UContainer>
+    </section>
   </div>
 </template>

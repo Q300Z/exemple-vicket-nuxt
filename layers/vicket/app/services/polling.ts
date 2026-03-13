@@ -4,7 +4,7 @@ import { BrowserNotificationProvider } from './notifications'
  * Headless Ticket Polling (SRP / DIP).
  * Monitors for new messages and triggers external notifications if hidden.
  */
-export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThread) => void) => {
+export const ticketPollingService = (token: Ref<string>, onUpdate: (data: TicketThread) => void) => {
   const isPolling = ref(false)
   const notificationProvider = new BrowserNotificationProvider()
   let timer: ReturnType<typeof setInterval> | null = null

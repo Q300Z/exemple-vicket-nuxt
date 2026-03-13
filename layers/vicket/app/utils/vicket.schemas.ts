@@ -32,17 +32,25 @@ export const createTicketSchema = (
       return
     }
 
+    const type = q.type?.toUpperCase()
+    const isArrayType = type === 'CHECKBOX' || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
+
     // 2. Default validation logic
-    if (q.required) {
-      if (q.type === 'CHECKBOX') {
-        shape[q.id] = z.array(z.string()).min(1, `Veuillez sélectionner au moins une option pour "${q.label}"`)
-      } else if (q.type === 'FILE') {
-        shape[q.id] = z.unknown().refine(val => !!val, `Le fichier pour "${q.label}" est requis`)
-      } else {
-        shape[q.id] = z.string().min(1, `Le champ "${q.label}" est requis`)
-      }
+    if (isArrayType) {
+      const base = z.array(z.string())
+      shape[q.id] = q.required 
+        ? base.min(1, `Veuillez sélectionner au moins une option pour "${q.label}"`)
+        : base.default([])
+    } else if (type === 'FILE') {
+      const base = z.unknown()
+      shape[q.id] = q.required
+        ? base.refine(val => !!val, `Le fichier pour "${q.label}" est requis`)
+        : base.optional()
     } else {
-      shape[q.id] = z.unknown().optional()
+      const base = z.string()
+      shape[q.id] = q.required
+        ? base.min(1, `Le champ "${q.label}" est requis`)
+        : z.union([z.string(), z.array(z.string()), z.null()]).optional() // Defensive for dynamic fields
     }
   })
 

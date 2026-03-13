@@ -14,6 +14,7 @@ export interface SupportFaq {
 export interface IKnowledgeRepository {
   categories: ComputedRef<string[]>
   fetchArticles(query?: string, category?: string): AsyncData<{ success: boolean, data: ArticleSummary[] }, unknown>
+  searchArticles(query?: string, category?: string): Promise<{ success: boolean, data: ArticleSummary[] }>
   fetchArticle(slug: string): AsyncData<{ success: boolean, data: ArticleFull }, unknown>
   fetchFaqs(query?: string): AsyncData<{ success: boolean, data: SupportFaq[] }, unknown>
   fetchRelatedArticles(currentId: string, limit?: number): AsyncData<ArticleSummary[], unknown>

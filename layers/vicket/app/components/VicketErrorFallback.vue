@@ -9,12 +9,25 @@ interface Props {
   description?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const { openDialog } = useSupportState()
+
+const props = withDefaults(defineProps<Props>(), {
   title: 'Échec du chargement',
   description: 'Nous ne parvenons pas à récupérer ces informations pour le moment.'
 })
 
 defineEmits(['retry'])
+
+const reportError = () => {
+  const errorDetails = props.error instanceof Error ? props.error.stack : String(props.error)
+  openDialog({
+    template_id: 'technique', // Assuming a 'technique' template exists
+    answers: {
+      'message': `Rapport d'erreur automatique :\n\n${errorDetails}`,
+      'subject': `Erreur : ${props.title}`
+    }
+  })
+}
 </script>
 
 <template>
@@ -35,13 +48,23 @@ defineEmits(['retry'])
       </p>
     </div>
 
-    <UButton
-      icon="i-lucide-refresh-cw"
-      label="Réessayer"
-      variant="soft"
-      color="error"
-      class="rounded-full px-6"
-      @click="$emit('retry')"
-    />
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+      <UButton
+        icon="i-lucide-refresh-cw"
+        label="Réessayer"
+        variant="soft"
+        color="error"
+        class="rounded-full px-6"
+        @click="$emit('retry')"
+      />
+      <UButton
+        icon="i-lucide-alert-circle"
+        label="Envoyer un rapport"
+        variant="ghost"
+        color="neutral"
+        class="rounded-full px-6 text-xs"
+        @click="reportError"
+      />
+    </div>
   </div>
 </template>

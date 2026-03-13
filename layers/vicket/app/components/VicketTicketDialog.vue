@@ -4,14 +4,9 @@ import { VicketValidationError } from '../utils/errors'
 /**
  * Ticket Interaction Dialog (SRP).
  * 100% Native Nuxt UI v4 Style.
+ * Autonomous: Managed via useSupportState.
  */
-interface Props {
-  open: boolean
-  templates: TicketTemplate[]
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits(['update:open'])
+const { isDialogOpen, templates, prefilledData } = useSupportState()
 
 const { stripHtml } = useContent()
 const { getBucket, clearAll, addFiles } = useFiles()
@@ -26,10 +21,46 @@ const error = ref<Error | null>(null)
 const isSubmitting = ref(false)
 const schema = ref<unknown>(null)
 
+// --- PRE-FILL LOGIC ---
+watch(() => isDialogOpen.value, (isOpen) => {
+  if (isOpen && prefilledData.value) {
+    const { template_id, answers } = prefilledData.value
+    if (template_id) {
+      const template = templates.value.find(t => t.id === template_id)
+      if (template) {
+        selectTemplate(template)
+        if (answers) {
+          formData.value = { ...formData.value, ...answers }
+        }
+      }
+    }
+  }
+})
+
 const selectTemplate = (template: TicketTemplate) => {
   selectedTemplate.value = template
-  formData.value = {}
-  schema.value = createTicketSchema(template.fields)
+  
+  // Initialize formData with defaults to avoid 'undefined' validation errors (KISS)
+  const initialData: Record<string, unknown> = {
+    title: '',
+    email: ''
+  }
+  
+  template.questions.forEach(q => {
+    const type = q.type?.toUpperCase()
+    const isArrayType = type === 'CHECKBOX' || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
+    
+    if (isArrayType) {
+      initialData[q.id] = []
+    } else if (type === 'FILE') {
+      initialData[q.id] = null
+    } else {
+      initialData[q.id] = ''
+    }
+  })
+  
+  formData.value = initialData
+  schema.value = createTicketSchema(template.questions)
   step.value = 'form'
 }
 
@@ -66,98 +97,108 @@ const onSubmit = async () => {
   }
 }
 
-const handleClose = (val: boolean) => {
-  emit('update:open', val)
-  if (!val && props.open) {
-    setTimeout(reset, 300)
-  }
+const handleClose = () => {
+  isDialogOpen.value = false
+  setTimeout(reset, 300)
 }
+
+// --- SHORTCUTS ---
+defineShortcuts({
+  escape: {
+    usingInput: true,
+    whenever: [isDialogOpen],
+    handler: () => {
+      handleClose()
+    }
+  }
+})
 </script>
 
 <template>
   <UModal
-    :open="open"
-    @update:open="handleClose"
+    v-model:open="isDialogOpen"
+    title="Demande de support"
+    description="Remplissez ce formulaire pour contacter nos experts."
   >
-    <section class="vk-dialog-content p-1" aria-label="Formulaire de support">
-      <!-- STEP: CATEGORY -->
-      <div v-if="step === 'category'" class="p-6 space-y-6">
-        <div class="text-center">
-          <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Besoin d'aide ?</h2>
-          <p class="text-sm text-[var(--ui-text-muted)] mt-1">Choisissez une catégorie pour votre demande.</p>
-        </div>
+    <template #content>
+      <section class="vk-dialog-content p-1" aria-label="Formulaire de support">
+        <!-- STEP: CATEGORY -->
+        <div v-if="step === 'category'" class="p-6 space-y-6">
+          <div class="text-center">
+            <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Besoin d'aide ?</h2>
+            <p class="text-sm text-[var(--ui-text-muted)] mt-1">Choisissez une catégorie pour votre demande.</p>
+          </div>
 
-        <div class="grid gap-2">
-          <UButton
-            v-for="tpl in templates"
-            :key="tpl.id"
-            variant="ghost"
-            color="neutral"
-            class="flex items-center justify-start gap-4 p-4 rounded-2xl group"
-            @click="selectTemplate(tpl)"
-          >
-            <template #leading>
-              <div class="w-10 h-10 rounded-xl bg-[var(--ui-bg-accented)] flex items-center justify-center text-[var(--ui-primary)]">
-                <UIcon name="i-lucide-message-square" class="w-5 h-5" />
-              </div>
-            </template>
-            <div class="text-left">
-              <p class="font-bold text-[var(--ui-text-highlighted)]">{{ tpl.label }}</p>
-              <p class="text-xs text-[var(--ui-text-muted)] line-clamp-1">{{ stripHtml(tpl.description || '') }}</p>
-            </div>
-            <template #trailing>
-              <UIcon name="i-lucide-chevron-right" class="ms-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </template>
-          </UButton>
-        </div>
-      </div>
-
-      <!-- STEP: FORM -->
-      <UCard v-else-if="step === 'form'" variant="ghost" class="border-none shadow-none">
-        <template #header>
-          <div class="flex items-center gap-4">
+          <div class="grid gap-2">
             <UButton
+              v-for="tpl in templates"
+              :key="tpl.id"
               variant="ghost"
               color="neutral"
-              icon="i-lucide-arrow-left"
-              @click="step = 'category'"
-            />
-            <span class="font-bold">{{ selectedTemplate?.label }}</span>
+              class="flex items-center justify-start gap-4 p-4 rounded-2xl group"
+              @click="selectTemplate(tpl)"
+            >
+              <template #leading>
+                <div class="w-10 h-10 rounded-xl bg-[var(--ui-bg-accented)] flex items-center justify-center text-[var(--ui-primary)]">
+                  <UIcon name="i-lucide-message-square" class="w-5 h-5" />
+                </div>
+              </template>
+              <div class="text-left">
+                <p class="font-bold text-[var(--ui-text-highlighted)]">{{ tpl.label }}</p>
+                <p class="text-xs text-[var(--ui-text-muted)] line-clamp-1">{{ stripHtml(tpl.description || '') }}</p>
+              </div>
+              <template #trailing>
+                <UIcon name="i-lucide-chevron-right" class="ms-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </template>
+            </UButton>
           </div>
-        </template>
+        </div>
 
-        <UForm :schema="schema" :state="formData" class="space-y-6" @submit="onSubmit">
-          <VicketFieldFactory
-            v-for="field in selectedTemplate?.fields"
-            :key="field.id"
-            v-model="formData[field.id]"
-            :field="field"
-            @files-added="addFiles('ticket', $event)"
-          />
+        <!-- STEP: FORM -->
+        <UCard v-else-if="step === 'form'" variant="ghost" class="border-none shadow-none">
+          <template #header>
+            <div class="flex items-center gap-4">
+              <UButton
+                variant="ghost"
+                color="neutral"
+                icon="i-lucide-arrow-left"
+                @click="step = 'category'"
+              />
+              <span class="font-bold">{{ selectedTemplate?.label }}</span>
+            </div>
+          </template>
 
-          <UButton
-            type="submit"
-            block
-            size="lg"
-            label="Envoyer"
-            :loading="isSubmitting"
-            class="rounded-xl"
-          />
-        </UForm>
-      </UCard>
+          <UForm :schema="schema" :state="formData" class="space-y-6" @submit="onSubmit">
+            <VicketFieldFactory
+              v-for="field in selectedTemplate?.questions"
+              :key="field.id"
+              v-model="formData[field.id]"
+              :question="field"
+              @files-added="addFiles('ticket', $event)"
+            />            <UButton
+              type="submit"
+              block
+              size="lg"
+              label="Envoyer"
+              :loading="isSubmitting"
+              class="rounded-xl"
+            />
+          </UForm>
+        </UCard>
 
-      <!-- SUCCESS / ERROR -->
-      <VicketErrorSwitcher
-        v-else-if="step === 'error'"
-        :error="error"
-        @retry="step === 'form' ? onSubmit() : reset()"
-      />
+        <!-- SUCCESS / ERROR -->
+        <VicketErrorSwitcher
+          v-else-if="step === 'error'"
+          :error="error"
+          @retry="step === 'form' ? onSubmit() : reset()"
+        />
 
-      <div v-else-if="step === 'success'" class="p-12 text-center space-y-6">
-        <UIcon name="i-lucide-check-circle" class="w-16 h-16 text-success mx-auto" />
-        <h2 class="text-2xl font-bold">Demande envoyée !</h2>
-        <UButton label="Fermer" block class="rounded-xl" @click="handleClose(false)" />
-      </div>
-    </section>
+        <div v-else-if="step === 'success'" class="p-12 text-center space-y-6">
+          <UIcon name="i-lucide-check-circle" class="w-16 h-16 text-success mx-auto" />
+          <h2 class="text-2xl font-bold">Demande envoyée !</h2>
+          <UButton label="Fermer" block class="rounded-xl" @click="handleClose" />
+        </div>
+      </section>
+    </template>
   </UModal>
 </template>

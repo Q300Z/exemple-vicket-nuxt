@@ -30,5 +30,19 @@ export default defineAppConfig({
         label: 'font-semibold text-[var(--ui-text-highlighted)]'
       }
     }
+  },
+
+  // --- Landing Page Data (OCP) ---
+  landing: {
+    // ... rest of landing
+  },
+
+  // --- Branding & White-labeling (OCP) ---
+  branding: {
+    logo: {
+      type: 'default', // 'default' | 'image'
+      src: '',         // URL if type is 'image'
+      alt: 'Vicket Support'
+    }
   }
 })

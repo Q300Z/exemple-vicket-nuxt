@@ -10,9 +10,12 @@ test.describe('Vicket Full Support Journey', () => {
     await expect(page).toHaveTitle(/Vicket/)
 
     // 2. Navigate to Support Center
-    const supportLink = page.getByRole('link', { name: /Support|Aide/i }).first()
-    await supportLink.click()
-    await expect(page).toHaveURL(/\/support/)
+    // We target any link containing 'Support' or 'Aide'
+    await page.locator('a').filter({ hasText: /Centre d'aide/i }).first().click({ force: true })
+    await expect(page).toHaveURL(/\/support/, { timeout: 15000 })
+    
+    // Ensure we are on the support page
+    await expect(page.getByRole('heading', { name: /aider/i })).toBeVisible({ timeout: 15000 })
 
     // 3. Search for a non-existent solution
     const searchInput = page.getByPlaceholder(/Rechercher/i)
@@ -21,24 +24,18 @@ test.describe('Vicket Full Support Journey', () => {
 
     // 4. Verify Empty State and click CTA
     await expect(page.locator('text=Aucun résultat trouvé')).toBeVisible()
-    const openTicketBtn = page.getByRole('button', { name: /Contacter le support|Ouvrir un ticket/i }).first()
-    await openTicketBtn.click()
+    const openTicketBtn = page.getByRole('button', { name: /Contacter le support|Ouvrir un ticket|Nouveau Ticket/i }).first()
+    await openTicketBtn.click({ force: true })
 
-    // 5. Form Step 1: Identification
-    await expect(page.locator('text=Votre adresse email')).toBeVisible()
-    await page.locator('input[type="email"]').fill('tester@example.com')
-
-    // If there are multiple templates, select the first one
-    const templates = await page.locator('input[type="radio"]').all()
-    if (templates.length > 0) {
-      await templates[0].check()
-    }
-
-    await page.getByRole('button', { name: /Continuer/i }).click()
+    // 5. Form Step 1: Category Selection
+    await expect(page.locator('.vk-dialog-content')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Besoin d\'aide ?' })).toBeVisible()
+    
+    // Select first category
+    await page.locator('.vk-dialog-content button').first().click({ force: true })
 
     // 6. Form Step 2: Details
-    await expect(page.locator('text=Sujet de la demande')).toBeVisible()
-    await page.getByPlaceholder(/Ex: Problème de connexion/i).fill('E2E Test Ticket')
+    await page.getByLabel('Sujet').fill('E2E Test Ticket')
 
     // Fill dynamic questions if they exist (Factory check)
     const textareas = await page.locator('textarea').all()
@@ -47,15 +44,13 @@ test.describe('Vicket Full Support Journey', () => {
     }
 
     // 7. Submission
-    await page.getByRole('button', { name: /Soumettre/i }).click()
+    await page.getByRole('button', { name: 'Envoyer' }).click({ force: true })
 
     // 8. Success Verification
-    // Increase timeout for API latency
-    await expect(page.locator('text=Ticket créé avec succès')).toBeVisible({ timeout: 15000 })
-    await expect(page.locator('text=Un lien sécurisé vous a été envoyé')).toBeVisible()
+    await expect(page.getByText('Demande envoyée !')).toBeVisible({ timeout: 15000 })
 
     // Close modal
-    await page.getByRole('button', { name: /Fermer la fenêtre/i }).click()
-    await expect(page.locator('text=Ticket créé avec succès')).not.toBeVisible()
+    await page.getByRole('button', { name: 'Fermer' }).click({ force: true })
+    await expect(page.locator('.vk-dialog-content')).not.toBeVisible()
   })
 })

@@ -16,6 +16,17 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue', 'search'])
 
 const { history, addToHistory } = useSearchHistory()
+const inputRef = ref<HTMLInputElement | null>(null)
+
+// --- SHORTCUTS ---
+defineShortcuts({
+  '/': {
+    usingInput: false,
+    handler: () => {
+      inputRef.value?.inputRef?.focus()
+    }
+  }
+})
 
 const searchQuery = computed({
   get: () => props.modelValue,
@@ -38,6 +49,7 @@ const useHistory = (q: string) => {
 <template>
   <div class="space-y-4 w-full">
     <UInput
+      ref="inputRef"
       v-model="searchQuery"
       icon="i-lucide-search"
       :placeholder="placeholder"

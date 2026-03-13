@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ArticleSummary } from '~/layers/vicket/app/composables/useVicket'
-import { KNOWLEDGE_REPOSITORY_KEY } from '../../../layers/vicket/app/types/repository'
+import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 
 /**
  * Support Index page (Scalable Repository strategy).
@@ -20,12 +20,28 @@ const { data: articlesData, status: articlesStatus, refresh: refreshArticles } =
 const { data: faqsData, status: faqsStatus, refresh: refreshFaqs } = await fetchFaqs(searchQuery.value)
 
 /* ── Computed ── */
-const articles = computed(() => (articlesData.value?.data || []) as ArticleSummary[])
+const articles = computed(() => {
+  const allResults = (articlesData.value?.data || [])
+  // Filter out FAQs because they are displayed in a separate section below (SRP)
+  return allResults.filter((item: { type?: string }) => item.type !== 'faq')
+})
 const faqs = computed(() => faqsData.value?.data || [])
 const isLoading = computed(() => articlesStatus.value === 'pending' || faqsStatus.value === 'pending')
 
 const faqItems = computed(() => faqs.value.map(f => ({ label: f.question, content: f.answer })))
 const hasContent = computed(() => articles.value.length > 0 || faqs.value.length > 0)
+
+// Quick Links for proactive support (SRP)
+const trendingArticles = computed(() => articles.value.slice(0, 3))
+
+// Dynamic categories derivation (OCP)
+const dynamicCategories = computed(() => {
+  const cats = new Set(['Tous'])
+  articles.value.forEach(a => {
+    if (a.category) cats.add(a.category)
+  })
+  return Array.from(cats)
+})
 
 /* ── Methods ── */
 const onSearch = () => {
@@ -55,7 +71,7 @@ const retryAll = (recover: () => Promise<void>) => {
       <SupportSearchSection
         v-model="searchQuery"
         v-model:category="selectedCategory"
-        :categories="categories"
+        :categories="dynamicCategories"
         @search="onSearch"
       />
 
@@ -81,13 +97,32 @@ const retryAll = (recover: () => Promise<void>) => {
         <!-- No Results -->
         <div v-else class="py-12">
           <VicketEmptyState
-            v-if="searchQuery.trim()"
+            v-if="searchQuery?.trim()"
             title="Aucun résultat trouvé"
             :description="`Nous n'avons trouvé aucun article correspondant à « ${searchQuery} ».`"
             icon="i-lucide-search-x"
           >
+            <template #content>
+              <div v-if="trendingArticles.length > 0" class="mt-8 space-y-4">
+                <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest text-center">Articles populaires</p>
+                <div class="flex flex-col gap-2 max-w-sm mx-auto">
+                  <UButton
+                    v-for="ta in trendingArticles"
+                    :key="ta.id"
+                    :to="`/support/${ta.slug}`"
+                    variant="soft"
+                    color="neutral"
+                    class="rounded-xl justify-start text-xs font-bold"
+                    icon="i-lucide-trending-up"
+                    prefetch
+                  >
+                    {{ ta.title }}
+                  </UButton>
+                </div>
+              </div>
+            </template>
             <template #actions>
-              <UButton color="neutral" variant="subtle" class="rounded-full px-8" @click="searchQuery = ''" />
+              <UButton color="neutral" variant="subtle" class="rounded-full px-8" @click="searchQuery = ''; onSearch()">Effacer la recherche</UButton>
             </template>
           </VicketEmptyState>
 

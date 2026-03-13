@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VICKET_FIELD_MAP } from '../utils/vicket.fields'
+import { resolveVicketComponent } from '../utils/vicket.fields'
 
 /**
  * Component Factory responsible for dynamic field rendering (SRP/DIP).
@@ -31,7 +31,7 @@ defineEmits(['update:modelValue'])
     class="w-full"
   >
     <component
-      :is="VICKET_FIELD_MAP[question.type] || VICKET_FIELD_MAP.TEXT"
+      :is="resolveVicketComponent(question.type)"
       :model-value="modelValue"
       :question="question"
       @update:model-value="$emit('update:modelValue', $event)"

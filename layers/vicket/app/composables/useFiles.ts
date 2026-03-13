@@ -56,6 +56,7 @@ export const useFiles = (maxSizeMB = 10) => {
       const previewKey = `${key}-${file.name}`
       if (previews.value[previewKey]) {
         URL.revokeObjectURL(previews.value[previewKey])
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [previewKey]: _, ...rest } = previews.value
         previews.value = rest
       }

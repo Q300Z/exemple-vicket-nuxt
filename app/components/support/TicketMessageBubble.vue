@@ -26,6 +26,7 @@ const formatDate = (date: string) => useDateFormat(date, 'DD MMM HH:mm').value
       class="ring-2 ring-[var(--ui-bg)] shadow-md shrink-0"
       :color="avatarColor"
       :ui="{ rounded: 'rounded-xl' }"
+      :style="{ viewTransitionName: `ticket-avatar-${message.author_type}` }"
     />
 
     <div :class="['flex flex-col max-w-[85%] space-y-1.5', message.author_type === 'reporter' ? 'items-end' : 'items-start']">

@@ -31,10 +31,15 @@ const onFileSelect = (e: Event) => {
         ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-950/20 scale-[1.01] ring-4 ring-primary-500/10'
         : 'border-gray-200 dark:border-gray-800 hover:border-primary-400 dark:hover:border-primary-600 hover:bg-gray-50/50 dark:hover:bg-gray-900/50'
     ]"
+    role="button"
+    tabindex="0"
+    aria-label="Zone de dépôt de fichiers"
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="isDragging = false"
     @drop.prevent="onDrop"
     @click="fileInput?.click()"
+    @keydown.enter.prevent="fileInput?.click()"
+    @keydown.space.prevent="fileInput?.click()"
   >
     <!-- Background Decoration -->
     <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -49,8 +54,9 @@ const onFileSelect = (e: Event) => {
       type="file"
       class="hidden"
       multiple
+      aria-hidden="true"
       @change="onFileSelect"
-    >
+    />
 
     <div class="space-y-3 relative z-10">
       <div class="mx-auto w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center group-hover:scale-110 transition-transform">

@@ -45,6 +45,7 @@ const { stripHtml } = useContent()
         v-for="article in articles"
         :key="article.id"
         :to="`/support/${article.slug}`"
+        prefetch
         class="group flex p-6 border border-[var(--ui-border)] hover:border-[color-mix(in_srgb,var(--ui-primary)_40%,var(--ui-border))] rounded-[var(--ui-radius)] transition-all hover:shadow-2xl hover:shadow-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] hover:-translate-y-1"
         :class="[
           layout === 'grid' ? 'bg-[var(--ui-bg)] flex-col' : 'grid-cols-1',
@@ -74,7 +75,7 @@ const { stripHtml } = useContent()
 
           <div
             class="font-bold text-[var(--ui-text-highlighted)] text-lg mb-2 group-hover:text-[var(--ui-primary)] transition-colors"
-            :style="{ viewTransitionName: `article-title-${article.slug}` }"
+            :style="{ viewTransitionName: `article-title-${article.id}` }"
           >
             <VicketHighlightedText :text="article.title" :query="searchQuery" />
           </div>

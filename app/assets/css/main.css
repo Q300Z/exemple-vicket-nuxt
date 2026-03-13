@@ -1,12 +1,31 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "../../../layers/vicket/app/assets/css/vicket.css";
 
 @theme {
-  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--vk-font-body);
   
   /* Standard Nuxt UI v4 mappings */
   --color-primary: var(--ui-primary);
   --color-neutral: var(--ui-neutral);
+}
+
+/**
+ * Host Application Overrides for Vicket Design System (White-labeling).
+ * We can redefine Vicket-specific tokens here.
+ */
+:root {
+  /* Branding Tokens */
+  --vk-radius: 1.5rem; /* More rounded for host app style */
+  --vk-primary: var(--ui-primary); /* Sync with Nuxt UI primary */
+  
+  /* Typography Tokens */
+  --vk-font-title: 'Public Sans', system-ui, sans-serif;
+  --vk-font-body: 'Public Sans', system-ui, sans-serif;
+  
+  /* Layout Tokens */
+  --section-spacing: 10rem;
+  --section-spacing-mobile: 6rem;
 }
 
 /* ────────────────────────────────────────────── */
@@ -17,7 +36,6 @@ body {
   background-color: var(--ui-bg);
   color: var(--ui-text-default);
   font-family: var(--font-sans);
-  /* Smooth transition for theme switching */
   transition: background-color 0.3s ease;
 }
 
@@ -26,9 +44,19 @@ body {
   @apply backdrop-blur-md bg-[var(--ui-bg)]/80 border border-[var(--ui-border)];
 }
 
-/* Optimized Gradient Text using primary tokens */
+/* Optimized Gradient Text */
 @utility primary-gradient-text {
   @apply bg-linear-to-r from-[var(--ui-primary)] to-[color-mix(in_srgb,var(--ui-primary)_70%,var(--ui-text-highlighted))] bg-clip-text text-transparent;
+}
+
+/* NEW: Luminous Border for premium sections (FAQ, Cards) */
+@utility luminous-border {
+  @apply border-[color-mix(in_srgb,var(--ui-primary)_20%,var(--ui-border))] shadow-[0_0_15px_rgba(0,0,0,0)] hover:shadow-[0_0_20px_color-mix(in_srgb,var(--ui-primary)_10%,transparent)] transition-all duration-500;
+}
+
+/* NEW: Subtle Gradient for internal cards */
+@utility subtle-gradient {
+  @apply bg-linear-to-br from-[color-mix(in_srgb,var(--ui-bg-accented)_50%,transparent)] to-[var(--ui-bg)];
 }
 
 /* Nuxt UI Native Scrollbar Pattern */

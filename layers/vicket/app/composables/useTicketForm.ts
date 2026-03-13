@@ -5,8 +5,10 @@ import { z } from 'zod'
  * Maps Vicket field types to Zod schemas.
  */
 export const useTicketForm = () => {
-  const createTicketSchema = (fields: TicketField[]) => {
+  const createTicketSchema = (fields: TicketField[] = []) => {
     const shape: Record<string, z.ZodTypeAny> = {}
+
+    if (!Array.isArray(fields)) return z.object({})
 
     for (const field of fields) {
       let schema: z.ZodTypeAny = z.string()

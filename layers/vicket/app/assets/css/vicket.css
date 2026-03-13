@@ -1,50 +1,98 @@
 @import "tailwindcss";
 
 /**
- * Specialized Article Content Styling (KISS).
- * Targeted at raw HTML/Markdown content without heavy Prose modules.
+ * Vicket Design System Tokens (OCP).
+ * These variables are linked to Nuxt UI v4 reactive tokens.
+ */
+:root {
+  --vk-primary: var(--ui-primary);
+  --vk-primary-muted: color-mix(in srgb, var(--vk-primary) 30%, transparent);
+  --vk-primary-accent: color-mix(in srgb, var(--vk-primary) 10%, transparent);
+  --vk-radius: var(--ui-radius);
+  --vk-border: var(--ui-border);
+  --vk-bg: var(--ui-bg);
+  --vk-bg-accented: var(--ui-bg-accented);
+  --vk-text: var(--ui-text-default);
+  --vk-text-highlighted: var(--ui-text-highlighted);
+  --vk-text-muted: var(--ui-text-muted);
+}
+
+/* Force Dark Mode inheritance for Nuxt Islands */
+.dark {
+  --vk-text: var(--ui-text-default);
+  --vk-text-highlighted: var(--ui-text-highlighted);
+  --vk-border: var(--ui-border);
+}
+
+/**
+ * Specialized Article Content Styling (SRP/DIP).
+ * Uses direct Tailwind utilities for robust Dark Mode support in Islands.
  */
 .vk-prose {
-  @apply text-[var(--ui-text-default)] leading-relaxed space-y-4;
+  @apply text-neutral-900 dark:text-neutral-100 leading-relaxed space-y-6 text-lg;
 }
 
 .vk-prose h2 {
-  @apply text-xl font-bold text-[var(--ui-text-highlighted)] mt-8 mb-4 border-b border-[var(--ui-border)] pb-2;
+  @apply text-neutral-950 dark:text-white text-2xl md:text-3xl font-black tracking-tight mt-12 mb-6 border-b border-gray-200 dark:border-gray-800 pb-4;
 }
 
 .vk-prose h3 {
-  @apply text-lg font-semibold text-[var(--ui-text-highlighted)] mt-6 mb-2;
+  @apply text-neutral-900 dark:text-neutral-100 text-xl md:text-2xl font-extrabold tracking-tight mt-8 mb-4;
+}
+
+.vk-prose p {
+  @apply opacity-100 dark:opacity-90;
 }
 
 .vk-prose ul {
-  @apply list-disc list-inside space-y-2 ml-4;
+  @apply list-disc list-inside space-y-3 ml-2;
 }
 
 .vk-prose ol {
-  @apply list-decimal list-inside space-y-2 ml-4;
+  @apply list-decimal list-inside space-y-3 ml-2;
+}
+
+.vk-prose li {
+  @apply pl-2;
 }
 
 .vk-prose blockquote {
-  @apply border-l-4 border-[var(--ui-primary)] bg-[color-mix(in-srgb,var(--ui-primary)_5%,transparent)] p-4 italic rounded-r-xl my-6;
+  border-color: var(--vk-primary);
+  background-color: var(--vk-primary-accent);
+  @apply border-l-4 p-6 italic rounded-r-3xl my-8 shadow-sm;
 }
 
 .vk-prose table {
-  @apply w-full border-collapse border border-[var(--ui-border)] rounded-xl overflow-hidden my-6;
+  border-color: var(--vk-border);
+  background-color: color-mix(in srgb, var(--vk-bg-accented) 20%, transparent);
+  @apply w-full border-collapse border rounded-2xl overflow-hidden my-10 shadow-sm;
 }
 
 .vk-prose th {
-  @apply bg-[var(--ui-bg-accented)] text-left p-3 font-semibold border border-[var(--ui-border)];
+  background-color: var(--vk-bg-accented);
+  color: var(--vk-text-highlighted);
+  border-color: var(--vk-border);
+  @apply text-left p-4 font-bold border uppercase text-xs tracking-widest;
 }
 
 .vk-prose td {
-  @apply p-3 border border-[var(--ui-border)];
+  border-color: var(--vk-border);
+  @apply p-4 border text-sm;
 }
 
 .vk-prose a {
-  @apply text-[var(--ui-primary)] underline hover:text-[var(--ui-primary-highlighted)] transition-colors;
+  color: var(--vk-primary);
+  text-decoration-color: var(--vk-primary-muted);
+  @apply font-bold underline transition-all hover:decoration-[var(--vk-primary)];
 }
 
-/* Fallback for code blocks */
+/* Code block adaptation */
 .vk-code-block {
-  @apply bg-neutral-900 text-neutral-100 p-4 rounded-xl font-mono text-sm overflow-x-auto my-6 border border-neutral-800 shadow-inner;
+  background-color: color-mix(in srgb, var(--vk-bg-accented) 80%, black);
+  border-color: var(--vk-border);
+  @apply p-6 rounded-3xl font-mono text-sm overflow-x-auto my-8 border shadow-inner;
+}
+
+.vk-code-block code {
+  color: var(--vk-primary);
 }

@@ -23,7 +23,7 @@ const value = computed({
 const options = computed(() => {
   return (props.question.options || []).map(opt => ({
     label: opt.label,
-    value: opt.value
+    value: opt.value ?? opt.id // Fallback to id if value is missing (common in Vicket API)
   }))
 })
 </script>
@@ -32,7 +32,7 @@ const options = computed(() => {
   <div class="pt-2">
     <UCheckboxGroup
       v-model="value"
-      :options="options"
+      :items="options"
       class="gap-3"
     />
   </div>

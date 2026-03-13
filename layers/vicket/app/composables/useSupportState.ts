@@ -6,9 +6,10 @@ export const useSupportState = () => {
   const templates = useState<Template[]>('vicket-templates', () => [])
   const isLoading = useState('vicket-loading', () => false)
   const loadError = useState<string | null>('vicket-load-error', () => null)
+  const prefilledData = useState<{ template_id?: string, answers?: Record<string, string> } | null>('vicket-prefilled-data', () => null)
 
-  const openDialog = () => {
-    console.log('Vicket: openDialog called')
+  const openDialog = (data?: { template_id?: string, answers?: Record<string, string> }) => {
+    prefilledData.value = data || null
     isDialogOpen.value = true
     if (templates.value.length === 0 && !isLoading.value) {
       loadTemplates()
@@ -35,6 +36,7 @@ export const useSupportState = () => {
     templates,
     isLoading,
     loadError,
+    prefilledData,
     openDialog,
     loadTemplates
   }

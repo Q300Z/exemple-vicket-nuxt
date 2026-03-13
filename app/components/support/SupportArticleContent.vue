@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
- * Article Content and Interaction area (SRP).
+ * Elite Article Content area (SRP).
+ * High-end bridge CTA and interactive feedback loop.
  */
 interface Props {
   articleId: string
@@ -12,44 +13,63 @@ defineEmits(['open-ticket'])
 </script>
 
 <template>
-  <div class="lg:col-span-3 space-y-12">
-    <!-- Body -->
-    <article class="relative prose prose-lg max-w-none">
+  <div class="lg:col-span-3 space-y-16">
+    <!-- Article Body (Driven by .vk-prose) -->
+    <article class="relative min-h-[300px]">
       <VicketContentRenderer :content="content" />
     </article>
 
-    <!-- Feedback -->
-    <div class="glass-effect p-8 rounded-3xl border border-[var(--ui-border)] shadow-sm">
-      <VicketArticleFeedback :article-id="articleId" />
+    <!-- Interactive Bridge (UX Masterpiece) -->
+    <div class="pt-16 border-t border-[var(--ui-border)]">
+      <div class="relative group overflow-hidden p-1 rounded-[calc(var(--ui-radius)*3)] bg-linear-to-br from-[var(--ui-border)] to-transparent hover:from-[var(--ui-primary)] transition-all duration-700">
+        <div class="relative bg-[var(--ui-bg)] rounded-[calc(var(--ui-radius)*2.8)] p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+          <!-- Glow Background -->
+          <div class="absolute -right-20 -top-20 w-64 h-64 bg-[var(--ui-primary)] opacity-5 blur-[100px] group-hover:opacity-15 transition-opacity" />
+          
+          <div class="relative z-10 space-y-3 text-center md:text-left">
+            <h3 class="text-3xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
+              Cet article a-t-il été <span class="primary-gradient-text italic">utile ?</span>
+            </h3>
+            <p class="text-[var(--ui-text-muted)] text-lg max-w-md">
+              Votre avis compte énormément pour nous permettre d'améliorer notre support.
+            </p>
+          </div>
+
+          <div class="relative z-10 shrink-0">
+            <VicketArticleFeedback :article-id="articleId" />
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Bottom Navigation & CTA -->
-    <div class="space-y-12 pt-12 border-t border-[var(--ui-border)]">
-      <div class="bg-[var(--ui-bg-accented)] p-8 rounded-3xl border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="space-y-1 text-center md:text-left">
-          <p class="text-xl font-bold text-[var(--ui-text-highlighted)]">Cet article n'a pas répondu à votre question ?</p>
-          <p class="text-[var(--ui-text-muted)]">Nos experts sont là pour vous accompagner 24/7.</p>
-        </div>
-        <UButton
-          v-if="templates.length > 0"
-          label="Contacter le support"
-          icon="i-lucide-message-square"
-          size="xl"
-          class="rounded-2xl px-8 shadow-md"
-          @click="$emit('open-ticket')"
-        />
+    <!-- Need More Help? Bridge -->
+    <div class="relative p-10 rounded-[40px] bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="space-y-2 text-center md:text-left">
+        <p class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Toujours bloqué ?</p>
+        <p class="text-[var(--ui-text-muted)]">Ouvrez un ticket et nos experts reviendront vers vous sous 24h.</p>
       </div>
+      
+      <UButton
+        v-if="templates.length > 0"
+        label="Contacter le support"
+        icon="i-lucide-message-square"
+        size="xl"
+        class="rounded-2xl px-10 shadow-2xl hover:scale-105 active:scale-95 transition-all shadow-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]"
+        :ui="{ label: 'text-inverted font-bold' }"
+        @click="$emit('open-ticket')"
+      />
+    </div>
 
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
-        <UButton
-          to="/support"
-          icon="i-lucide-arrow-left"
-          variant="ghost"
-          color="neutral"
-          label="Retour aux articles"
-          class="rounded-full px-6 hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
-        />
-      </div>
+    <!-- Navigation -->
+    <div class="flex justify-center pt-4">
+      <UButton
+        to="/support"
+        icon="i-lucide-arrow-left"
+        variant="ghost"
+        color="neutral"
+        label="Découvrir d'autres guides"
+        class="rounded-full px-8 hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] font-bold text-xs uppercase tracking-widest"
+      />
     </div>
   </div>
 </template>

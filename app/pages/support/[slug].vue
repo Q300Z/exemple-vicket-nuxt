@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { KNOWLEDGE_REPOSITORY_KEY } from '../../../layers/vicket/app/types/repository'
+import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 
 /**
  * Article Detail page (Scalable Repository strategy).
@@ -14,12 +14,20 @@ const { scrollProgress } = useReadingProgress()
 const { openDialog, templates } = useSupportState()
 
 const slug = computed(() => String(route.params.slug))
+const isDistractionFree = ref(false)
 
 // --- DATA FETCHING ---
 const { data: response, status } = await fetchArticle(slug.value)
 
 const article = computed(() => response.value?.data || null)
 const isLoading = computed(() => status.value === 'pending')
+
+// --- SEO AUTOMATION (Nuxt 4 Optimization) ---
+watchEffect(() => {
+  if (article.value) {
+    useVicketSEO(article.value)
+  }
+})
 </script>
 
 <template>
@@ -31,7 +39,18 @@ const isLoading = computed(() => status.value === 'pending')
     />
 
     <UContainer class="py-12 sm:py-16">
-      <VicketBreadcrumbs />
+      <div class="flex items-center justify-between mb-6">
+        <VicketBreadcrumbs />
+        <UButton
+          v-if="article"
+          variant="ghost"
+          color="neutral"
+          :icon="isDistractionFree ? 'i-lucide-sidebar' : 'i-lucide-maximize-2'"
+          :label="isDistractionFree ? 'Afficher la barre latérale' : 'Lecture sans distraction'"
+          class="rounded-full text-[10px] font-bold uppercase tracking-widest"
+          @click="isDistractionFree = !isDistractionFree"
+        />
+      </div>
 
       <NuxtErrorBoundary>
         <!-- Loading -->
@@ -55,12 +74,18 @@ const isLoading = computed(() => status.value === 'pending')
         </div>
 
         <!-- Article Detail Orchestration -->
-        <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-16">
-          <div class="lg:col-span-3 space-y-12">
+        <div 
+          v-else 
+          class="grid gap-16 transition-all duration-700"
+          :class="isDistractionFree ? 'grid-cols-1 max-w-3xl mx-auto' : 'grid-cols-1 lg:grid-cols-4'"
+        >
+          <div :class="isDistractionFree ? 'lg:col-span-1' : 'lg:col-span-3'" class="space-y-12">
             <SupportArticleHeader
+              :article-id="article.id"
               :title="article.title"
               :category="article.category"
               :slug="slug"
+              :content="article.content"
             />
 
             <SupportArticleContent
@@ -72,6 +97,7 @@ const isLoading = computed(() => status.value === 'pending')
           </div>
 
           <SupportArticleSidebar
+            v-if="!isDistractionFree"
             :article-id="article.id"
             :content="article.content"
             @open-ticket="openDialog"

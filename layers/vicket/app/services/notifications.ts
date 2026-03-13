@@ -3,11 +3,11 @@
  * Allows switching between Browser Web Push, UI Toasts, or System Logs.
  */
 export interface INotificationProvider {
-  notify(title: string, body: string, options?: { icon?: string; tag?: string }): Promise<void>
+  notify(title: string, body: string, options?: { icon?: string, tag?: string }): Promise<void>
 }
 
 export class BrowserNotificationProvider implements INotificationProvider {
-  async notify(title: string, body: string, options?: { icon?: string; tag?: string }) {
+  async notify(title: string, body: string, options?: { icon?: string, tag?: string }) {
     if (typeof window === 'undefined' || !('Notification' in window)) return
     
     if (Notification.permission === 'granted') {

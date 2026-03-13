@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
- * Article Sidebar component (SRP).
+ * Elite Article Sidebar component (SRP).
+ * Advanced blending and glowing surfaces.
  */
 interface Props {
   articleId: string
@@ -12,39 +13,60 @@ defineEmits(['open-ticket'])
 
 <template>
   <aside class="hidden lg:block">
-    <div class="sticky top-28 space-y-12">
-      <!-- Sommaire -->
-      <div class="glass-effect p-6 rounded-3xl border border-[var(--ui-border)] shadow-sm">
+    <div class="sticky top-28 space-y-10">
+      <!-- Table of Contents Card -->
+      <div class="glass-effect p-8 rounded-[calc(var(--ui-radius)*2)] shadow-sm relative overflow-hidden group">
+        <div class="absolute -right-10 -top-10 w-32 h-32 bg-[var(--ui-primary)] opacity-5 blur-3xl group-hover:opacity-10 transition-opacity" />
         <VicketArticleTOC :content="content" />
       </div>
 
-      <!-- Related Articles -->
-      <VicketSidebarArticles :current-article-id="articleId" />
+      <!-- Related Content Section -->
+      <div class="space-y-6">
+        <div class="flex items-center gap-2 px-2">
+          <UIcon name="i-lucide-layers" class="w-4 h-4 text-[var(--ui-primary)]" />
+          <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ui-text-muted)]">Articles liés</span>
+        </div>
+        <VicketSidebarArticles :current-article-id="articleId" />
+      </div>
 
-      <!-- CTA Support -->
+      <!-- Dramatic CTA Support Card -->
       <div
-        class="p-8 rounded-3xl space-y-6 shadow-2xl relative overflow-hidden group transition-all"
+        class="p-10 rounded-[calc(var(--ui-radius)*3)] space-y-8 shadow-3xl relative overflow-hidden group transition-all duration-700 hover:scale-[1.02]"
         :style="{ 
           backgroundColor: 'var(--ui-primary)', 
-          '--tw-shadow-color': 'color-mix(in srgb, var(--ui-primary) 30%, transparent)' 
+          '--tw-shadow-color': 'color-mix(in srgb, var(--ui-primary) 40%, transparent)' 
         }"
       >
-        <div class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+        <!-- Animated Background Patterns -->
+        <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
+        <div class="absolute -left-10 bottom-0 w-48 h-48 bg-black/10 rounded-full blur-3xl" />
 
-        <div class="p-3.5 rounded-2xl bg-white/20 w-fit backdrop-blur-md">
-          <UIcon name="i-lucide-headset" class="w-7 h-7 text-white" />
+        <div class="p-4 rounded-2xl bg-white/20 w-fit backdrop-blur-xl border border-white/10">
+          <UIcon
+            name="i-lucide-headset"
+            class="w-8 h-8 text-inverted animate-pulse"
+          />
         </div>
-        <div class="space-y-2 relative z-10 text-white">
-          <p class="font-bold text-xl leading-tight">Vous n'avez pas trouvé votre réponse ?</p>
-          <p class="text-sm opacity-80 leading-relaxed">Nos experts sont à votre disposition pour vous aider.</p>
+
+        <div class="space-y-3 relative z-10 text-inverted">
+          <h3 class="font-black text-2xl leading-tight tracking-tight">
+            Une question spécifique ?
+          </h3>
+          <p class="text-sm opacity-80 leading-relaxed font-medium">
+            Nos ingénieurs support sont disponibles en direct pour vous débloquer.
+          </p>
         </div>
+
         <UButton
           block
           color="white"
           variant="solid"
-          size="lg"
-          class="rounded-2xl font-bold shadow-lg transition-transform hover:scale-[1.02]"
-          :style="{ color: 'var(--ui-primary)' }"
+          size="xl"
+          class="rounded-2xl font-black shadow-xl transition-all hover:scale-105 active:scale-95"
+          :ui="{ 
+            base: 'bg-white dark:bg-gray-100 text-gray-950 hover:bg-white/90',
+            label: 'font-bold' 
+          }"
           @click="$emit('open-ticket')"
         >
           Ouvrir un ticket
@@ -53,3 +75,9 @@ defineEmits(['open-ticket'])
     </div>
   </aside>
 </template>
+
+<style scoped>
+.shadow-3xl {
+  box-shadow: 0 32px 64px -12px var(--tw-shadow-color);
+}
+</style>

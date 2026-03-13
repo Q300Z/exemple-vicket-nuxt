@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/repository'
+import type { ArticleSummary } from '../composables/useVicket'
 
 /**
  * Advanced Support Launcher Component (SRP/OCP).
@@ -9,35 +10,72 @@ import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/reposi
 const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 const tickets = inject(TICKET_REPOSITORY_KEY)
 
+const appConfig = useAppConfig()
+// Defensive access to avoid SSR "undefined" errors (KISS)
+const vicket = computed(() => appConfig.vicket || {
+  name: 'Vicket',
+  labels: {
+    searchPlaceholder: 'Rechercher une solution...'
+  }
+})
+
 // Robust fallback for website name (KISS)
-const websiteName = computed(() => tickets?.websiteName.value || 'Vicket')
+const websiteName = computed(() => tickets?.websiteName.value || vicket.value.name || 'Vicket')
 
 const { stripHtml } = useContent()
 
 const isOpen = ref(false)
 const searchQuery = ref('')
+const articles = ref<ArticleSummary[]>([])
+const isLoading = ref(false)
+const searchInputRef = ref<{ inputRef?: { focus: () => void } } | null>(null)
 
-const { data: articlesData, status, refresh: refreshArticles } = await useAsyncData(
-  'launcher-articles',
-  () => knowledge ? knowledge.fetchArticles(searchQuery.value).then(res => res.data) : Promise.resolve({ data: [] }),
-  { immediate: false }
-)
+const fetchResults = async () => {
+  if (!knowledge) return
+  isLoading.value = true
+  try {
+    const res = await knowledge.searchArticles(searchQuery.value)
+    articles.value = res.data || []
+  } catch (e) {
+    console.error('[Launcher] Search error:', e)
+  } finally {
+    isLoading.value = false
+  }
+}
 
-const articles = computed(() => (articlesData.value?.data || []))
+// Real-time search with debouncing (UX/Performance)
+watchDebounced(searchQuery, (val) => {
+  if (val.trim().length >= 2) {
+    fetchResults()
+  } else if (val.trim() === '') {
+    // Re-fetch default articles when cleared (Discovery Mode)
+    fetchResults()
+  }
+}, { debounce: 300 })
+
+const isSearching = computed(() => searchQuery.value.trim().length > 0)
 const displayArticles = computed(() => articles.value.slice(0, 5))
-const isLoading = computed(() => status.value === 'pending')
 
 const handleOpen = async () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     if (tickets) await tickets.fetchInit()
-    await refreshArticles()
+    await fetchResults()
+    
+    // Auto-focus search input (A11y/UX)
+    nextTick(() => {
+      searchInputRef.value?.inputRef?.focus()
+    })
   }
 }
 
-const goToArticle = (slug: string) => {
+const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
   isOpen.value = false
-  navigateTo(`/support/${slug}`)
+  if (article.type === 'faq') {
+    navigateTo(`/support#${article.id}`)
+  } else {
+    navigateTo(`/support/${article.slug}`)
+  }
 }
 </script>
 
@@ -60,16 +98,16 @@ const goToArticle = (slug: string) => {
         class="w-[350px] max-w-[calc(100vw-2rem)] shadow-2xl overflow-hidden"
         :ui="{ 
           body: 'p-0 flex flex-col', 
-          root: 'ring-1 ring-[var(--ui-border)] bg-[var(--ui-bg)] rounded-2xl' 
+          root: 'ring-1 ring-[var(--ui-border)] bg-[var(--ui-bg)] rounded-[var(--ui-radius)]' 
         }"
       >
         <!-- Header -->
-        <div class="p-4 bg-[var(--ui-primary)] flex items-center justify-between shadow-sm">
+        <div class="p-4 bg-[var(--ui-primary)] flex items-center justify-between shadow-sm border-b border-white/10">
           <span class="font-bold text-inverted">{{ websiteName }} Aide</span>
           <UButton
             icon="i-lucide-x"
             variant="ghost"
-            class="text-inverted hover:bg-white/20"
+            class="text-inverted hover:bg-white/20 rounded-full"
             size="xs"
             @click="isOpen = false"
           />
@@ -78,31 +116,49 @@ const goToArticle = (slug: string) => {
         <!-- Search -->
         <div class="p-3 border-b border-[var(--ui-border)]">
           <UInput
+            ref="searchInputRef"
             v-model="searchQuery"
             icon="i-lucide-search"
-            placeholder="Rechercher une solution..."
+            :placeholder="vicket.labels.searchPlaceholder"
             size="sm"
             variant="subtle"
             class="w-full"
             :loading="isLoading"
-            @keyup.enter="refreshArticles"
           />
         </div>
 
         <!-- Content -->
         <div class="overflow-y-auto max-h-[350px] p-2 space-y-1 bg-[var(--ui-bg-accented)]/30">
+          <p v-if="displayArticles.length > 0" class="px-3 py-2 text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
+            {{ isSearching ? 'Résultats de recherche' : 'Articles suggérés' }}
+          </p>
           <button
             v-for="article in displayArticles"
             :key="article.id"
-            class="w-full text-left p-3 rounded-xl hover:bg-[var(--ui-bg)] border border-transparent hover:border-[var(--ui-border)] transition-all group"
-            @click="goToArticle(article.slug)"
+            class="w-full text-left p-3 rounded-xl hover:bg-[var(--ui-bg)] border border-transparent hover:border-[var(--ui-border)] transition-all group flex flex-col gap-1 relative"
+            @click="goToArticle(article)"
           >
-            <p class="text-sm font-bold text-[var(--ui-text-highlighted)] group-hover:text-[var(--ui-primary)] transition-colors truncate">
-              {{ article.title }}
-            </p>
-            <p class="text-xs text-[var(--ui-text-muted)] truncate mt-1">
-              {{ stripHtml(article.content) }}
-            </p>
+            <div class="flex items-center justify-between gap-2">
+              <VicketHighlightedText 
+                :text="article.title" 
+                :query="searchQuery"
+                class="text-sm font-bold text-[var(--ui-text-highlighted)] group-hover:text-[var(--ui-primary)] transition-colors truncate grow"
+              />
+              <UBadge 
+                v-if="article.type"
+                size="xs" 
+                variant="subtle" 
+                :color="article.type === 'faq' ? 'warning' : 'primary'"
+                class="rounded-md px-1 text-[8px] uppercase font-black shrink-0"
+              >
+                {{ article.type }}
+              </UBadge>
+            </div>
+            <VicketHighlightedText 
+              :text="stripHtml(article.content)" 
+              :query="searchQuery"
+              class="text-xs text-[var(--ui-text-muted)] line-clamp-2"
+            />
           </button>
 
           <div
@@ -124,7 +180,7 @@ const goToArticle = (slug: string) => {
     <!-- FAB -->
     <UButton
       size="xl"
-      class="rounded-full w-14 h-14 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-transform shadow-[color-mix(in_srgb,var(--ui-primary)_30%,transparent)]"
+      class="rounded-full w-14 h-14 flex items-center justify-center shadow-2xl hover:scale-110 active:scale-90 transition-transform shadow-[var(--vk-primary-muted)]"
       @click="handleOpen"
     >
       <UIcon 

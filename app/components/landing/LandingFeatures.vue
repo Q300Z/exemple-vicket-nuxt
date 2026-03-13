@@ -15,7 +15,7 @@ defineProps<{ features: Feature[] }>()
     <div
       v-for="f in features"
       :key="f.title"
-      class="group p-8 rounded-[32px] bg-[color-mix(in_srgb,var(--ui-bg)_40%,transparent)] backdrop-blur-md border border-[color-mix(in_srgb,var(--ui-primary)_10%,var(--ui-border))] hover:border-[color-mix(in_srgb,var(--ui-primary)_40%,var(--ui-border))] transition-all duration-500 shadow-sm hover:shadow-[var(--ui-primary)]/5"
+      class="group p-8 rounded-[calc(var(--ui-radius)*2.5)] bg-[color-mix(in_srgb,var(--ui-bg)_40%,transparent)] backdrop-blur-md border border-[color-mix(in_srgb,var(--ui-primary)_10%,var(--ui-border))] hover:border-[color-mix(in_srgb,var(--ui-primary)_40%,var(--ui-border))] transition-all duration-500 shadow-sm hover:shadow-[var(--ui-primary)]/5"
     >
       <div class="w-14 h-14 rounded-2xl bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] flex items-center justify-center text-[var(--ui-primary)] mb-6 group-hover:scale-110 transition-transform">
         <UIcon

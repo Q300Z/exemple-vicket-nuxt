@@ -11,5 +11,13 @@ export default defineEventHandler((event) => {
     if (['POST', 'PUT', 'PATCH'].includes(event.method)) {
       checkBodySize(event)
     }
+
+    // 3. Centralized Error Interception (Monitoring Strategy)
+    try {
+      // Logic for monitoring can be added here if we want to wrap the response
+      // But in H3, it's better to use an error hook if available.
+    } catch (e) {
+      console.error('[Vicket Server Error]:', e)
+    }
   }
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NOTIFICATION_SERVICE_KEY } from '../../layers/vicket/app/types/interaction'
+import { NOTIFICATION_SERVICE_KEY } from '#vicket/types/interaction'
 
 /**
  * Ticket Thread Orchestrator (Clean Code).
@@ -18,6 +18,9 @@ const isLoading = ref(true)
 const isSending = ref(false)
 const replyBox = ref()
 
+/* ── Ticket Logic Processing (SRP) ── */
+const { firstReporterMessage, sortedMessages, summaryAnswers } = useTicketProcessor(thread)
+
 /* ── Polling ── */
 const { isPolling, startPolling } = useTicketPolling(token, (updatedData) => {
   if (updatedData.messages.length !== thread.value?.messages.length) {
@@ -25,23 +28,13 @@ const { isPolling, startPolling } = useTicketPolling(token, (updatedData) => {
   }
 })
 
-/* ── Computed ── */
-const firstReporterMessage = computed(() => {
-  if (!thread.value?.messages) return null
-  const sorted = [...thread.value.messages].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-  return sorted.find(m => m.author_type === 'reporter') || null
-})
-
-const sortedMessages = computed(() => {
-  if (!thread.value?.messages) return []
-  return [...thread.value.messages]
-    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-    .filter(m => !firstReporterMessage.value || m.id !== firstReporterMessage.value.id)
-})
-
-const summaryAnswers = computed(() => thread.value?.answers?.filter(a => a.attachments?.length || a.answer?.trim()) || [])
-
 /* ── Methods ── */
+const AUTHOR_LABELS: Record<string, string> = {
+  reporter: 'Vous',
+  agent: 'Expert Support',
+  system: 'Système'
+}
+
 const loadThread = async () => {
   if (!hasToken.value) return (isLoading.value = false)
   isLoading.value = true

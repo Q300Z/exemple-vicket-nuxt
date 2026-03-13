@@ -5,25 +5,43 @@ import VicketFieldText from '../../app/components/fields/VicketFieldText.vue'
 import VicketFieldSelect from '../../app/components/fields/VicketFieldSelect.vue'
 
 describe('VicketFieldFactory', () => {
-  it('should render VicketFieldText for TEXT type', async () => {
+  const mockQuestion = {
+    id: 'q1',
+    type: 'TEXT',
+    label: 'Test Label',
+    required: true
+  }
+
+  it('renders a text field by default or for type TEXT', async () => {
     const wrapper = await mountSuspended(VicketFieldFactory, {
       props: {
         modelValue: '',
-        question: { id: 'q1', type: 'TEXT', label: 'Name' }
+        question: mockQuestion
       }
     })
-
+    
     expect(wrapper.findComponent(VicketFieldText).exists()).toBe(true)
   })
 
-  it('should render VicketFieldSelect for SELECT type', async () => {
+  it('renders a select field for type SELECT', async () => {
     const wrapper = await mountSuspended(VicketFieldFactory, {
       props: {
         modelValue: '',
-        question: { id: 'q2', type: 'SELECT', label: 'Choice', options: [] }
+        question: { ...mockQuestion, type: 'SELECT', options: [] }
       }
     })
-
+    
     expect(wrapper.findComponent(VicketFieldSelect).exists()).toBe(true)
+  })
+
+  it('falls back to text field for unknown types', async () => {
+    const wrapper = await mountSuspended(VicketFieldFactory, {
+      props: {
+        modelValue: '',
+        question: { ...mockQuestion, type: 'UNKNOWN' }
+      }
+    })
+    
+    expect(wrapper.findComponent(VicketFieldText).exists()).toBe(true)
   })
 })

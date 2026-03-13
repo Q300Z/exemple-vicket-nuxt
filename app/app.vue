@@ -1,21 +1,9 @@
-<script setup>
-import { 
-  KNOWLEDGE_REPOSITORY_KEY, 
-  TICKET_REPOSITORY_KEY, 
-  ENGAGEMENT_REPOSITORY_KEY 
-} from '../layers/vicket/app/types/repository'
-import { NOTIFICATION_SERVICE_KEY } from '../layers/vicket/app/types/interaction'
-
+<script setup lang="ts">
 const { isDialogOpen, templates, openDialog } = useSupportState()
-const { knowledge, tickets, engagement } = useSupportData()
-const notificationService = useNotificationService()
 const { locale, locales, setLocale } = useI18n()
 
-// Provide for DIP (Specialized interfaces)
-provide(KNOWLEDGE_REPOSITORY_KEY, knowledge)
-provide(TICKET_REPOSITORY_KEY, tickets)
-provide(ENGAGEMENT_REPOSITORY_KEY, engagement)
-provide(NOTIFICATION_SERVICE_KEY, notificationService)
+// Centralized DIP Injection (Clean Architecture)
+useVicketInjection()
 
 useHead({
   htmlAttrs: { lang: locale.value }
@@ -67,6 +55,15 @@ const items = computed(() => [
           <UColorModeButton />
 
           <UButton
+            to="/support"
+            label="Centre d'aide"
+            variant="ghost"
+            color="neutral"
+            size="sm"
+            class="rounded-full px-4 hidden sm:flex"
+          />
+
+          <UButton
             label="Nouveau Ticket"
             icon="i-lucide-plus"
             size="sm"
@@ -82,39 +79,61 @@ const items = computed(() => [
       <NuxtPage />
     </UMain>
 
-    <UFooter class="border-t glass-effect py-12 mt-20">
+    <UFooter class="border-t glass-effect py-12">
       <template #left>
         <p class="text-xs text-[var(--ui-text-muted)] font-medium uppercase tracking-widest">
           © 2026 Vicket Showcase • Dynamic White-label Engine
         </p>
       </template>
+
+      <template #right>
+        <div class="flex items-center gap-4">
+          <UButton 
+            icon="i-simple-icons-x" 
+            variant="ghost" 
+            color="neutral" 
+            aria-label="Twitter / X"
+          />
+          <UButton 
+            icon="i-simple-icons-github" 
+            variant="ghost" 
+            color="neutral" 
+            to="https://github.com/vicket-app" 
+            target="_blank"
+            aria-label="GitHub"
+          />
+        </div>
+      </template>
     </UFooter>
 
-    <VicketSupportLauncher>
-      <template #actions>
-        <UButton
-          block
-          size="lg"
-          label="Ouvrir un ticket"
-          icon="i-lucide-message-square"
-          class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
-          :ui="{ label: 'text-inverted font-bold' }"
-          @click="isDialogOpen = true; if (templates.length === 0) openDialog()"
-        />
+    <ClientOnly>
+      <VicketSupportLauncher>
+        <template #actions>
+          <UButton
+            block
+            size="lg"
+            label="Ouvrir un ticket"
+            icon="i-lucide-message-square"
+            class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
+            :ui="{ label: 'text-inverted font-bold' }"
+            @click="isDialogOpen = true; if (templates.length === 0) openDialog()"
+          />
+        </template>
+      </VicketSupportLauncher>
+      
+      <template #fallback>
+        <VicketSupportSkeleton />
       </template>
-    </VicketSupportLauncher>
-    <VicketTicketDialog
-      :open="isDialogOpen"
-      :templates="templates"
-      @update:open="isDialogOpen = $event"
-    />
+    </ClientOnly>
+
+    <LazyVicketTicketDialog />
   </UApp>
 </template>
 
 <style>
 /* Global Reactive Theme Accents */
 ::selection {
-  background-color: color-mix(in srgb, var(--ui-primary) 30%, transparent);
-  color: var(--ui-primary);
+  background-color: var(--vk-primary-muted);
+  color: var(--vk-primary);
 }
 </style>

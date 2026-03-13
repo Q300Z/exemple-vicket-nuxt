@@ -43,13 +43,6 @@ export default defineNuxtConfig({
 
   ogImage: { enabled: false },
 
-  imports: {
-    dirs: [
-      'layers/vicket/app/utils',
-      'layers/vicket/app/composables'
-    ]
-  },
-
   css: ['~/assets/css/main.css'],
 
   i18n: {
@@ -67,6 +60,7 @@ export default defineNuxtConfig({
 
   colorMode: { classSuffix: '' },
   future: { compatibilityVersion: 4 },
+  ssr: process.env.NUXT_SSR !== 'false',
   experimental: {
     viewTransition: true,
     componentDetection: true,

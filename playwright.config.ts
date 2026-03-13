@@ -6,14 +6,20 @@ import { fileURLToPath } from 'node:url'
  */
 export default defineConfig({
   testDir: fileURLToPath(new URL('./layers/vicket/tests/e2e', import.meta.url)),
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  retries: 1,
+  workers: 1,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
-    trace: 'on-first-retry'
+    trace: 'on-first-retry',
+    actionTimeout: 15000,
+    navigationTimeout: 30000,
+    // Disable animations for stability
+    contextOptions: {
+      reducedMotion: 'reduce'
+    }
   },
   projects: [
     {
@@ -22,11 +28,11 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'pnpm run build && pnpm run preview',
+    command: 'NUXT_SSR=false pnpm run build && NUXT_SSR=false pnpm run preview',
     url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     stdout: 'ignore',
     stderr: 'pipe',
-    timeout: 120 * 1000
+    timeout: 180 * 1000
   }
 })

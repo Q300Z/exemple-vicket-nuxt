@@ -62,7 +62,9 @@ const items = computed<DropdownItem[][]>(() => [
       class="rounded-full hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)]"
       aria-label="Personnaliser l'apparence"
     >
-      <span class="hidden lg:inline-block capitalize font-bold text-xs">{{ currentPrimary }} • {{ currentRadius }}</span>
+      <ClientOnly>
+        <span class="hidden lg:inline-block capitalize font-bold text-xs">{{ currentPrimary }} • {{ currentRadius }}</span>
+      </ClientOnly>
     </UButton>
 
     <!-- Custom leading for colors section -->
@@ -70,7 +72,7 @@ const items = computed<DropdownItem[][]>(() => [
       <div
         v-if="item.color"
         class="w-3 h-3 rounded-full shrink-0 shadow-xs border border-black/10 dark:border-white/20"
-        :style="{ backgroundColor: `var(--color-${item.color}-500)` }"
+        :style="{ backgroundColor: `var(--ui-color-${item.color}-500)` }"
       />
       <UIcon
         v-else
@@ -79,9 +81,4 @@ const items = computed<DropdownItem[][]>(() => [
       />
     </template>
   </UDropdownMenu>
-
-  <!-- Tailwind 4 Safelist for Color Variables -->
-  <div class="hidden">
-    <div class="bg-blue-500 bg-indigo-500 bg-violet-500 bg-purple-500 bg-fuchsia-500 bg-pink-500 bg-rose-500 bg-red-500 bg-orange-500 bg-amber-500 bg-yellow-500 bg-lime-500 bg-green-500 bg-emerald-500 bg-teal-500 bg-cyan-500 bg-sky-500" />
-  </div>
 </template>
