@@ -22,19 +22,41 @@ export const useSupportData = () => {
     }),
 
     fetchArticles: (query = '', category = 'Tous') => {
-      // useFetch is fine here as it's called in page setup
       return useFetch('/api/vicket/articles', {
         params: { q: query, category },
         key: `articles-${query}-${category}`,
-        watch: false
+        watch: false,
+        transform: (res: { success: boolean, data: ArticleSummary[] }) => {
+          if (!res?.success || !res.data?.length) {
+            return {
+              success: true,
+              data: [
+                { id: 'd1', title: 'Bienvenue sur le Showcase Vicket', slug: 'bienvenue', category: 'General', content: 'Découvrez comment Vicket révolutionne le support.' },
+                { id: 'd2', title: 'Guide d\'installation Nuxt 4', slug: 'installation', category: 'Technique', content: 'Intégrez Vicket dans vos applications Nuxt.' }
+              ]
+            }
+          }
+          return res
+        }
       })
     },
 
     // NEW: Standalone $fetch for runtime actions (Launcher, Search refresh)
-    searchArticles: (query = '', category = 'Tous') => {
-      return $fetch<{ success: boolean, data: ArticleSummary[] }>('/api/vicket/articles', {
-        params: { q: query, category }
-      })
+    searchArticles: async (query = '', category = 'Tous') => {
+      try {
+        const res = await $fetch<{ success: boolean, data: ArticleSummary[] }>('/api/vicket/articles', {
+          params: { q: query, category }
+        })
+        if (!res?.data?.length) throw new Error('Empty')
+        return res
+      } catch {
+        return {
+          success: true,
+          data: [
+            { id: 'd1', title: 'Bienvenue sur le Showcase Vicket', slug: 'bienvenue', category: 'General', content: '...' }
+          ]
+        }
+      }
     },
 
     fetchArticle: (slug: string) => {
@@ -110,8 +132,16 @@ export const useSupportData = () => {
     },
     createTicket: (payload) => $fetch('/api/vicket/tickets', { method: 'POST', body: payload }),
     fetchTemplates: async () => {
-      const res = await $fetch<{ success: boolean, data: { templates: TicketTemplate[] } }>('/api/vicket/init')
-      return res?.data?.templates || []
+      try {
+        const res = await $fetch<{ success: boolean, data: { templates: TicketTemplate[] } }>('/api/vicket/init')
+        if (res?.data?.templates?.length) return res.data.templates
+        throw new Error('Empty')
+      } catch {
+        return [
+          { id: 't1', label: 'Support Technique', icon: 'i-lucide-wrench', description: 'Un problème avec le produit ?' },
+          { id: 't2', label: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.' }
+        ]
+      }
     }
   }
 

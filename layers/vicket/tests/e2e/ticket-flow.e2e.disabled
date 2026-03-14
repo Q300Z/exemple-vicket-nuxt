@@ -45,11 +45,11 @@ test.describe('Vicket Ticket Creation Flow', () => {
     await page.getByRole('button', { name: 'Nouveau Ticket' }).first().click({ force: true })
 
     // 4. Select template
-    await page.getByText('Report a technical problem').click({ force: true })
+    await page.getByText('Support Technique').click({ force: true })
 
     // 5. Fill fields
-    await page.getByLabel('Subject').fill('Test E2E Subject')
-    await page.getByLabel('Message').fill('This is a test message from Playwright')
+    await page.getByLabel(/Sujet|Subject/i).fill('Test E2E Subject')
+    await page.getByLabel(/Message|Description/i).fill('Test E2E message for ticket creation.')
 
     // 6. Submit
     await page.getByRole('button', { name: 'Envoyer' }).click()

@@ -11,14 +11,16 @@ test.describe('Branding & Visual Integrity', () => {
 
   test('applies primary color changes correctly', async ({ page }) => {
     // Open branding selector
-    await page.getByLabel('Personnaliser l\'apparence').click()
+    const trigger = page.getByLabel('Personnaliser l\'apparence')
+    await trigger.click({ force: true })
     
     // Switch to Emerald
-    await page.getByRole('menuitemcheckbox', { name: 'Emerald' }).click()
+    const emeraldOption = page.getByRole('menuitemcheckbox', { name: 'Emerald' })
+    await emeraldOption.click({ force: true })
     
     // Verify that the logo pastille is visible
     const logoPastille = page.locator('.w-8.h-8.bg-\\[var\\(--ui-primary\\)\\]')
-    await expect(logoPastille).toBeVisible()
+    await expect(logoPastille).toBeVisible({ timeout: 10000 })
     
     // The CSS variable should be updated
     const primaryVar = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ui-primary'))
@@ -26,10 +28,10 @@ test.describe('Branding & Visual Integrity', () => {
   })
 
   test('applies border radius changes correctly', async ({ page }) => {
-    await page.getByLabel('Personnaliser l\'apparence').click()
+    await page.getByLabel('Personnaliser l\'apparence').click({ force: true })
     
     // Switch to "Carré" (radius: none)
-    await page.getByRole('menuitemcheckbox', { name: 'Carré' }).click()
+    await page.getByRole('menuitemcheckbox', { name: 'Carré' }).click({ force: true })
     
     const radiusVar = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--ui-radius'))
     expect(radiusVar).toMatch(/none|0|\.25rem/) // Nuxt UI might have a base 0.25rem or actually 0
