@@ -1,5 +1,12 @@
 # Changelog
 
+# [1.1.0](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.0.6...v1.1.0) (2026-03-14)
+
+
+### Features
+
+* implement full i18n support with fr/en translation files ([51c7d9b](https://github.com/Q300Z/exemple-vicket-nuxt/commit/51c7d9bc4ad8ed64a741b950e7c9057e038cab54))
+
 ## [1.0.6](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.0.5...v1.0.6) (2026-03-14)
 
 ## [1.0.5](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.0.4...v1.0.5) (2026-03-14)
