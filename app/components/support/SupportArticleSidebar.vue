@@ -59,12 +59,11 @@ defineEmits(['open-ticket'])
 
         <UButton
           block
-          color="white"
+          color="neutral"
           variant="solid"
           size="xl"
-          class="rounded-2xl font-black shadow-xl transition-all hover:scale-105 active:scale-95"
+          class="rounded-2xl font-black shadow-xl transition-all hover:scale-105 active:scale-95 bg-white text-gray-950 dark:bg-gray-100"
           :ui="{ 
-            base: 'bg-white dark:bg-gray-100 text-gray-950 hover:bg-white/90',
             label: 'font-bold' 
           }"
           @click="$emit('open-ticket')"

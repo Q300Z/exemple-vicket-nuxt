@@ -11,8 +11,9 @@ const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 const tickets = inject(TICKET_REPOSITORY_KEY)
 
 const appConfig = useAppConfig()
-// Defensive access to avoid SSR "undefined" errors (KISS)
-const vicket = computed(() => appConfig.vicket || {
+// Defensive access to avoid SSR \"undefined\" errors (KISS)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const vicket = computed(() => (appConfig.vicket as any) || {
   name: 'Vicket',
   labels: {
     searchPlaceholder: 'Rechercher une solution...'
@@ -20,7 +21,7 @@ const vicket = computed(() => appConfig.vicket || {
 })
 
 // Robust fallback for website name (KISS)
-const websiteName = computed(() => tickets?.websiteName.value || vicket.value.name || 'Vicket')
+const websiteName = computed(() => tickets?.websiteName?.value || vicket.value.name || 'Vicket')
 
 const { stripHtml } = useContent()
 

@@ -26,7 +26,7 @@ const statusConfig = computed(() => {
 
 <template>
   <UBadge
-    :color="statusConfig.color"
+    :color="(statusConfig.color as any)"
     variant="solid"
     class="px-3 py-1 rounded-full transition-all duration-300"
     :class="{ 'badge-pulse': statusConfig.pulse }"

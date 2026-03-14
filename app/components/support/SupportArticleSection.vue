@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ArticleSummary } from '~/layers/vicket/app/composables/useVicket'
+import type { ArticleSummary } from '#vicket/composables/useVicket'
 
 /**
  * Article Grid component (SRP).

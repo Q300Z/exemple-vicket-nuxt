@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import { createResolver } from '@nuxt/kit'
+import { fileURLToPath } from 'node:url'
 
-const { resolve } = createResolver(import.meta.url)
+const r = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -14,25 +14,25 @@ export default defineNuxtConfig({
 
   imports: {
     dirs: [
-      resolve('./app/composables'),
-      resolve('./app/utils'),
-      resolve('./app/types'),
-      resolve('./app/services')
+      r('./app/composables'),
+      r('./app/utils'),
+      r('./app/types'),
+      r('./app/services')
     ]
   },
 
   components: [
-    { path: resolve('./app/components'), prefix: 'Vicket' }
+    { path: r('./app/components'), prefix: 'Vicket' }
   ],
 
   css: [
-    resolve('./app/assets/css/vicket.css')
+    r('./app/assets/css/vicket.css')
   ],
 
   alias: {
-    '#vicket/types': resolve('./app/types'),
-    '#vicket/utils': resolve('./app/utils'),
-    '#vicket/composables': resolve('./app/composables')
+    '#vicket/types': r('./app/types'),
+    '#vicket/utils': r('./app/utils'),
+    '#vicket/composables': r('./app/composables')
   },
 
   runtimeConfig: {

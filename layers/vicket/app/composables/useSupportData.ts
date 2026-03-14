@@ -47,13 +47,13 @@ export const useSupportData = () => {
         const res = await $fetch<{ success: boolean, data: ArticleSummary[] }>('/api/vicket/articles', {
           params: { q: query, category }
         })
-        if (!res?.data?.length) throw new Error('Empty')
+        if (!res?.success || !res?.data?.length) throw new Error('Empty')
         return res
       } catch {
         return {
           success: true,
           data: [
-            { id: 'd1', title: 'Bienvenue sur le Showcase Vicket', slug: 'bienvenue', category: 'General', content: '...' }
+            { id: 'd1', title: 'Bienvenue sur le Showcase Vicket', slug: 'bienvenue', category: 'General', content: 'Découvrez comment Vicket révolutionne le support.' }
           ]
         }
       }
@@ -134,12 +134,13 @@ export const useSupportData = () => {
     fetchTemplates: async () => {
       try {
         const res = await $fetch<{ success: boolean, data: { templates: TicketTemplate[] } }>('/api/vicket/init')
-        if (res?.data?.templates?.length) return res.data.templates
-        throw new Error('Empty')
+        if (res?.success && res.data?.templates?.length) return res.data.templates
+        console.warn('[Vicket] Invalid init response, using fallback.')
+        throw new Error('Invalid structure')
       } catch {
         return [
-          { id: 't1', label: 'Support Technique', icon: 'i-lucide-wrench', description: 'Un problème avec le produit ?' },
-          { id: 't2', label: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.' }
+          { id: 't1', label: 'Support Technique', icon: 'i-lucide-wrench', description: 'Un problème avec le produit ?', questions: [] },
+          { id: 't2', label: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.', questions: [] }
         ]
       }
     }

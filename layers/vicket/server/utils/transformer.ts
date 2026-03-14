@@ -1,4 +1,4 @@
-import type { Article } from '~/app/composables/useVicket'
+import type { ArticleFull } from '../app/types/vicket'
 
 /**
  * Server-side utility responsible for enriching Vicket data (SRP).

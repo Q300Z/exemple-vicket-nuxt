@@ -14,12 +14,12 @@ const { buckets, previews, addFiles, removeFile } = useFiles()
 
 const onFilesAdded = (questionId: string, files: FileList | File[]) => {
   addFiles(questionId, files)
-  emit('update:modelValue', buckets.value[questionId]?.length > 0 ? true : undefined)
+  emit('update:modelValue', (buckets.value[questionId]?.length || 0) > 0 ? true : undefined)
 }
 
 const onFileRemoved = (questionId: string, index: number) => {
   removeFile(questionId, index)
-  emit('update:modelValue', buckets.value[questionId]?.length > 0 ? true : undefined)
+  emit('update:modelValue', (buckets.value[questionId]?.length || 0) > 0 ? true : undefined)
 }
 </script>
 

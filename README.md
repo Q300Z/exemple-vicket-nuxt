@@ -1,7 +1,7 @@
 # 🚀 Showcase : Implémentation Vicket Support (Nuxt 4)
 
-[![Industrial CI/CD](https://github.com/vicket-poc/poc-vicket/actions/workflows/ci.yml/badge.svg)](https://github.com/vicket-poc/poc-vicket/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
+[![Industrial CI/CD](https://github.com/Q300Z/exemple-vicket-nuxt/actions/workflows/ci.yml/badge.svg)](https://github.com/Q300Z/exemple-vicket-nuxt/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-1.0.3-blue.svg)](CHANGELOG.md)
 
 Ce projet est une **démonstration technique de haut niveau** illustrant comment intégrer la couche de support [Vicket](https://vicket.app) dans une application moderne utilisant **Nuxt 4**. 
 

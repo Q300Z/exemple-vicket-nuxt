@@ -19,16 +19,16 @@
         </div>
 
         <h2 class="text-4xl font-bold text-[var(--ui-text-highlighted)] leading-tight">
-          Personnalisation <br/>
+          Personnalisation <br />
           <span class="text-[var(--ui-text-muted)] dark:text-[var(--ui-text-default)]">au runtime.</span>
         </h2>
 
         <p class="text-[var(--ui-text-default)] dark:text-gray-200 text-lg leading-relaxed">
-          Grâce à l'utilisation des <span class="text-[#4a47ff] dark:text-primary-400 font-semibold">CSS Variables</span> de Nuxt UI, votre application change d'identité instantanément.
+          Grâce à une architecture modulaire et aux <span class="text-[#4a47ff] dark:text-primary-400 font-semibold">CSS Variables</span> de Nuxt UI, votre centre d'aide s'adapte à n'importe quelle identité visuelle.
         </p>
 
         <ul class="space-y-4">
-          <li v-for="item in ['Réactivité totale du thème', 'Support natif Dark/Light mode', 'Optimisé pour les Nuxt Layers']" :key="item" class="flex items-center gap-3 text-sm text-[var(--ui-text-default)] dark:text-gray-300">
+          <li v-for="item in ['Architecture SOLID & Repository Pattern', 'Mise en page dynamique (Grille/Liste)', 'Optimisé pour Nuxt 4 & Layers']" :key="item" class="flex items-center gap-3 text-sm text-[var(--ui-text-default)] dark:text-gray-300">
             <UIcon name="i-lucide-check-circle-2" class="w-5 h-5 text-[var(--ui-primary)]" />
             {{ item }}
           </li>
@@ -38,11 +38,11 @@
           color="primary"
           variant="solid"
           size="xl"
-          label="Explorer sur GitHub"
+          label="Code Source sur GitHub"
           icon="i-simple-icons-github"
           class="rounded-2xl px-8 shadow-lg"
           :ui="{ label: 'font-bold' }"
-          to="https://github.com/vicket-app"
+          to="https://github.com/Q300Z/exemple-vicket-nuxt"
         />
       </div>
 

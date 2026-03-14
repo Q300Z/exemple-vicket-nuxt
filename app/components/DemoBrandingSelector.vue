@@ -64,7 +64,7 @@ const items = computed<DropdownItem[][]>(() => [
 <template>
   <UDropdownMenu
     :items="items"
-    :content="{ align: 'end', sideOffset: 8, class: 'min-w-[220px] max-h-[400px] overflow-y-auto' }"
+    :content="{ align: 'end', sideOffset: 8, ui: { content: 'min-w-[220px] max-h-[400px] overflow-y-auto' } }"
   >
     <UButton
       variant="ghost"

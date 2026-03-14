@@ -23,9 +23,8 @@ const formatDate = (date: string) => useDateFormat(date, 'DD MMM HH:mm').value
     <UAvatar
       :alt="authorLabel"
       size="md"
-      class="ring-2 ring-[var(--ui-bg)] shadow-md shrink-0"
+      class="ring-2 ring-[var(--ui-bg)] shadow-md shrink-0 rounded-xl"
       :color="avatarColor"
-      :ui="{ rounded: 'rounded-xl' }"
       :style="{ viewTransitionName: `ticket-avatar-${message.author_type}` }"
     />
 
@@ -59,7 +58,7 @@ const formatDate = (date: string) => useDateFormat(date, 'DD MMM HH:mm').value
             icon="i-lucide-paperclip"
             size="xs"
             variant="ghost"
-            :color="message.author_type === 'reporter' ? 'white' : 'primary'"
+            color="neutral"
             class="rounded-lg hover:bg-white/10 dark:hover:bg-white/5"
           >
             {{ att.original_filename }}

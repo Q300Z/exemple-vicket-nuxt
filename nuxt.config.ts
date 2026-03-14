@@ -38,8 +38,6 @@ export default defineNuxtConfig({
   },
 
   seo: {
-    fallbackTitle: false,
-    automaticTitles: true,
     redirectToCanonicalSiteUrl: true
   },
 
@@ -77,7 +75,6 @@ export default defineNuxtConfig({
   ssr: true,
   experimental: {
     viewTransition: true,
-    componentDetection: true,
     payloadExtraction: true 
   },
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import type { TicketTemplate } from '../types/vicket'
 import { VicketValidationError } from '../utils/errors'
+import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/repository'
 
 /**
  * Ticket Interaction Dialog (SRP).
@@ -11,6 +13,8 @@ const { isDialogOpen, templates, prefilledData } = useSupportState()
 const { stripHtml } = useContent()
 const { getBucket, clearAll, addFiles } = useFiles()
 const { createTicketSchema } = useTicketForm()
+const ticketsRepo = inject(TICKET_REPOSITORY_KEY)
+const knowledgeRepo = inject(KNOWLEDGE_REPOSITORY_KEY)
 const ticketFiles = getBucket('ticket')
 
 /* ── STATE ── */
@@ -28,7 +32,7 @@ watch(() => isDialogOpen.value, (isOpen) => {
     if (template_id) {
       const template = templates.value.find(t => t.id === template_id)
       if (template) {
-        selectTemplate(template)
+        selectTemplate(template as TicketTemplate)
         if (answers) {
           formData.value = { ...formData.value, ...answers }
         }
@@ -40,13 +44,14 @@ watch(() => isDialogOpen.value, (isOpen) => {
 const selectTemplate = (template: TicketTemplate) => {
   selectedTemplate.value = template
   
-  // Initialize formData with defaults to avoid 'undefined' validation errors (KISS)
+  // Initialize formData with defaults
   const initialData: Record<string, unknown> = {
     title: '',
     email: ''
   }
   
-  template.questions.forEach(q => {
+  const questions = template.questions || []
+  questions.forEach(q => {
     const type = q.type?.toUpperCase()
     const isArrayType = type === 'CHECKBOX' || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
     
@@ -60,7 +65,7 @@ const selectTemplate = (template: TicketTemplate) => {
   })
   
   formData.value = initialData
-  schema.value = createTicketSchema(template.questions)
+  schema.value = createTicketSchema(questions)
   step.value = 'form'
 }
 
@@ -73,23 +78,25 @@ const reset = () => {
 }
 
 const onSubmit = async () => {
-  if (!selectedTemplate.value) return
+  if (!selectedTemplate.value || !ticketsRepo) return
   isSubmitting.value = true
   try {
     await new Promise(resolve => setTimeout(resolve, 800))
-    await createTicket({
-      template_id: selectedTemplate.value.id,
+    await ticketsRepo.createTicket({
+      email: String(formData.value.email),
+      title: String(formData.value.title),
+      templateId: selectedTemplate.value.id,
       answers: formData.value as Record<string, string>,
-      attachments: ticketFiles.value
+      fileMap: { ticket: ticketFiles.value }
     })
     step.value = 'success'
   } catch (err: unknown) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const e = err as any
+    const e = err as { statusCode?: number, data?: { errors?: any } }
     if (e.statusCode === 422) {
       error.value = new VicketValidationError('Validation échouée', e.data?.errors || {})
     } else {
-      error.value = e instanceof Error ? e : new Error(String(e))
+      error.value = err instanceof Error ? err : new Error(String(err))
     }
     step.value = 'error'
   } finally {
@@ -106,9 +113,8 @@ const handleClose = () => {
 defineShortcuts({
   escape: {
     usingInput: true,
-    whenever: [isDialogOpen],
     handler: () => {
-      handleClose()
+      if (isDialogOpen.value) handleClose()
     }
   }
 })
@@ -137,7 +143,7 @@ defineShortcuts({
               color="neutral"
               class="flex items-center justify-start gap-4 p-4 rounded-2xl group"
               :aria-label="`Sélectionner la catégorie ${tpl.label}`"
-              @click="selectTemplate(tpl)"
+              @click="selectTemplate(tpl as any)"
             >
               <template #leading>
                 <div class="w-10 h-10 rounded-xl bg-[var(--ui-bg-accented)] flex items-center justify-center text-[var(--ui-primary)]">
@@ -156,18 +162,16 @@ defineShortcuts({
         </div>
 
         <!-- STEP: FORM -->
-        <UCard v-else-if="step === 'form'" variant="ghost" class="border-none shadow-none">
-          <template #header>
-            <div class="flex items-center gap-4">
-              <UButton
-                variant="ghost"
-                color="neutral"
-                icon="i-lucide-arrow-left"
-                @click="step = 'category'"
-              />
-              <span class="font-bold">{{ selectedTemplate?.label }}</span>
-            </div>
-          </template>
+        <div v-else-if="step === 'form'" class="p-6">
+          <div class="flex items-center gap-4 mb-6">
+            <UButton
+              variant="ghost"
+              color="neutral"
+              icon="i-lucide-arrow-left"
+              @click="step = 'category'"
+            />
+            <span class="font-bold">{{ selectedTemplate?.label }}</span>
+          </div>
 
           <UForm :schema="schema" :state="formData" class="space-y-6" @submit="onSubmit">
             <VicketFieldFactory
@@ -176,7 +180,8 @@ defineShortcuts({
               v-model="formData[field.id]"
               :question="field"
               @files-added="addFiles('ticket', $event)"
-            />            <UButton
+            />
+            <UButton
               type="submit"
               block
               size="lg"
@@ -185,13 +190,13 @@ defineShortcuts({
               class="rounded-xl"
             />
           </UForm>
-        </UCard>
+        </div>
 
         <!-- SUCCESS / ERROR -->
         <VicketErrorSwitcher
           v-else-if="step === 'error'"
           :error="error"
-          @retry="step === 'form' ? onSubmit() : reset()"
+          @retry="(step as any) === 'form' ? onSubmit() : reset()"
         />
 
         <div v-else-if="step === 'success'" class="p-12 text-center space-y-6">

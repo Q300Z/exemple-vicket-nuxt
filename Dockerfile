@@ -27,6 +27,8 @@ RUN pnpm run build
 # Stage 2: Runtime
 FROM node:20-slim AS runtime
 
+LABEL org.opencontainers.image.source="https://github.com/Q300Z/exemple-vicket-nuxt"
+
 WORKDIR /app
 
 # Best practice: Don't run as root

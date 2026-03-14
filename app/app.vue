@@ -98,7 +98,7 @@ const items = computed(() => [
             icon="i-simple-icons-github" 
             variant="ghost" 
             color="neutral" 
-            to="https://github.com/vicket-app" 
+            to="https://github.com/Q300Z/exemple-vicket-nuxt" 
             target="_blank"
             aria-label="GitHub"
           />

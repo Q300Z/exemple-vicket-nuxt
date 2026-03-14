@@ -56,7 +56,7 @@ const formattedDisplay = computed(() => {
       <template #content>
         <div class="p-1 bg-[var(--ui-bg-default)] border border-[var(--ui-border-accented)] rounded-lg shadow-xl dark:shadow-primary/10">
           <UCalendar
-            v-model="dateValue"
+            v-model="dateValue as any"
             color="primary"
             class="p-1"
           />

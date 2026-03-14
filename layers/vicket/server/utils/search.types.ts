@@ -1,4 +1,4 @@
-import type { ArticleSummary } from '~/app/composables/useVicket'
+import type { ArticleSummary } from '../app/types/vicket'
 
 export type UnifiedSearchResult = ArticleSummary & {
   type: 'article' | 'faq'

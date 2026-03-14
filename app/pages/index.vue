@@ -11,10 +11,10 @@ const stats = computed(() => appConfig.landing?.stats || [])
 
 // --- SEO (Nuxt 4 Best Practices) ---
 useSeoMeta({
-  title: 'Vicket - Le Support Client Nouvelle Génération',
-  description: 'Découvrez l\'implémentation de référence Vicket pour Nuxt 4. Une architecture SOLID, une marque blanche totale et une performance inégalée.',
-  ogTitle: 'Vicket Showcase - Nuxt 4 Industrial Grade',
-  ogDescription: 'Le futur du support client est ici. Intégrez Vicket en moins de 15 minutes.',
+  title: 'Vicket - L\'implémentation Nuxt 4 de référence',
+  description: 'Découvrez comment intégrer la puissance de Vicket dans vos applications Nuxt 4 avec une architecture industrielle et une marque blanche totale.',
+  ogTitle: 'Vicket Nuxt Showcase - Industrial Grade',
+  ogDescription: 'Le futur du support client est ici. Intégrez Vicket.app dans votre stack Nuxt en quelques minutes.',
   ogImage: '/og-image.png'
 })
 </script>
@@ -65,10 +65,12 @@ useSeoMeta({
             <UButton
               variant="subtle"
               color="primary"
-              label="Documentation API"
+              label="Documentation Vicket"
               icon="i-lucide-book"
               size="lg"
               class="rounded-xl"
+              to="https://vicket.app/docs"
+              target="_blank"
             />
           </div>
         </div>

@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue', 'search'])
 
 const { history, addToHistory } = useSearchHistory()
-const inputRef = ref<HTMLInputElement | null>(null)
+const inputRef = ref<{ inputRef: HTMLInputElement } | null>(null)
 
 // --- SHORTCUTS ---
 defineShortcuts({
@@ -55,7 +55,6 @@ const useHistory = (q: string) => {
       :placeholder="placeholder"
       :size="size"
       class="w-full"
-      :ui="{ rounded: 'rounded-2xl' }"
       @keyup.enter="onEnter"
       @blur="onEnter"
     />
