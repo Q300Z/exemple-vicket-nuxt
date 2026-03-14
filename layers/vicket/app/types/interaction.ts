@@ -28,4 +28,4 @@ export interface INotificationService {
 /**
  * Injection Key for the Notification Service.
  */
-export const NOTIFICATION_SERVICE_KEY = Symbol('NOTIFICATION_SERVICE') as InjectionKey<INotificationService>
+export const NOTIFICATION_SERVICE_KEY = 'NOTIFICATION_SERVICE' as unknown as InjectionKey<INotificationService>

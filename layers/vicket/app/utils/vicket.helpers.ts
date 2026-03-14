@@ -42,8 +42,9 @@ export function sortQuestions<T extends { order?: number }>(questions: T[]): T[]
 }
 
 export function calculateReadingTime(content: string): number {
+  if (!content || !content.trim()) return 0
   const wordsPerMinute = 200
   const noHtml = stripHtml(content)
-  const words = noHtml.split(/\s+/).length
+  const words = noHtml.trim().split(/\s+/).length
   return Math.ceil(words / wordsPerMinute)
 }

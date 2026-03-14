@@ -107,6 +107,7 @@ export default defineNuxtConfig({
   ssr: true,
   experimental: {
     viewTransition: true,
+    componentIslands: true,
     payloadExtraction: process.env.NODE_ENV === 'production'
   },
 

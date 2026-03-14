@@ -13,6 +13,7 @@ export const useSupportState = () => {
   const customValidators = useState<Record<string, unknown>>('vicket-custom-validators', () => ({}))
   const isDistractionFree = useState('vicket-distraction-free', () => false)
   const apiLatency = useState<number | null>('vicket-api-latency', () => null)
+  const step = useState<'category' | 'form' | 'success' | 'error'>('vicket-dialog-step', () => 'category')
 
   const openDialog = (data?: { template_id?: string, answers?: Record<string, string> }) => {
     prefilledData.value = data || null
@@ -57,6 +58,7 @@ export const useSupportState = () => {
     customValidators,
     isDistractionFree,
     apiLatency,
+    step,
     openDialog,
     loadTemplates
   }

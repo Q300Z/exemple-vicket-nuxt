@@ -16,7 +16,7 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
     if (el) el.textContent = message
   }
 
-  const { paused } = useIntervalFn(async () => {
+  const { resume, pause } = useIntervalFn(async () => {
     if (!token.value || !isPolling.value || !ticketsRepo) return
 
     try {
@@ -39,20 +39,20 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
 
   const startPolling = () => {
     isPolling.value = true
-    paused.value = false
+    resume()
   }
 
   const stopPolling = () => {
     isPolling.value = false
-    paused.value = true
+    pause()
   }
 
   if (import.meta.client) {
     useEventListener(document, 'visibilitychange', () => {
       if (document.hidden) {
-        paused.value = true
+        pause()
       } else if (isPolling.value) {
-        paused.value = false
+        resume()
       }
     })
   }

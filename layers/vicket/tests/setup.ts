@@ -44,6 +44,11 @@ vi.mock('vue-i18n', () => ({
   })
 }))
 
+// Mock directives
+config.global.directives = {
+  motion: {}
+}
+
 // Mock Nuxt Link & Components
 config.global.stubs = {
   NuxtLink: { name: 'NuxtLink', template: '<a><slot /></a>' },

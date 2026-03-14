@@ -8,7 +8,7 @@ import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/reposi
  * 100% Native Nuxt UI v4 Style.
  * Autonomous: Managed via useSupportState.
  */
-const { isDialogOpen, templates, prefilledData, customValidators } = useSupportState()
+const { isDialogOpen, templates, prefilledData, customValidators, step } = useSupportState()
 
 const { stripHtml } = useContent()
 const { getBucket, clearAll, addFiles } = useFiles()
@@ -20,7 +20,6 @@ const ticketFiles = getBucket('ticket')
 const { saveTicket } = useTicketHistory()
 
 /* ── STATE ── */
-const step = ref<'category' | 'form' | 'success' | 'error'>('category')
 const selectedTemplate = ref<TicketTemplate | null>(null)
 const formData = ref<Record<string, unknown>>({})
 const error = ref<Error | null>(null)

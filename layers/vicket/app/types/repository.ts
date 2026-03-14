@@ -43,6 +43,6 @@ export interface IEngagementRepository {
  * Injection Keys for Decoupled Repositories (DIP)
  * Using Symbol.for to ensure consistent identity across layers and tests.
  */
-export const KNOWLEDGE_REPOSITORY_KEY = Symbol.for('KNOWLEDGE_REPOSITORY') as InjectionKey<IKnowledgeRepository>
-export const TICKET_REPOSITORY_KEY = Symbol.for('TICKET_REPOSITORY') as InjectionKey<ITicketRepository>
-export const ENGAGEMENT_REPOSITORY_KEY = Symbol.for('ENGAGEMENT_REPOSITORY') as InjectionKey<IEngagementRepository>
+export const KNOWLEDGE_REPOSITORY_KEY = 'KNOWLEDGE_REPOSITORY' as unknown as InjectionKey<IKnowledgeRepository>
+export const TICKET_REPOSITORY_KEY = 'TICKET_REPOSITORY' as unknown as InjectionKey<ITicketRepository>
+export const ENGAGEMENT_REPOSITORY_KEY = 'ENGAGEMENT_REPOSITORY' as unknown as InjectionKey<IEngagementRepository>
