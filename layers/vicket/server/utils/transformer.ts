@@ -1,5 +1,3 @@
-import type { ArticleFull } from '../app/types/vicket'
-
 /**
  * Server-side utility responsible for enriching Vicket data (SRP).
  */

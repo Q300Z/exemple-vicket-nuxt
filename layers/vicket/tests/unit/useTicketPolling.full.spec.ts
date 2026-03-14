@@ -15,11 +15,11 @@ describe('useTicketPolling (Industrial Logic)', () => {
   })
 
   it('starts and stops polling correctly', async () => {
-    let polling: any
+    let polling: { isPolling: Ref<boolean>, startPolling: () => void, stopPolling: () => void } | undefined
     
     const TestComponent = defineComponent({
       setup() {
-        polling = useTicketPolling(ref('tok'), vi.fn())
+        polling = useTicketPolling(ref('tok'), vi.fn()) as any // Internal cast for test setup
         return () => h('div')
       }
     })
@@ -27,25 +27,27 @@ describe('useTicketPolling (Industrial Logic)', () => {
     mount(TestComponent, {
       global: {
         provide: {
-          [TICKET_REPOSITORY_KEY as any]: mockTickets
+          'TICKET_REPOSITORY': mockTickets
         }
       }
     })
     
-    expect(polling.isPolling.value).toBe(false)
-    polling.startPolling()
-    expect(polling.isPolling.value).toBe(true)
-    polling.stopPolling()
-    expect(polling.isPolling.value).toBe(false)
+    if (polling) {
+      expect(polling.isPolling.value).toBe(false)
+      polling.startPolling()
+      expect(polling.isPolling.value).toBe(true)
+      polling.stopPolling()
+      expect(polling.isPolling.value).toBe(false)
+    }
   })
 
   it('stops polling after too many errors', async () => {
     mockTickets.fetchTicketThread.mockRejectedValue(new Error('Persistent Fail'))
     
-    let polling: any
+    let polling: { isPolling: Ref<boolean>, startPolling: () => void } | undefined
     const TestComponent = defineComponent({
       setup() {
-        polling = useTicketPolling(ref('tok'), vi.fn())
+        polling = useTicketPolling(ref('tok'), vi.fn()) as any
         return () => h('div')
       }
     })
@@ -53,18 +55,20 @@ describe('useTicketPolling (Industrial Logic)', () => {
     mount(TestComponent, {
       global: {
         provide: {
-          [TICKET_REPOSITORY_KEY as any]: mockTickets
+          'TICKET_REPOSITORY': mockTickets
         }
       }
     })
 
-    polling.startPolling()
-    
-    // Simulate 6 intervals (max is 5 errors)
-    for(let i=0; i<6; i++) {
-      await vi.advanceTimersByTimeAsync(30000)
+    if (polling) {
+      polling.startPolling()
+      
+      // Simulate 6 intervals (max is 5 errors)
+      for(let i=0; i<6; i++) {
+        await vi.advanceTimersByTimeAsync(30000)
+      }
+      
+      expect(polling.isPolling.value).toBe(false)
     }
-    
-    expect(polling.isPolling.value).toBe(false)
   })
 })

@@ -27,9 +27,8 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
 
       // A11y: announce new activity if it's a new message
       announceUpdate('Le ticket a été mis à jour avec de nouveaux messages.')
-    } catch (e) {
+    } catch {
       errorCount.value++
-      console.error('[Polling] Error fetching update:', e)
 
       if (errorCount.value > 5) {
         stopPolling()

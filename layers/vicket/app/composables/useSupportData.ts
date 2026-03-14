@@ -129,7 +129,9 @@ export const useSupportData = () => {
           websiteName.value = data.data.website?.name || 'Support'
           return data.data
         }
-      } catch (e) { console.error(e) }
+      } catch {
+        // Fallback handled by return null
+      }
       return null
     },
     createTicket: async (payload) => {

@@ -38,8 +38,8 @@ const fetchResults = async () => {
   try {
     const res = await knowledge.searchArticles(searchQuery.value)
     articles.value = res.data || []
-  } catch (e) {
-    console.error('[Launcher] Search error:', e)
+  } catch {
+    // Fail silently in launcher
   } finally {
     isLoading.value = false
   }

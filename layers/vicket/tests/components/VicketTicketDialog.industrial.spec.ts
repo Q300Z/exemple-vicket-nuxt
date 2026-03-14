@@ -31,9 +31,9 @@ describe('VicketTicketDialog (High Coverage)', () => {
     const wrapper = await mountSuspended(VicketTicketDialog, {
       global: {
         provide: {
-          [TICKET_REPOSITORY_KEY as any]: mockTickets,
-          [KNOWLEDGE_REPOSITORY_KEY as any]: mockKnowledge,
-          [NOTIFICATION_SERVICE_KEY as any]: mockNotifications
+          'TICKET_REPOSITORY': mockTickets,
+          'KNOWLEDGE_REPOSITORY': mockKnowledge,
+          'NOTIFICATION_SERVICE': mockNotifications
         }
       }
     })

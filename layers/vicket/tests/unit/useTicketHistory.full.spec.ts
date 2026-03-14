@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { useTicketHistory } from '../../app/composables/useTicketHistory'
 
 // Mock useCookie
-const mockCookie = ref<any[]>([])
+const mockCookie = ref<unknown[]>([])
 vi.stubGlobal('useCookie', () => mockCookie)
 
 describe('useTicketHistory (Coverage Boost)', () => {

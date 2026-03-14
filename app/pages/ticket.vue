@@ -148,6 +148,7 @@ watch(() => token.value, () => loadThread(), { immediate: true })
             <!-- Timeline System Message -->
             <div v-if="message.author_type === 'system'" class="flex justify-center my-4">
               <div class="flex items-center gap-3 px-4 py-1 rounded-full bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] text-[11px] text-[var(--ui-text-muted)] italic">
+                <!-- eslint-disable-next-line vue/no-v-html -->
                 <div v-html="message.content" />
                 <span class="text-[9px] font-bold uppercase">{{ formatDate(message.created_at) }}</span>
               </div>

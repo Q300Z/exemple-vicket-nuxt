@@ -51,7 +51,7 @@ describe('VicketTicketDialog (God Mode)', () => {
     await nextTick()
 
     const section = wrapper.find('section[role="region"]')
-    if (!section.exists()) return // Fallback if structure changed
+    if (!section.exists()) return
 
     // Simulate ArrowDown
     await section.trigger('keydown', { key: 'ArrowDown' })
@@ -71,8 +71,8 @@ describe('VicketTicketDialog (God Mode)', () => {
     isDialogOpen.value = true
     step.value = 'form'
     
-    // Bypass the guard clause
-    const vm = wrapper.vm as any
+    // Bypass the guard clause via public methods or casting to unknown if needed
+    const vm = wrapper.vm as unknown as { selectedTemplate: any, onSubmit: () => Promise<void> }
     if (vm.selectedTemplate !== undefined) {
       vm.selectedTemplate = { id: 't1', name: 'Tech', questions: [] }
     }
@@ -87,7 +87,7 @@ describe('VicketTicketDialog (God Mode)', () => {
 
   it('handles close reset', async () => {
     const wrapper = await mountDialog()
-    const vm = wrapper.vm as any
+    const vm = wrapper.vm as unknown as { handleClose: () => void }
     if (vm.handleClose) {
       vm.handleClose()
       await new Promise(r => setTimeout(r, 400)) // Wait for reset timeout

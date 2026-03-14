@@ -49,7 +49,7 @@ describe('Vicket Helpers (Industrial Coverage)', () => {
 
   it('sortQuestions should respect business order', () => {
     const q = [{ id: '1', order: 5 }, { id: '2', order: 1 }]
-    const sorted = sortQuestions(q as any)
+    const sorted = sortQuestions(q as unknown as { id: string, order: number }[])
     expect(sorted[0].id).toBe('2')
   })
 })

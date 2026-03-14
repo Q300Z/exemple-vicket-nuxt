@@ -37,7 +37,7 @@ const onShare = async () => {
         text: t('support.article.share_text', { title: props.title }),
         url
       })
-    } catch (err: unknown) {
+    } catch {
       // User cancelled
     }
   } else {

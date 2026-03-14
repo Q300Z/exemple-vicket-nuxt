@@ -8,7 +8,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const { templates } = useSupportState()
-const route = useRoute()
 
 // We can't easily extract live Schema.org from SSR here without complex DOM parsing
 // but we can show what SHOULD be there based on our SEO composable logic.
