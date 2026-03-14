@@ -38,7 +38,7 @@ const scrollToHeading = (id: string) => {
         name="i-lucide-list-tree"
         class="w-4 h-4"
       />
-      <span class="text-xs font-extrabold uppercase tracking-widest">Sommaire</span>
+      <span class="text-xs font-extrabold uppercase tracking-widest">{{ $t('support.article.toc_title') }}</span>
     </div>
 
     <ul class="space-y-2 border-l border-gray-100 dark:border-gray-800">

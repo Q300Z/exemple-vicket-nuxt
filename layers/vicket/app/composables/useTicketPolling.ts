@@ -7,6 +7,7 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
   const isPolling = ref(false)
   const lastFetch = ref<Date | null>(null)
   const errorCount = ref(0)
+  const ticketsRepo = inject(TICKET_REPOSITORY_KEY)
 
   // A11y: Announcements for screen readers
   const announceUpdate = (message: string) => {
@@ -16,10 +17,10 @@ export const useTicketPolling = (token: Ref<string>, onUpdate: (data: TicketThre
   }
 
   const { paused } = useIntervalFn(async () => {
-    if (!token.value || !isPolling.value) return
+    if (!token.value || !isPolling.value || !ticketsRepo) return
 
     try {
-      const data = await fetchTicketThread(token.value)
+      const data = await ticketsRepo.fetchTicketThread(token.value)
       onUpdate(data)
       lastFetch.value = new Date()
       errorCount.value = 0

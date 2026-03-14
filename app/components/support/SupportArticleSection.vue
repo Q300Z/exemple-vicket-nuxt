@@ -24,12 +24,12 @@ const { stripHtml } = useContent()
           <UIcon name="i-lucide-book-open" class="w-6 h-6" />
         </div>
         <div>
-          <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Articles Populaires</h2>
-          <p class="text-sm text-[var(--ui-text-muted)]">Guides et tutoriels étape par étape.</p>
+          <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">{{ $t('common.popular_articles') }}</h2>
+          <p class="text-sm text-[var(--ui-text-muted)]">{{ $t('common.popular_articles_desc') }}</p>
         </div>
       </div>
       <p class="hidden sm:block text-xs font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
-        {{ articles.length }} articles
+        {{ $t('common.article_count', { count: articles.length }) }}
       </p>
     </div>
 

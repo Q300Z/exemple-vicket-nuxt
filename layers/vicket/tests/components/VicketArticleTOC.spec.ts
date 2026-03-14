@@ -9,7 +9,8 @@ describe('VicketArticleTOC', () => {
       props: { content }
     })
 
-    expect(component.text()).toContain('Sommaire')
+    const text = component.text()
+    expect(text.includes('Sommaire') || text.includes('support.article.toc_title')).toBe(true)
     expect(component.text()).toContain('Title 1')
     expect(component.text()).toContain('Title 2')
   })

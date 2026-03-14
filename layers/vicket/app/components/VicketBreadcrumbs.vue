@@ -7,19 +7,21 @@ import type { INavigable } from '../types/ui'
  */
 const route = useRoute()
 
+const { t } = useI18n()
+
 const breadcrumbs = computed<INavigable[]>(() => {
   const path = route?.path || ''
   const parts = path.split('/').filter(Boolean)
 
   // Base item
-  const items: INavigable[] = [{ label: 'Accueil', to: '/', icon: 'i-lucide-home' }]
+  const items: INavigable[] = [{ label: t('common.breadcrumb_home'), to: '/', icon: 'i-lucide-home' }]
 
   let currentPath = ''
   parts.forEach((part) => {
     currentPath += `/${part}`
 
     let label = part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' ')
-    if (part === 'support') label = 'Centre de Support'
+    if (part === 'support') label = t('common.support_center')
 
     // Explicit interface fulfillment (ISP)
     const navigable: INavigable = {

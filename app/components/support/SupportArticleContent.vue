@@ -27,10 +27,10 @@ defineEmits(['open-ticket'])
           <div class="absolute -right-20 -top-20 w-64 h-64 bg-[var(--ui-primary)] opacity-5 blur-[100px] group-hover:opacity-15 transition-opacity" />
           
           <div class="relative z-10 space-y-3 text-center md:text-left">
-            <h3 class="text-3xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
+            <h2 class="text-3xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
               Cet article a-t-il été <span class="primary-gradient-text italic">utile ?</span>
-            </h3>
-            <p class="text-[var(--ui-text-muted)] text-lg max-w-md">
+            </h2>
+            <p class="text-gray-700 dark:text-gray-300 text-lg max-w-md">
               Votre avis compte énormément pour nous permettre d'améliorer notre support.
             </p>
           </div>
@@ -46,7 +46,7 @@ defineEmits(['open-ticket'])
     <div class="relative p-10 rounded-[40px] bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-8">
       <div class="space-y-2 text-center md:text-left">
         <p class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Toujours bloqué ?</p>
-        <p class="text-[var(--ui-text-muted)]">Ouvrez un ticket et nos experts reviendront vers vous sous 24h.</p>
+        <p class="text-gray-700 dark:text-gray-300">Ouvrez un ticket et nos experts reviendront vers vous sous 24h.</p>
       </div>
       
       <UButton

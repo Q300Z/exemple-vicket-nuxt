@@ -62,9 +62,20 @@ const useHistory = (q: string) => {
     <!-- Search History (Internal UI logic) -->
     <div
       v-if="(history?.length || 0) > 0 && !searchQuery"
-      class="flex items-center gap-3 animate-in fade-in duration-500"
+      class="space-y-3 animate-in fade-in slide-in-from-top-2 duration-500"
     >
-      <span class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">{{ $t('common.recent') }}</span>
+      <div class="flex items-center justify-between px-1">
+        <span class="text-[10px] font-black text-[var(--ui-text-muted)] uppercase tracking-[0.2em]">{{ $t('common.recent') }}</span>
+        <UButton
+          variant="ghost"
+          color="neutral"
+          size="xs"
+          icon="i-lucide-trash-2"
+          :label="$t('common.clear_search')"
+          class="text-[9px] uppercase font-bold hover:text-error-500"
+          @click="clearHistory"
+        />
+      </div>
       <div class="flex flex-wrap gap-2">
         <UButton
           v-for="q in history"
@@ -72,7 +83,8 @@ const useHistory = (q: string) => {
           size="xs"
           variant="subtle"
           color="neutral"
-          class="rounded-full px-3"
+          icon="i-lucide-history"
+          class="rounded-full px-4 py-1.5 transition-all hover:scale-105"
           @click="useHistory(q)"
         >
           {{ q }}

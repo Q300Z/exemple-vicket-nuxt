@@ -8,12 +8,13 @@ import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../types/reposi
  * 100% Native Nuxt UI v4 Style.
  * Autonomous: Managed via useSupportState.
  */
-const { isDialogOpen, templates, prefilledData } = useSupportState()
+const { isDialogOpen, templates, prefilledData, customValidators } = useSupportState()
 
 const { stripHtml } = useContent()
 const { getBucket, clearAll, addFiles } = useFiles()
 const { createTicketSchema } = useTicketForm()
 const ticketsRepo = inject(TICKET_REPOSITORY_KEY)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const knowledgeRepo = inject(KNOWLEDGE_REPOSITORY_KEY)
 const ticketFiles = getBucket('ticket')
 
@@ -24,6 +25,7 @@ const formData = ref<Record<string, unknown>>({})
 const error = ref<Error | null>(null)
 const isSubmitting = ref(false)
 const schema = ref<unknown>(null)
+const emailLimitReached = ref(false) // Added for quota management
 
 // --- PRE-FILL LOGIC ---
 watch(() => isDialogOpen.value, (isOpen) => {
@@ -50,7 +52,9 @@ const selectTemplate = (template: TicketTemplate) => {
     email: ''
   }
   
-  const questions = template.questions || []
+  // 1.2 Business Sorting (SRP)
+  const questions = sortQuestions(template.questions || [])
+  
   questions.forEach(q => {
     const type = q.type?.toUpperCase()
     const isArrayType = type === 'CHECKBOX' || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
@@ -65,7 +69,7 @@ const selectTemplate = (template: TicketTemplate) => {
   })
   
   formData.value = initialData
-  schema.value = createTicketSchema(questions)
+  schema.value = createTicketSchema(questions, customValidators.value)
   step.value = 'form'
 }
 
@@ -74,21 +78,29 @@ const reset = () => {
   selectedTemplate.value = null
   formData.value = {}
   error.value = null
+  emailLimitReached.value = false
   clearAll()
 }
 
 const onSubmit = async () => {
   if (!selectedTemplate.value || !ticketsRepo) return
   isSubmitting.value = true
+  emailLimitReached.value = false
   try {
     await new Promise(resolve => setTimeout(resolve, 800))
-    await ticketsRepo.createTicket({
+    const response = await ticketsRepo.createTicket({
       email: String(formData.value.email),
       title: String(formData.value.title),
       templateId: selectedTemplate.value.id,
       answers: formData.value as Record<string, string>,
       fileMap: { ticket: ticketFiles.value }
     })
+    
+    // 1.4 Quota Management
+    if (response.data?.email_limit_reached) {
+      emailLimitReached.value = true
+    }
+    
     step.value = 'success'
   } catch (err: unknown) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -150,7 +162,7 @@ defineShortcuts({
               @click="selectTemplate(tpl)"
             >
               <div class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-[var(--ui-primary)] shrink-0">
-                <UIcon name="i-lucide-message-square" class="w-5 h-5" />
+                <UIcon :name="tpl.icon || 'i-lucide-message-square'" class="w-5 h-5" />
               </div>
               <div class="grow min-w-0">
                 <p class="font-bold text-gray-900 dark:text-white truncate">{{ tpl.name }}</p>
@@ -170,7 +182,7 @@ defineShortcuts({
               icon="i-lucide-arrow-left"
               @click="step = 'category'"
             />
-            <span class="font-bold">{{ selectedTemplate?.name }}</span>
+            <p class="font-bold text-gray-900 dark:text-white">{{ selectedTemplate?.name }}</p>
           </div>
 
           <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
@@ -203,7 +215,15 @@ defineShortcuts({
 
         <div v-else-if="step === 'success'" class="p-12 text-center space-y-6">
           <UIcon name="i-lucide-check-circle" class="w-16 h-16 text-success mx-auto" />
-          <h2 class="text-2xl font-bold">{{ $t('vicket.request_sent') }}</h2>
+          <div class="space-y-2">
+            <h2 class="text-2xl font-bold">{{ $t('vicket.request_sent') }}</h2>
+            <p v-if="emailLimitReached" class="text-sm text-warning-500 font-medium animate-pulse">
+              {{ $t('vicket.email_limit_warning') }}
+            </p>
+            <p v-else class="text-sm text-[var(--ui-text-muted)]">
+              {{ $t('vicket.request_sent_desc') }}
+            </p>
+          </div>
           <UButton :label="$t('common.close')" block class="rounded-xl" @click="handleClose" />
         </div>
       </section>

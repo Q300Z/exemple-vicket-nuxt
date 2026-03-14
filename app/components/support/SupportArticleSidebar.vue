@@ -22,9 +22,9 @@ defineEmits(['open-ticket'])
 
       <!-- Related Content Section -->
       <div class="space-y-6">
-        <div class="flex items-center gap-2 px-2">
+        <div class="flex items-center gap-3">
           <UIcon name="i-lucide-layers" class="w-4 h-4 text-[var(--ui-primary)]" />
-          <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ui-text-muted)]">{{ $t('article.related_articles') }}</span>
+          <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ui-text-muted)]">{{ $t('support.article.related_articles') }}</span>
         </div>
         <VicketSidebarArticles :current-article-id="articleId" />
       </div>
@@ -49,11 +49,11 @@ defineEmits(['open-ticket'])
         </div>
 
         <div class="space-y-3 relative z-10 text-inverted">
-          <h3 class="font-black text-2xl leading-tight tracking-tight">
-            {{ $t('article.specific_question') }}
-          </h3>
-          <p class="text-sm opacity-80 leading-relaxed font-medium">
-            {{ $t('article.expert_assistance') }}
+          <h2 class="font-black text-2xl leading-tight tracking-tight">
+            {{ $t('support.article.specific_question') }}
+          </h2>
+          <p class="text-sm opacity-100 leading-relaxed font-medium">
+            {{ $t('support.article.expert_assistance') }}
           </p>
         </div>
 

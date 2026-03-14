@@ -34,7 +34,6 @@ const articles = computed(() => {
   return allResults.filter((item: { type?: string }) => item.type !== 'faq')
 })
 
-const hasResults = computed(() => articles.value.length > 0)
 const faqs = computed(() => faqsData.value?.data || [])
 const isLoading = computed(() => articlesStatus.value === 'pending' || faqsStatus.value === 'pending')
 

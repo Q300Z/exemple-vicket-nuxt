@@ -71,6 +71,7 @@ export const useSupportData = () => {
       watchEffect(() => {
         if (fetchResult.data.value?.success) {
           offlineCache.value[slug] = fetchResult.data.value
+          // eslint-disable-next-line no-console
           console.log(`[Vicket Offline] Cached article: ${slug}`)
         }
       })
@@ -79,6 +80,7 @@ export const useSupportData = () => {
       if (import.meta.client) {
         watchEffect(() => {
           if (fetchResult.status.value === 'error' && offlineCache.value[slug]) {
+            // eslint-disable-next-line no-console
             console.warn(`[Vicket Offline] Network error, serving from cache: ${slug}`)
             fetchResult.data.value = offlineCache.value[slug]
             fetchResult.status.value = 'success'
@@ -130,11 +132,52 @@ export const useSupportData = () => {
       } catch (e) { console.error(e) }
       return null
     },
-    createTicket: (payload) => $fetch('/api/vicket/tickets', { method: 'POST', body: payload }),
+    createTicket: async (payload) => {
+      // 1. Normalize payload for Vicket Contract (Legacy Sync)
+      // Vicket expects "data" field for JSON part when files are present
+      const hasFiles = Object.values(payload.fileMap || {}).some(files => files.length > 0)
+      
+      let body: RequestInit['body']
+      if (hasFiles) {
+        const formData = new FormData()
+        const normalizedAnswers: Record<string, unknown> = { ...payload.answers }
+        
+        // Map files to specific question slots
+        for (const [key, files] of Object.entries(payload.fileMap || {})) {
+          if (files.length > 0) {
+            files.forEach((file) => {
+              formData.append(`files[${key}]`, file)
+            })
+            normalizedAnswers[key] = '__isFile:true'
+          }
+        }
+
+        formData.append('data', JSON.stringify({
+          email: payload.email,
+          title: payload.title,
+          templateId: payload.templateId,
+          answers: normalizedAnswers
+        }))
+        body = formData
+      } else {
+        body = {
+          email: payload.email,
+          title: payload.title,
+          templateId: payload.templateId,
+          answers: payload.answers
+        }
+      }
+
+      return $fetch<TicketCreateResponse>('/api/vicket/tickets', { 
+        method: 'POST', 
+        body 
+      })
+    },
     fetchTemplates: async () => {
       try {
         const res = await $fetch<{ success: boolean, data: { templates: TicketTemplate[] } }>('/api/vicket/init')
         if (res?.success && res.data?.templates?.length) return res.data.templates
+        // eslint-disable-next-line no-console
         console.warn('[Vicket] Invalid init response, using fallback.')
         throw new Error('Invalid structure')
       } catch {
@@ -143,13 +186,54 @@ export const useSupportData = () => {
           { id: 't2', name: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.', questions: [] }
         ]
       }
+    },
+    fetchTicketThread: async (token: string) => {
+      const payload = await $fetch<{
+        success?: boolean
+        error?: string
+        error_code?: string
+        data?: TicketThread
+      }>(`/api/vicket/thread?token=${encodeURIComponent(token)}`)
+
+      if (!payload?.success || !payload?.data) {
+        if (payload?.error_code === 'ticket-link-expired') {
+          throw new Error('This link has expired. A new secure link has been sent to your email.')
+        }
+        throw new Error(payload?.error || 'Failed to load ticket.')
+      }
+      return payload.data
+    },
+    sendReply: async (token: string, content: string, files: File[]) => {
+      const url = `/api/vicket/messages?token=${encodeURIComponent(token)}`
+      let body: RequestInit['body']
+
+      if (files.length > 0) {
+        const formData = new FormData()
+        formData.append('data', JSON.stringify({ content }))
+        files.forEach(file => formData.append('files', file))
+        body = formData
+      } else {
+        body = { content }
+      }
+
+      const res = await $fetch<{ success?: boolean, error?: string, error_code?: string }>(url, {
+        method: 'POST',
+        body
+      })
+
+      if (!res?.success) {
+        if (res?.error_code === 'ticket-link-expired') {
+          throw new Error('This link has expired. A new secure link has been sent to your email.')
+        }
+        throw new Error(res?.error || 'Failed to send reply.')
+      }
     }
   }
 
   // --- Engagement Repository Implementation ---
   const engagement: IEngagementRepository = {
     submitFeedback: (articleId, helpful) => 
-      $fetch(`/api/vicket/articles/${articleId}/feedback`, { method: 'POST', body: { helpful } })
+      $fetch(`/api/vicket/article/${articleId}/feedback`, { method: 'POST', body: { helpful } })
   }
 
   return {

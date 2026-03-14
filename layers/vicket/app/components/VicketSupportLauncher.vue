@@ -158,7 +158,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
             <VicketHighlightedText 
               :text="stripHtml(article.content)" 
               :query="searchQuery"
-              class="text-xs text-[var(--ui-text-muted)] line-clamp-2"
+              class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2"
             />
           </button>
 
@@ -166,8 +166,8 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
             v-if="displayArticles.length === 0 && !isLoading"
             class="py-12 text-center"
           >
-            <UIcon name="i-lucide-search-x" class="w-8 h-8 text-[var(--ui-text-muted)] mx-auto mb-2 opacity-20" />
-            <p class="text-xs text-[var(--ui-text-muted)]">{{ $t('common.no_results') }}</p>
+            <UIcon name="i-lucide-search-x" class="w-8 h-8 text-gray-400 mx-auto mb-2 opacity-20" />
+            <p class="text-xs text-gray-600 dark:text-gray-400">{{ $t('common.no_results') }}</p>
           </div>
         </div>
 

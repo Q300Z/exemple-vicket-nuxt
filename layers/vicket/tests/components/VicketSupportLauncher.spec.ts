@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import VicketSupportLauncher from '../../app/components/VicketSupportLauncher.vue'
 import { KNOWLEDGE_REPOSITORY_KEY, TICKET_REPOSITORY_KEY } from '../../app/types/repository'

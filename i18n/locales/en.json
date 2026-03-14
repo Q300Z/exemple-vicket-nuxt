@@ -28,12 +28,18 @@
     "no_results": "No results found",
     "no_results_for": "We could not find any article matching \"{query}\".",
     "popular_articles": "Popular articles",
+    "popular_articles_desc": "Step-by-step guides and tutorials.",
+    "article_count": "{count} article | {count} articles",
+    "breadcrumb_home": "Home",
     "search_results": "Search results",
     "clear_search": "Clear search",
     "recent": "Recent:",
     "load_failed": "Loading failed",
     "load_failed_desc": "We are unable to retrieve this information at the moment.",
-    "report_error": "Send a report",
+    "success": "Success",
+    "link_copied": "Link copied!",
+    "link_copied_desc": "The article URL has been added to your clipboard.",
+    "report_error": "Send report",
     "view_faq": "View FAQ",
     "select_date": "Select a date"
   },
@@ -57,8 +63,14 @@
       "not_found_desc": "Sorry, we could not find the article.",
       "back_to_support": "Back to support",
       "related_articles": "Related articles",
+      "recently_updated": "Recently updated",
+      "reading_time": "{minutes} min read",
+      "toc_title": "Table of Contents",
       "specific_question": "Any specific question?",
-      "expert_assistance": "Our support engineers are available live to help you."
+      "expert_assistance": "Our support engineers are available live to help you.",
+      "feedback_question": "Did this article help you?",
+      "feedback_thanks": "Thanks for your feedback!",
+      "share_text": "Check out this article on Vicket: {title}"
     }
   },
   "landing": {
@@ -122,6 +134,8 @@
     "select_category": "Select category {name}",
     "form_subtitle": "Fill out this form to contact our experts.",
     "request_sent": "Request sent!",
+    "request_sent_desc": "Check your email to follow the progress of your ticket.",
+    "email_limit_warning": "Ticket created, but the daily email limit is reached. Please check your spams or 'My Tickets' tab.",
     "live_active": "Live active",
     "priority": "Priority: {label}",
     "form_details": "Form details",
@@ -140,6 +154,10 @@
     "send_reply": "Send response",
     "dropzone_aria": "File drop zone",
     "dropzone_title": "Click or drag your files",
-    "dropzone_desc": "Images, PDF, documents (Max 10MB)"
+    "dropzone_desc": "Images, PDF, documents (Max 10MB)",
+    "labels": {
+      "feedbackPositive": "Helpful",
+      "feedbackNegative": "Not helpful"
+    }
   }
 }

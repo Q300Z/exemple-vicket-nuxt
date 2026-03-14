@@ -30,7 +30,7 @@ const formatDate = (date: string) => useDateFormat(date, 'DD MMM HH:mm').value
 
     <div :class="['flex flex-col max-w-[85%] space-y-1.5', message.author_type === 'reporter' ? 'items-end' : 'items-start']">
       <div class="flex items-center gap-2 px-1">
-        <span class="text-xs font-bold text-[var(--ui-text-highlighted)]">{{ authorLabel }}</span>
+        <span class="text-xs font-bold text-[var(--ui-text-highlighted)]">{{ message.author_name || authorLabel }}</span>
         <span class="text-[10px] text-[var(--ui-text-muted)] font-medium">{{ formatDate(message.created_at) }}</span>
       </div>
 

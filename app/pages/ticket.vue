@@ -7,7 +7,9 @@ import { NOTIFICATION_SERVICE_KEY } from '#vicket/types/interaction'
  */
 const route = useRoute()
 const notifications = inject(NOTIFICATION_SERVICE_KEY)
+const ticketsRepo = inject(TICKET_REPOSITORY_KEY)
 if (!notifications) throw new Error('Notification Service not provided')
+if (!ticketsRepo) throw new Error('Ticket Repository not provided')
 
 const { getAvatarColor } = useBranding()
 const token = computed(() => String(route.query.token || ''))
@@ -30,10 +32,12 @@ const { isPolling, startPolling } = useTicketPolling(token, (updatedData) => {
 
 /* ── Methods ── */
 const { t } = useI18n()
+const { formatAnswerText, isFileAnswer } = useVicketHelpers()
 
 const AUTHOR_LABELS: Record<string, string> = {
   reporter: t('vicket.author_you'),
   agent: t('vicket.author_agent'),
+  user: t('vicket.author_agent'), // 'user' is often used for agents in Vicket API
   system: t('vicket.author_system')
 }
 
@@ -41,11 +45,12 @@ const loadThread = async () => {
   if (!hasToken.value) return (isLoading.value = false)
   isLoading.value = true
   try {
-    const data = await fetchTicketThread(token.value)
+    const data = await ticketsRepo.fetchTicketThread(token.value)
     thread.value = data
     if (data.status?.label.toLowerCase() !== 'closed') startPolling()
-  } catch {
-    notifications.error('Erreur', t('vicket.error_load_thread'))
+  } catch (err: unknown) {
+    const error = err as Error
+    notifications.error('Erreur', error.message || t('vicket.error_load_thread'))
   } finally { isLoading.value = false }
 }
 
@@ -53,12 +58,13 @@ const onReply = async ({ content, files }: { content: string, files: File[] }) =
   if (!content.trim() && files.length === 0) return notifications.warn('Validation', t('vicket.msg_required'))
   isSending.value = true
   try {
-    await sendReply(token.value, content.trim(), files)
+    await ticketsRepo.sendReply(token.value, content.trim(), files)
     replyBox.value?.clear()
     notifications.success('Succès', t('vicket.reply_sent'))
     await loadThread()
-  } catch {
-    notifications.error('Erreur', t('vicket.reply_failed'))
+  } catch (err: unknown) {
+    const error = err as Error
+    notifications.error('Erreur', error.message || t('vicket.reply_failed'))
   } finally { isSending.value = false }
 }
 
@@ -105,7 +111,27 @@ watch(() => token.value, () => loadThread(), { immediate: true })
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div v-for="answer in summaryAnswers" :key="answer.id" class="space-y-1">
               <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase">{{ answer.question_label }}</p>
-              <p class="text-sm">{{ answer.answer || '-' }}</p>
+              
+              <!-- File attachments -->
+              <div v-if="answer.attachments && answer.attachments.length > 0" class="flex flex-wrap gap-1.5 mt-1">
+                <UButton
+                  v-for="att in answer.attachments"
+                  :key="att.id"
+                  :to="att.url"
+                  target="_blank"
+                  variant="subtle"
+                  color="neutral"
+                  size="xs"
+                  icon="i-lucide-paperclip"
+                  class="rounded-full"
+                >
+                  {{ att.original_filename }}
+                </UButton>
+              </div>
+              <!-- File answer placeholder -->
+              <p v-else-if="isFileAnswer(answer.answer)" class="text-xs italic text-[var(--ui-text-muted)]">Fichier envoyé</p>
+              <!-- Text answer -->
+              <p v-else class="text-sm font-medium">{{ formatAnswerText(answer.answer) || '-' }}</p>
             </div>
           </div>
         </UCard>

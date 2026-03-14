@@ -13,14 +13,18 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/a11y'
   ],
-
   // --- Security & Hardening (Industrial Standards) ---
   security: {
     headers: {
       contentSecurityPolicy: {
         'img-src': ['\'self\'', 'data:', 'blob:', 'https://api.vicket.app'],
-        'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://*.qalpuch.cc'],
-        'connect-src': ['\'self\'', 'https://api.vicket.app']
+        'script-src': [
+          '\'self\'', 
+          '\'unsafe-inline\'', 
+          'https://*.qalpuch.cc', 
+          'https://static.cloudflareinsights.com' // Allow Cloudflare analytics
+        ],
+        'connect-src': ['\'self\'', 'https://api.vicket.app', 'https://cloudflareinsights.com']
       }
     },
     rateLimiter: {
@@ -34,12 +38,15 @@ export default defineNuxtConfig({
   routeRules: {
     '/support/**': { swr: 3600 },
     '/api/vicket/tickets': { security: { rateLimiter: { tokensPerInterval: 5, interval: 'minute' } } },
-    '/api/vicket/**': { cache: { maxAge: 60 } }
+    '/api/vicket/**': { cache: { maxAge: 60 } },
+    // Force long cache for static assets (Fix Lighthouse insight)
+    '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } }
   },
 
-  // --- OPTIMISATION ICONES ULTIME : Remote API ---
-  icon: {
-    serverBundle: 'none'
+  // --- SEO & Crawling ---
+  robots: {
+    disallow: ['/api'],
+    allow: ['/']
   },
 
   // --- Nuxt UI v4 Ultra-Optimized ---
@@ -78,7 +85,8 @@ export default defineNuxtConfig({
 
   robots: {
     disallow: ['/api'],
-    allow: ['/']
+    allow: ['/'],
+    blockAI: false // Avoid non-standard Content-Signal directive
   },
 
   css: ['~/assets/css/main.css'],

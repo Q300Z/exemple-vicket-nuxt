@@ -14,12 +14,35 @@ const props = defineProps<Props>()
 
 const readingTime = computed(() => calculateReadingTime(props.content || ''))
 
+const { t } = useI18n()
+const notifications = inject(NOTIFICATION_SERVICE_KEY)
+
 // --- COPY LOGIC ---
 const { copy, copied } = useClipboard()
 
 const onCopy = () => {
   const url = `${window.location.origin}/support/${props.slug}`
   copy(url)
+  if (notifications) {
+    notifications.success(t('common.success'), t('common.link_copied'))
+  }
+}
+
+const onShare = async () => {
+  const url = `${window.location.origin}/support/${props.slug}`
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: props.title,
+        text: t('support.article.share_text', { title: props.title }),
+        url
+      })
+    } catch (err: unknown) {
+      // User cancelled
+    }
+  } else {
+    onCopy()
+  }
 }
 </script>
 
@@ -45,14 +68,14 @@ const onCopy = () => {
 
     <div class="flex flex-wrap items-center justify-between gap-8">
       <!-- Meta Pills -->
-      <div class="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-widest text-[var(--ui-text-muted)]">
-        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] shadow-sm">
+      <div class="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-widest text-gray-700 dark:text-gray-300">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800 shadow-sm">
           <UIcon name="i-lucide-calendar" class="w-4 h-4 text-[var(--ui-primary)]" />
-          <span>Mis à jour récemment</span>
+          <span>{{ $t('support.article.recently_updated') }}</span>
         </div>
-        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] shadow-sm">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800 shadow-sm">
           <UIcon name="i-lucide-clock" class="w-4 h-4 text-[var(--ui-primary)]" />
-          <span>{{ readingTime }} min de lecture</span>
+          <span>{{ $t('support.article.reading_time', { minutes: readingTime }) }}</span>
         </div>
       </div>
 
@@ -61,10 +84,8 @@ const onCopy = () => {
         <UButton
           :icon="copied ? 'i-lucide-check' : 'i-lucide-link'"
           :color="copied ? 'success' : 'neutral'"
-          :label="copied ? 'Copié !' : undefined"
           variant="soft"
           class="rounded-full h-11 flex items-center justify-center hover:scale-110 transition-all duration-300 min-w-[44px]"
-          :class="{ 'px-4': copied }"
           aria-label="Copier le lien"
           @click="onCopy"
         />
@@ -74,6 +95,7 @@ const onCopy = () => {
           color="neutral"
           class="rounded-full w-11 h-11 flex items-center justify-center hover:scale-110 transition-transform"
           aria-label="Partager l'article"
+          @click="onShare"
         />
       </div>
     </div>

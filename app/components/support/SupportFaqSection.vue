@@ -88,7 +88,7 @@ watch(() => route.hash, (hash) => {
 
           <template #content>
             <div class="px-6 md:px-8 pb-8 animate-in slide-in-from-top-2 duration-300">
-              <div class="text-[var(--ui-text-default)] text-base md:text-lg leading-relaxed border-t border-[var(--ui-border)] pt-6">
+              <div class="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed border-t border-[var(--ui-border)] pt-6">
                 <VicketHighlightedText :text="item.content" :query="searchQuery" />
               </div>
             </div>

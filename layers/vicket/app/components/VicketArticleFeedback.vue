@@ -12,6 +12,7 @@ const props = defineProps<{
 
 const appConfig = useAppConfig()
 // Defensive access to avoid SSR "undefined" errors (KISS)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const vicket = computed(() => appConfig.vicket || {
   labels: {
     feedbackPositive: 'Oui',
@@ -21,6 +22,7 @@ const vicket = computed(() => appConfig.vicket || {
 
 const notifications = inject(NOTIFICATION_SERVICE_KEY)
 const engagement = inject(ENGAGEMENT_REPOSITORY_KEY)
+const { t } = useI18n()
 
 const voted = ref(false)
 const feedback = ref<'positive' | 'negative' | null>(null)
@@ -45,8 +47,8 @@ const handleVote = async (type: 'positive' | 'negative') => {
   }
 
   notifications?.success(
-    'Merci !',
-    'Votre avis nous aide à améliorer notre support.'
+    t('common.success'),
+    t('support.article.feedback_thanks')
   )
 }
 
@@ -55,14 +57,14 @@ const handleVote = async (type: 'positive' | 'negative') => {
 <template>
   <div class="mt-12 py-8 border-t border-[var(--ui-border)] text-center space-y-4">
     <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
-      Cet article vous a-t-il aidé ?
+      {{ $t('support.article.feedback_question') }}
     </p>
 
     <div class="flex items-center justify-center gap-4">
       <template v-if="!voted">
         <UButton
           icon="i-lucide-thumbs-up"
-          :label="vicket.labels.feedbackPositive"
+          :label="$t('vicket.labels.feedbackPositive')"
           variant="outline"
           color="neutral"
           class="rounded-full px-6"
@@ -70,7 +72,7 @@ const handleVote = async (type: 'positive' | 'negative') => {
         />
         <UButton
           icon="i-lucide-thumbs-down"
-          :label="vicket.labels.feedbackNegative"
+          :label="$t('vicket.labels.feedbackNegative')"
           variant="outline"
           color="neutral"
           class="rounded-full px-6"
@@ -84,7 +86,7 @@ const handleVote = async (type: 'positive' | 'negative') => {
       >
         <div 
           class="p-3 rounded-full shadow-inner"
-          :style="{ backgroundColor: 'color-mix(in srgb, var(--ui-primary) 10%, transparent)', color: 'var(--ui-primary)' }"
+          :style="{ backgroundColor: 'color-mix(in_srgb, var(--ui-primary) 10%, transparent)', color: 'var(--ui-primary)' }"
         >
           <UIcon
             :name="feedback === 'positive' ? 'i-lucide-heart' : 'i-lucide-message-square'"
@@ -92,7 +94,7 @@ const handleVote = async (type: 'positive' | 'negative') => {
           />
         </div>
         <p class="text-sm font-bold text-[var(--ui-text-highlighted)]">
-          Merci pour votre retour !
+          {{ $t('support.article.feedback_thanks') }}
         </p>
       </div>
     </div>

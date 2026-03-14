@@ -11,10 +11,9 @@ if (!knowledge) throw new Error('Knowledge Repository not provided')
 const { fetchArticle } = knowledge
 const route = useRoute()
 const { scrollProgress } = useReadingProgress()
-const { openDialog, templates } = useSupportState()
+const { openDialog, templates, isDistractionFree } = useSupportState()
 
 const slug = computed(() => String(route.params.slug))
-const isDistractionFree = ref(false)
 
 // --- DATA FETCHING ---
 const { data: response, status } = await fetchArticle(slug.value)
@@ -46,7 +45,7 @@ watchEffect(() => {
           variant="ghost"
           color="neutral"
           :icon="isDistractionFree ? 'i-lucide-sidebar' : 'i-lucide-maximize-2'"
-          :label="isDistractionFree ? $t('article.show_sidebar') : $t('article.distraction_free')"
+          :label="isDistractionFree ? $t('support.article.show_sidebar') : $t('support.article.distraction_free')"
           class="rounded-full text-[10px] font-bold uppercase tracking-widest"
           @click="isDistractionFree = !isDistractionFree"
         />
@@ -66,9 +65,9 @@ watchEffect(() => {
 
         <!-- Not Found -->
         <div v-else-if="!article" class="py-20">
-          <VicketEmptyState :title="$t('article.not_found')" :description="$t('article.not_found_desc')" icon="i-lucide-file-question">
+          <VicketEmptyState :title="$t('support.article.not_found')" :description="$t('support.article.not_found_desc')" icon="i-lucide-file-question">
             <template #actions>
-              <UButton to="/support" variant="subtle" color="neutral" class="rounded-full px-8">{{ $t('article.back_to_support') }}</UButton>
+              <UButton to="/support" variant="subtle" color="neutral" class="rounded-full px-8">{{ $t('support.article.back_to_support') }}</UButton>
             </template>
           </VicketEmptyState>
         </div>
@@ -94,6 +93,8 @@ watchEffect(() => {
               :templates="templates"
               @open-ticket="openDialog"
             />
+
+            <VicketArticleFeedback :article-id="article.id" />
           </div>
 
           <SupportArticleSidebar
@@ -103,6 +104,9 @@ watchEffect(() => {
             @open-ticket="openDialog"
           />
         </div>
+
+        <!-- Mobile TOC -->
+        <VicketMobileTOC v-if="article" :content="article.content" />
 
         <template #error="{ error, recover }">
           <VicketErrorFallback :error="error" @retry="recover" />

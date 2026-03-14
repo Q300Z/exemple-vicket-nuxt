@@ -26,8 +26,10 @@ export interface IKnowledgeRepository {
 export interface ITicketRepository {
   websiteName: Ref<string>
   fetchInit(): Promise<unknown>
-  createTicket(payload: Record<string, unknown>): Promise<unknown>
+  createTicket(payload: Record<string, unknown>): Promise<TicketCreateResponse>
   fetchTemplates(): Promise<TicketTemplate[]>
+  fetchTicketThread(token: string): Promise<TicketThread>
+  sendReply(token: string, content: string, files: File[]): Promise<void>
 }
 
 /**

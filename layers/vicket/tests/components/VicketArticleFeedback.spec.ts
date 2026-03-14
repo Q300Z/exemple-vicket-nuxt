@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import VicketArticleFeedback from '../../app/components/VicketArticleFeedback.vue'
 import { NOTIFICATION_SERVICE_KEY, ENGAGEMENT_REPOSITORY_KEY } from '../../app/types/repository'
@@ -22,11 +22,10 @@ describe('VicketArticleFeedback', () => {
         }
       }
     })
-    
-    expect(wrapper.text()).toContain('aidé')
+
+    expect(wrapper.text()).toContain('support.article.feedback_question')
     expect(wrapper.findAll('button').length).toBe(2)
   })
-
   it.skip('handles positive feedback', async () => {
     const wrapper = await mountSuspended(VicketArticleFeedback, {
       props: { articleId: '123' },
