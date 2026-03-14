@@ -1,0 +1,145 @@
+{
+  "site": {
+    "name": "Vicket Showcase"
+  },
+  "seo": {
+    "index": {
+      "title": "Vicket - L'implémentation Nuxt 4 de référence",
+      "description": "Découvrez comment intégrer la puissance de Vicket dans vos applications Nuxt 4 avec une architecture industrielle et une marque blanche totale."
+    },
+    "support": {
+      "title": "Centre d'aide",
+      "description": "Trouvez des réponses à vos questions ou contactez notre support technique."
+    }
+  },
+  "common": {
+    "open_ticket": "Ouvrir un ticket",
+    "support_center": "Centre d'aide",
+    "new_ticket": "Nouveau Ticket",
+    "language": "Changer la langue",
+    "appearance": "Apparence",
+    "dark_light_mode": "Mode Sombre / Clair",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "send": "Envoyer",
+    "back": "Retour",
+    "search": "Rechercher",
+    "search_placeholder": "Rechercher une solution...",
+    "no_results": "Aucun résultat trouvé",
+    "no_results_for": "Nous n'avons trouvé aucun article correspondant à « {query} ».",
+    "popular_articles": "Articles populaires",
+    "search_results": "Résultats de recherche",
+    "clear_search": "Effacer la recherche",
+    "recent": "Récent :",
+    "load_failed": "Échec du chargement",
+    "load_failed_desc": "Nous ne parvenons pas à récupérer ces informations pour le moment.",
+    "report_error": "Envoyer un rapport",
+    "view_faq": "Voir la FAQ",
+    "select_date": "Sélectionner une date"
+  },
+  "support": {
+    "hero": {
+      "title_1": "Comment pouvons-nous vous",
+      "title_2": "aider ?",
+      "description": "Consultez notre base de connaissances ou contactez notre équipe de support pour une assistance personnalisée."
+    },
+    "faq": {
+      "title_1": "Foire Aux",
+      "title_2": "Questions",
+      "description": "Tout ce que vous devez savoir pour démarrer sereinement avec Vicket.",
+      "any_other_questions": "D'autres questions ?",
+      "contact_support": "Notre support est là pour vous."
+    },
+    "article": {
+      "distraction_free": "Lecture sans distraction",
+      "show_sidebar": "Afficher la barre latérale",
+      "not_found": "Article introuvable",
+      "not_found_desc": "Désolé, nous ne trouvons pas l'article.",
+      "back_to_support": "Retour au support",
+      "related_articles": "Articles liés",
+      "specific_question": "Une question spécifique ?",
+      "expert_assistance": "Nos ingénieurs support sont disponibles en direct pour vous débloquer."
+    }
+  },
+  "landing": {
+    "hero": {
+      "badge": "Vicket Industrial Implementation",
+      "title_1": "Le Support Client",
+      "title_2": "réinventé.",
+      "description": "L'implémentation de référence du Vicket Support Layer pour Nuxt 4."
+    },
+    "stats": {
+      "users": "Utilisateurs",
+      "time_save": "Gain de temps",
+      "satisfaction": "Satisfaction"
+    },
+    "features": {
+      "white_label": {
+        "title": "Support White-Label",
+        "desc": "Des composants UI personnalisables qui se fondent nativement dans votre produit."
+      },
+      "workflows": {
+        "title": "Workflows Automatisés",
+        "desc": "Intégrez des processus temporels et manuels pour automatiser votre support client."
+      },
+      "scoring": {
+        "title": "Scoring Intelligent",
+        "desc": "Algorithme de priorité basé sur des signaux réels pour traiter l'urgent en priorité."
+      },
+      "teams": {
+        "title": "Visibilité par Équipe",
+        "desc": "Compartimentez le support par départements (Engineering, Sales, Support L1)."
+      },
+      "knowledge": {
+        "title": "Base de Connaissances",
+        "desc": "Réduisez le volume de tickets en permettant le self-service client intelligent."
+      },
+      "developer_first": {
+        "title": "Developer-First",
+        "desc": "Architecture SOLID et documentation riche pour une intégration en quelques minutes."
+      }
+    },
+    "tech": {
+      "badge": "SOLID Architecture",
+      "title_1": "Personnalisation",
+      "title_2": "au runtime.",
+      "description": "Vicket a été conçu avec une approche Contract-First. Grâce à une architecture modulaire et aux CSS Variables, votre centre d'aide s'adapte à n'importe quelle identité visuelle tout en garantissant une stabilité totale.",
+      "item_1": "Architecture SOLID & Repository Pattern",
+      "item_2": "Workflows et Triggers automatisés",
+      "item_3": "Scoring intelligent de priorité",
+      "button": "Code Source sur GitHub"
+    },
+    "quote": {
+      "text": "Le support client nouvelle génération.",
+      "discover": "Découvrir Vicket.app",
+      "docs": "Documentation Vicket"
+    }
+  },
+  "vicket": {
+    "api_unavailable": "L'API Vicket est actuellement indisponible. Mode démonstration activé.",
+    "need_help": "Besoin d'aide ?",
+    "choose_category": "Choisissez une catégorie pour votre demande.",
+    "select_category": "Sélectionner la catégorie {name}",
+    "form_subtitle": "Remplissez ce formulaire pour contacter nos experts.",
+    "request_sent": "Demande envoyée !",
+    "live_active": "Live actif",
+    "priority": "Priorité : {label}",
+    "form_details": "Détails du formulaire",
+    "initial_message": "Message initial",
+    "author_you": "Vous",
+    "author_agent": "Expert Support",
+    "author_system": "Système",
+    "error_load_thread": "Impossible de charger le ticket.",
+    "msg_required": "Message requis.",
+    "reply_sent": "Réponse envoyée.",
+    "reply_failed": "Envoi échoué.",
+    "api_not_configured": "API non configurée (Mode Démo)",
+    "questions_on_billing": "Questions sur vos factures",
+    "kb_update": "Notre base de connaissances est en cours de mise à jour.",
+    "reply_placeholder": "Écrivez votre message de réponse...",
+    "send_reply": "Envoyer la réponse",
+    "dropzone_aria": "Zone de dépôt de fichiers",
+    "dropzone_title": "Cliquer ou glisser vos fichiers",
+    "dropzone_desc": "Images, PDF, documents (Max 10MB)"
+  }
+}

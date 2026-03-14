@@ -123,8 +123,8 @@ defineShortcuts({
 <template>
   <UModal
     v-model:open="isDialogOpen"
-    title="Demande de support"
-    description="Remplissez ce formulaire pour contacter nos experts."
+    :title="$t('common.new_ticket')"
+    :description="$t('vicket.form_subtitle')"
   >
     <template #content>
       <section 
@@ -137,8 +137,8 @@ defineShortcuts({
         <!-- STEP: CATEGORY -->
         <div v-if="step === 'category'" class="p-6 space-y-6">
           <div class="text-center">
-            <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Besoin d'aide ?</h2>
-            <p class="text-sm text-[var(--ui-text-muted)] mt-1">Choisissez une catégorie pour votre demande.</p>
+            <h2 class="text-2xl font-bold text-[var(--ui-text-highlighted)]">{{ $t('vicket.need_help') }}</h2>
+            <p class="text-sm text-[var(--ui-text-muted)] mt-1">{{ $t('vicket.choose_category') }}</p>
           </div>
 
           <div class="grid gap-3">
@@ -146,7 +146,7 @@ defineShortcuts({
               v-for="tpl in templates"
               :key="tpl.id"
               class="w-full flex items-center justify-start gap-4 p-4 rounded-2xl transition-all border border-gray-200 dark:border-gray-800 hover:border-[var(--ui-primary)] hover:bg-[var(--ui-primary)]/5 text-left group"
-              :aria-label="`Sélectionner la catégorie ${tpl.name}`"
+              :aria-label="$t('vicket.select_category', { name: tpl.name })"
               @click="selectTemplate(tpl)"
             >
               <div class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-[var(--ui-primary)] shrink-0">
@@ -186,7 +186,7 @@ defineShortcuts({
                 type="submit"
                 block
                 size="lg"
-                label="Envoyer"
+                :label="$t('common.send')"
                 :loading="isSubmitting"
                 class="rounded-xl mt-8"
               />
@@ -203,8 +203,8 @@ defineShortcuts({
 
         <div v-else-if="step === 'success'" class="p-12 text-center space-y-6">
           <UIcon name="i-lucide-check-circle" class="w-16 h-16 text-success mx-auto" />
-          <h2 class="text-2xl font-bold">Demande envoyée !</h2>
-          <UButton label="Fermer" block class="rounded-xl" @click="handleClose" />
+          <h2 class="text-2xl font-bold">{{ $t('vicket.request_sent') }}</h2>
+          <UButton :label="$t('common.close')" block class="rounded-xl" @click="handleClose" />
         </div>
       </section>
     </template>

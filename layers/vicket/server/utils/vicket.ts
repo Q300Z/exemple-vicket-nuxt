@@ -51,8 +51,8 @@ export const getVicketData = async (): Promise<SupportInitResponse['data']> => {
     return {
       website: { name: 'Vicket Showcase' },
       templates: [
-        { id: 'f1', name: 'Support Technique', icon: 'i-lucide-wrench', description: 'API non configurée (Mode Démo)', questions: [] },
-        { id: 'f2', name: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures', questions: [] }
+        { id: 'f1', name: 'Support Technique', icon: 'i-lucide-wrench', description: 'vicket.api_not_configured', questions: [] },
+        { id: 'f2', name: 'Facturation', icon: 'i-lucide-credit-card', description: 'vicket.questions_on_billing', questions: [] }
       ],
       articles: [],
       faqs: [],

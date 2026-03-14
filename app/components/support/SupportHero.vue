@@ -12,10 +12,10 @@ defineEmits(['open-ticket'])
 <template>
   <div class="text-center space-y-6 mb-16 animate-in fade-in slide-in-from-top-4 duration-1000">
     <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-[var(--ui-text-highlighted)] leading-tight">
-      Comment pouvons-nous vous <span class="primary-gradient-text italic">aider ?</span>
+      {{ $t('support.hero.title_1') }} <span class="primary-gradient-text italic">{{ $t('support.hero.title_2') }}</span>
     </h1>
     <p class="text-[var(--ui-text-muted)] max-w-2xl mx-auto text-lg sm:text-xl">
-      Consultez notre base de connaissances ou contactez notre équipe de support pour une assistance personnalisée.
+      {{ $t('support.hero.description') }}
     </p>
 
     <div class="flex flex-wrap justify-center gap-4 pt-4">
@@ -24,16 +24,15 @@ defineEmits(['open-ticket'])
         icon="i-lucide-message-circle"
         size="xl"
         variant="solid"
+        :label="$t('common.open_ticket')"
         class="rounded-full shadow-xl px-10 transition-transform hover:scale-105 active:scale-95"
         :style="{ '--tw-shadow-color': 'color-mix(in srgb, var(--ui-primary) 30%, transparent)' }"
         :ui="{ label: 'text-inverted font-bold' }"
         @click="$emit('open-ticket')"
-      >
-        Ouvrir un ticket
-      </UButton>
+      />
       <UButton
         to="#faq"
-        label="Voir la FAQ"
+        :label="$t('common.view_faq')"
         variant="ghost"
         color="neutral"
         size="xl"

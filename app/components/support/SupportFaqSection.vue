@@ -41,10 +41,10 @@ watch(() => route.hash, (hash) => {
         <UIcon name="i-lucide-help-circle" class="w-8 h-8" />
       </div>
       <h2 class="text-4xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
-        Foire Aux <span class="primary-gradient-text italic">Questions</span>
+        {{ $t('support.faq.title_1') }} <span class="primary-gradient-text italic">{{ $t('support.faq.title_2') }}</span>
       </h2>
       <p class="text-[var(--ui-text-muted)] max-w-xl mx-auto text-lg">
-        Tout ce que vous devez savoir pour démarrer sereinement avec Vicket.
+        {{ $t('support.faq.description') }}
       </p>
     </div>
 
@@ -99,15 +99,14 @@ watch(() => route.hash, (hash) => {
 
     <div class="pt-8 text-center">
       <p class="text-[var(--ui-text-muted)] text-sm font-medium">
-        D'autres questions ? 
+        {{ $t('support.faq.any_other_questions') }} 
         <UButton
           variant="link"
           color="primary"
           class="font-bold px-1"
+          :label="$t('support.faq.contact_support')"
           @click="$emit('open-support')"
-        >
-          Notre support est là pour vous.
-        </UButton>
+        />
       </p>
     </div>
   </section>

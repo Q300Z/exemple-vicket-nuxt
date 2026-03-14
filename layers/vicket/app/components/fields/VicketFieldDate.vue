@@ -24,10 +24,12 @@ const dateValue = computed({
   }
 })
 
+const { locale, t } = useI18n()
+
 const formattedDisplay = computed(() => {
-  if (!props.modelValue) return 'Sélectionner une date'
+  if (!props.modelValue) return t('common.select_date')
   try {
-    return new Intl.DateTimeFormat('fr-FR', {
+    return new Intl.DateTimeFormat(locale.value === 'fr' ? 'fr-FR' : 'en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'

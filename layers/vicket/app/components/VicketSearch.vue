@@ -9,7 +9,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'Rechercher...',
+  placeholder: '',
   size: 'md'
 })
 
@@ -52,7 +52,7 @@ const useHistory = (q: string) => {
       ref="inputRef"
       v-model="searchQuery"
       icon="i-lucide-search"
-      :placeholder="placeholder"
+      :placeholder="placeholder || $t('common.search_placeholder')"
       :size="size"
       class="w-full"
       @keyup.enter="onEnter"
@@ -64,7 +64,7 @@ const useHistory = (q: string) => {
       v-if="(history?.length || 0) > 0 && !searchQuery"
       class="flex items-center gap-3 animate-in fade-in duration-500"
     >
-      <span class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">Récent :</span>
+      <span class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">{{ $t('common.recent') }}</span>
       <div class="flex flex-wrap gap-2">
         <UButton
           v-for="q in history"

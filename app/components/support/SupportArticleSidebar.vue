@@ -24,7 +24,7 @@ defineEmits(['open-ticket'])
       <div class="space-y-6">
         <div class="flex items-center gap-2 px-2">
           <UIcon name="i-lucide-layers" class="w-4 h-4 text-[var(--ui-primary)]" />
-          <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ui-text-muted)]">Articles liés</span>
+          <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--ui-text-muted)]">{{ $t('article.related_articles') }}</span>
         </div>
         <VicketSidebarArticles :current-article-id="articleId" />
       </div>
@@ -50,10 +50,10 @@ defineEmits(['open-ticket'])
 
         <div class="space-y-3 relative z-10 text-inverted">
           <h3 class="font-black text-2xl leading-tight tracking-tight">
-            Une question spécifique ?
+            {{ $t('article.specific_question') }}
           </h3>
           <p class="text-sm opacity-80 leading-relaxed font-medium">
-            Nos ingénieurs support sont disponibles en direct pour vous débloquer.
+            {{ $t('article.expert_assistance') }}
           </p>
         </div>
 
@@ -63,13 +63,12 @@ defineEmits(['open-ticket'])
           variant="solid"
           size="xl"
           class="rounded-2xl font-black shadow-xl transition-all hover:scale-105 active:scale-95 bg-white text-gray-950 dark:bg-gray-100"
+          :label="$t('common.open_ticket')"
           :ui="{ 
             label: 'font-bold' 
           }"
           @click="$emit('open-ticket')"
-        >
-          Ouvrir un ticket
-        </UButton>
+        />
       </div>
     </div>
   </aside>

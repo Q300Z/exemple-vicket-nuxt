@@ -34,7 +34,7 @@ defineExpose({
     <form class="space-y-4" @submit.prevent="handleSubmit">
       <UTextarea
         v-model="content"
-        placeholder="Écrivez votre message de réponse..."
+        :placeholder="$t('vicket.reply_placeholder')"
         :rows="4"
         autoresize
         variant="none"
@@ -60,11 +60,10 @@ defineExpose({
             icon="i-lucide-send"
             size="lg"
             :loading="isSending"
+            :label="$t('vicket.send_reply')"
             class="rounded-full px-8 shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]"
             :ui="{ label: 'text-[var(--ui-bg)] font-bold' }"
-          >
-            Envoyer la réponse
-          </UButton>
+          />
         </div>
       </div>
     </form>

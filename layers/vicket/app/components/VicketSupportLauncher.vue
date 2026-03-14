@@ -104,7 +104,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
       >
         <!-- Header -->
         <div class="p-4 bg-[var(--ui-primary)] flex items-center justify-between shadow-sm border-b border-white/10">
-          <span class="font-bold text-inverted">{{ websiteName }} Aide</span>
+          <span class="font-bold text-inverted">{{ websiteName }} {{ $t('common.support_center') }}</span>
           <UButton
             icon="i-lucide-x"
             variant="ghost"
@@ -120,7 +120,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
             ref="searchInputRef"
             v-model="searchQuery"
             icon="i-lucide-search"
-            :placeholder="vicket.labels.searchPlaceholder"
+            :placeholder="$t('common.search_placeholder')"
             size="sm"
             variant="subtle"
             class="w-full"
@@ -131,7 +131,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
         <!-- Content -->
         <div class="overflow-y-auto max-h-[350px] p-2 space-y-1 bg-[var(--ui-bg-accented)]/30">
           <p v-if="displayArticles.length > 0" class="px-3 py-2 text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
-            {{ isSearching ? 'Résultats de recherche' : 'Articles suggérés' }}
+            {{ isSearching ? $t('common.search_results') : $t('common.popular_articles') }}
           </p>
           <button
             v-for="article in displayArticles"
@@ -167,7 +167,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
             class="py-12 text-center"
           >
             <UIcon name="i-lucide-search-x" class="w-8 h-8 text-[var(--ui-text-muted)] mx-auto mb-2 opacity-20" />
-            <p class="text-xs text-[var(--ui-text-muted)]">Aucun article trouvé.</p>
+            <p class="text-xs text-[var(--ui-text-muted)]">{{ $t('common.no_results') }}</p>
           </div>
         </div>
 
@@ -188,7 +188,7 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
         :name="isOpen ? 'i-lucide-chevron-down' : 'i-lucide-life-buoy'" 
         class="w-7 h-7 text-inverted" 
       />
-      <span class="sr-only">Besoin d'aide ?</span>
+      <span class="sr-only">{{ $t('vicket.need_help') }}</span>
     </UButton>
   </aside>
 </template>

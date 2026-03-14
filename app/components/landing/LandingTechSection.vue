@@ -15,20 +15,20 @@
       <div class="space-y-8">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] border border-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]">
           <UIcon name="i-lucide-code" class="w-4 h-4 text-[var(--ui-primary)]" />
-          <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-highlighted)]">SOLID Architecture</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-highlighted)]">{{ $t('landing.tech.badge') }}</span>
         </div>
 
         <h2 class="text-4xl font-bold text-[var(--ui-text-highlighted)] leading-tight">
-          Personnalisation <br />
-          <span class="text-gray-600 dark:text-[var(--ui-text-default)]">au runtime.</span>
+          {{ $t('landing.tech.title_1') }} <br />
+          <span class="text-gray-600 dark:text-gray-400">{{ $t('landing.tech.title_2') }}</span>
         </h2>
 
-        <p class="text-[var(--ui-text-default)] text-lg leading-relaxed">
-          Vicket a été conçu avec une approche <span class="text-[var(--ui-primary)] font-semibold">Contract-First</span>. Grâce à une architecture modulaire et aux CSS Variables, votre centre d'aide s'adapte à n'importe quelle identité visuelle tout en garantissant une stabilité totale.
+        <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+          {{ $t('landing.tech.description') }}
         </p>
 
         <ul class="space-y-4">
-          <li v-for="item in ['Architecture SOLID & Repository Pattern', 'Workflows et Triggers automatisés', 'Scoring intelligent de priorité']" :key="item" class="flex items-center gap-3 text-sm text-[var(--ui-text-default)]">
+          <li v-for="item in [$t('landing.tech.item_1'), $t('landing.tech.item_2'), $t('landing.tech.item_3')]" :key="item" class="flex items-center gap-3 text-sm text-gray-800 dark:text-gray-200">
             <UIcon name="i-lucide-check-circle-2" class="w-5 h-5 text-[var(--ui-primary)]" />
             {{ item }}
           </li>
@@ -38,7 +38,7 @@
           color="primary"
           variant="solid"
           size="xl"
-          label="Code Source sur GitHub"
+          :label="$t('landing.tech.button')"
           icon="i-simple-icons-github"
           class="rounded-2xl px-8 shadow-lg"
           :ui="{ label: 'font-bold' }"

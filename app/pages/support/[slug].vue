@@ -46,7 +46,7 @@ watchEffect(() => {
           variant="ghost"
           color="neutral"
           :icon="isDistractionFree ? 'i-lucide-sidebar' : 'i-lucide-maximize-2'"
-          :label="isDistractionFree ? 'Afficher la barre latérale' : 'Lecture sans distraction'"
+          :label="isDistractionFree ? $t('article.show_sidebar') : $t('article.distraction_free')"
           class="rounded-full text-[10px] font-bold uppercase tracking-widest"
           @click="isDistractionFree = !isDistractionFree"
         />
@@ -66,9 +66,9 @@ watchEffect(() => {
 
         <!-- Not Found -->
         <div v-else-if="!article" class="py-20">
-          <VicketEmptyState title="Article introuvable" description="Désolé, nous ne trouvons pas l'article." icon="i-lucide-file-question">
+          <VicketEmptyState :title="$t('article.not_found')" :description="$t('article.not_found_desc')" icon="i-lucide-file-question">
             <template #actions>
-              <UButton to="/support" variant="subtle" color="neutral" class="rounded-full px-8">Retour au support</UButton>
+              <UButton to="/support" variant="subtle" color="neutral" class="rounded-full px-8">{{ $t('article.back_to_support') }}</UButton>
             </template>
           </VicketEmptyState>
         </div>

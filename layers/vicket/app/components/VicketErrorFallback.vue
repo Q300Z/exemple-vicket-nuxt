@@ -41,17 +41,17 @@ const reportError = () => {
 
     <div class="space-y-1">
       <p class="font-bold text-[var(--ui-text-highlighted)]">
-        {{ title }}
+        {{ title || $t('common.load_failed') }}
       </p>
       <p class="text-xs text-[var(--ui-text-muted)] max-w-xs mx-auto">
-        {{ description }}
+        {{ description || $t('common.load_failed_desc') }}
       </p>
     </div>
 
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
       <UButton
         icon="i-lucide-refresh-cw"
-        label="Réessayer"
+        :label="$t('common.retry')"
         variant="soft"
         color="error"
         class="rounded-full px-6"
@@ -59,7 +59,7 @@ const reportError = () => {
       />
       <UButton
         icon="i-lucide-alert-circle"
-        label="Envoyer un rapport"
+        :label="$t('common.report_error')"
         variant="ghost"
         color="neutral"
         class="rounded-full px-6 text-xs"

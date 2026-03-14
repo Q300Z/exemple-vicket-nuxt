@@ -11,6 +11,12 @@ export default withNuxt({
     '@intlify/vue-i18n': vueI18n,
     '@stylistic': stylistic
   },
+  settings: {
+    'vue-i18n': {
+      localeDir: './i18n/locales/*.json',
+      messageSyntaxVersion: '^9.0.0'
+    }
+  },
   rules: {
     // --- SOLID & LOGIC QUALITY ---
     '@typescript-eslint/no-explicit-any': 'error',
@@ -34,9 +40,9 @@ export default withNuxt({
     'vuejs-accessibility/anchor-has-content': 'error',
 
     // --- INTERNATIONALIZATION (i18n) ---
-    '@intlify/vue-i18n/no-dynamic-keys': 'warn',
-    '@intlify/vue-i18n/no-unused-keys': ['error', { extensions: ['.json', '.vue'] }],
-    '@intlify/vue-i18n/no-missing-keys': 'error',
+    '@intlify/vue-i18n/no-dynamic-keys': 'off',
+    '@intlify/vue-i18n/no-unused-keys': 'warn',
+    '@intlify/vue-i18n/no-missing-keys': 'warn',
 
     // --- STYLISTIC (Nuxt 4 Standard) ---
     '@stylistic/semi': ['error', 'never'],

@@ -29,10 +29,12 @@ const { isPolling, startPolling } = useTicketPolling(token, (updatedData) => {
 })
 
 /* ── Methods ── */
+const { t } = useI18n()
+
 const AUTHOR_LABELS: Record<string, string> = {
-  reporter: 'Vous',
-  agent: 'Expert Support',
-  system: 'Système'
+  reporter: t('vicket.author_you'),
+  agent: t('vicket.author_agent'),
+  system: t('vicket.author_system')
 }
 
 const loadThread = async () => {
@@ -43,20 +45,20 @@ const loadThread = async () => {
     thread.value = data
     if (data.status?.label.toLowerCase() !== 'closed') startPolling()
   } catch {
-    notifications.error('Erreur', 'Impossible de charger le ticket.')
+    notifications.error('Erreur', t('vicket.error_load_thread'))
   } finally { isLoading.value = false }
 }
 
 const onReply = async ({ content, files }: { content: string, files: File[] }) => {
-  if (!content.trim() && files.length === 0) return notifications.warn('Validation', 'Message requis.')
+  if (!content.trim() && files.length === 0) return notifications.warn('Validation', t('vicket.msg_required'))
   isSending.value = true
   try {
     await sendReply(token.value, content.trim(), files)
     replyBox.value?.clear()
-    notifications.success('Succès', 'Réponse envoyée.')
+    notifications.success('Succès', t('vicket.reply_sent'))
     await loadThread()
   } catch {
-    notifications.error('Erreur', 'Envoi échoué.')
+    notifications.error('Erreur', t('vicket.reply_failed'))
   } finally { isSending.value = false }
 }
 
@@ -75,7 +77,7 @@ watch(() => token.value, () => loadThread(), { immediate: true })
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--ui-success)] opacity-75" />
             <span class="relative inline-flex rounded-full h-2 w-2 bg-[var(--ui-success)]" />
           </span>
-          <span class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">Live actif</span>
+          <span class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">{{ $t('vicket.live_active') }}</span>
         </div>
       </div>
 
@@ -93,13 +95,13 @@ watch(() => token.value, () => loadThread(), { immediate: true })
           </div>
           <div class="flex items-center gap-3">
             <VicketStatusBadge v-if="thread.status?.label" :label="thread.status.label" />
-            <UBadge v-if="thread.priority?.label && thread.priority.label.toLowerCase() !== 'low'" color="warning" variant="subtle">Priorité : {{ thread.priority.label }}</UBadge>
+            <UBadge v-if="thread.priority?.label && thread.priority.label.toLowerCase() !== 'low'" color="warning" variant="subtle">{{ $t('vicket.priority', { label: thread.priority.label }) }}</UBadge>
           </div>
         </div>
 
         <!-- Summary -->
         <UCard v-if="summaryAnswers.length > 0" class="subtle-gradient overflow-hidden border-[color-mix(in_srgb,var(--ui-primary)_10%,var(--ui-border))]">
-          <template #header><span class="font-bold">Détails du formulaire</span></template>
+          <template #header><span class="font-bold">{{ $t('vicket.form_details') }}</span></template>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div v-for="answer in summaryAnswers" :key="answer.id" class="space-y-1">
               <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase">{{ answer.question_label }}</p>
@@ -110,7 +112,7 @@ watch(() => token.value, () => loadThread(), { immediate: true })
 
         <!-- Initial Message -->
         <UCard v-if="firstReporterMessage" class="subtle-gradient border-[var(--ui-border)]">
-          <template #header><span class="font-bold">Message initial</span></template>
+          <template #header><span class="font-bold">{{ $t('vicket.initial_message') }}</span></template>
           <VicketContentRenderer :content="firstReporterMessage.content" />
         </UCard>
 

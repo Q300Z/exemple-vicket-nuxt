@@ -5,7 +5,8 @@ import VicketFileDropZone from '../../app/components/VicketFileDropZone.vue'
 describe('VicketFileDropZone', () => {
   it('renders the drop zone with correct label', async () => {
     const wrapper = await mountSuspended(VicketFileDropZone)
-    expect(wrapper.text()).toContain('Cliquer ou glisser vos fichiers')
+    // Check for i18n keys (standard for unit tests)
+    expect(wrapper.text()).toContain('vicket.dropzone_title')
   })
 
   it('updates state when dragging files over', async () => {

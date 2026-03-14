@@ -8,11 +8,13 @@ import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 if (!knowledge) throw new Error('Knowledge Repository not provided')
 
+const { t } = useI18n()
+
 // --- SEO (Nuxt 4 Best Practice) ---
 useSeoMeta({
-  title: 'Centre d\'aide',
-  description: 'Trouvez des réponses à vos questions ou contactez notre support technique.',
-  ogTitle: 'Vicket Support - Centre d\'aide',
+  title: () => t('seo.support.title'),
+  description: () => t('seo.support.description'),
+  ogTitle: () => t('seo.support.title'),
   ogType: 'website'
 })
 
@@ -106,13 +108,13 @@ const retryAll = (recover: () => Promise<void>) => {
         <div v-else class="py-12">
           <VicketEmptyState
             v-if="searchQuery?.trim()"
-            title="Aucun résultat trouvé"
-            :description="`Nous n'avons trouvé aucun article correspondant à « ${searchQuery} ».`"
+            :title="$t('common.no_results')"
+            :description="$t('common.no_results_for', { query: searchQuery })"
             icon="i-lucide-search-x"
           >
             <template #content>
               <div v-if="trendingArticles.length > 0" class="mt-8 space-y-4">
-                <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest text-center">Articles populaires</p>
+                <p class="text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest text-center">{{ $t('common.popular_articles') }}</p>
                 <div class="flex flex-col gap-2 max-w-sm mx-auto">
                   <UButton
                     v-for="ta in trendingArticles"
@@ -130,18 +132,18 @@ const retryAll = (recover: () => Promise<void>) => {
               </div>
             </template>
             <template #actions>
-              <UButton color="neutral" variant="subtle" class="rounded-full px-8" @click="searchQuery = ''; onSearch()">Effacer la recherche</UButton>
+              <UButton color="neutral" variant="subtle" class="rounded-full px-8" @click="searchQuery = ''; onSearch()">{{ $t('common.clear_search') }}</UButton>
             </template>
           </VicketEmptyState>
 
           <VicketEmptyState
             v-else
-            title="Besoin d'aide ?"
-            description="Notre base de connaissances est en cours de mise à jour."
+            :title="$t('vicket.need_help')"
+            :description="$t('vicket.kb_update')"
             icon="i-lucide-message-square"
           >
             <template #actions>
-              <UButton variant="solid" size="lg" class="rounded-full px-10 shadow-lg" @click="openDialog" />
+              <UButton :label="$t('common.open_ticket')" variant="solid" size="lg" class="rounded-full px-10 shadow-lg" @click="openDialog" />
             </template>
           </VicketEmptyState>
         </div>

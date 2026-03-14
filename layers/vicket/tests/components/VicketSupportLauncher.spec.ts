@@ -44,8 +44,7 @@ describe('VicketSupportLauncher', () => {
     const button = wrapper.find('button')
     await button.trigger('click')
 
-    // Note: Due to mountSuspended context isolation with Layers, 
-    // injection might fallback to default 'Vicket' in tests.
-    expect(wrapper.text()).toMatch(/Vicket Aide|Support Aide/)
+    // Updated for i18n keys
+    expect(wrapper.text()).toContain('common.support_center')
   })
 })

@@ -24,10 +24,10 @@ defineProps<{ features: Feature[] }>()
         />
       </div>
       <h2 class="text-xl font-extrabold text-[var(--ui-text-highlighted)] mb-3">
-        {{ f.title }}
+        {{ $t(f.title) }}
       </h2>
-      <p class="text-sm leading-relaxed text-[var(--ui-text-muted)]">
-        {{ f.desc }}
+      <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+        {{ $t(f.desc) }}
       </p>
     </div>
   </div>

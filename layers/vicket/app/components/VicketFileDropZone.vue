@@ -33,7 +33,7 @@ const onFileSelect = (e: Event) => {
     ]"
     role="button"
     tabindex="0"
-    aria-label="Zone de dépôt de fichiers"
+    :aria-label="$t('vicket.dropzone_aria')"
     @dragover.prevent="isDragging = true"
     @dragleave.prevent="isDragging = false"
     @drop.prevent="onDrop"
@@ -67,10 +67,10 @@ const onFileSelect = (e: Event) => {
       </div>
       <div>
         <p class="text-base font-bold text-[var(--ui-text-highlighted)]">
-          Cliquer ou glisser vos fichiers
+          {{ $t('vicket.dropzone_title') }}
         </p>
         <p class="text-sm text-[var(--ui-text-muted)] mt-1">
-          Images, PDF, documents (Max 10MB)
+          {{ $t('vicket.dropzone_desc') }}
         </p>
       </div>
     </div>

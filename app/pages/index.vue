@@ -10,15 +10,15 @@ const features = computed(() => appConfig.landing?.features || [])
 const stats = computed(() => appConfig.landing?.stats || [])
 
 // --- SEO (Nuxt 4 Best Practices) ---
+const { t } = useI18n()
+
 useSeoMeta({
-  title: 'Vicket - L\'implémentation Nuxt 4 de référence',
-  description: 'Découvrez comment intégrer la puissance de Vicket dans vos applications Nuxt 4 avec une architecture industrielle et une marque blanche totale.',
-  ogTitle: 'Vicket Nuxt Showcase - Industrial Grade',
-  ogDescription: 'Le futur du support client est ici. Intégrez Vicket.app dans votre stack Nuxt en quelques minutes.',
+  title: () => t('seo.index.title'),
+  description: () => t('seo.index.description'),
+  ogTitle: () => t('seo.index.title'),
+  ogDescription: () => t('seo.index.description'),
   ogImage: '/og-image.png',
-  twitterCard: 'summary_large_image',
-  twitterTitle: 'Vicket Nuxt Showcase',
-  twitterDescription: 'Le support client White-Label réinventé pour Nuxt 4.'
+  twitterCard: 'summary_large_image'
 })
 </script>
 
@@ -52,13 +52,13 @@ useSeoMeta({
       <UContainer>
         <div class="text-center space-y-8 max-w-4xl mx-auto">
           <h2 class="text-3xl md:text-4xl font-bold text-[var(--ui-text-highlighted)] italic">
-            "Le support client nouvelle génération."
+            "{{ $t('landing.quote.text') }}"
           </h2>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <UButton
               variant="ghost"
               color="neutral"
-              label="Découvrir Vicket.app"
+              :label="$t('landing.quote.discover')"
               icon="i-lucide-external-link"
               size="lg"
               class="rounded-xl"
@@ -68,7 +68,7 @@ useSeoMeta({
             <UButton
               variant="subtle"
               color="primary"
-              label="Documentation Vicket"
+              :label="$t('landing.quote.docs')"
               icon="i-lucide-book"
               size="lg"
               class="rounded-xl"

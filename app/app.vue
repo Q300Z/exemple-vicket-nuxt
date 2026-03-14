@@ -1,18 +1,19 @@
 <script setup lang="ts">
 const { isDialogOpen, templates, openDialog } = useSupportState()
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale, t } = useI18n()
 const route = useRoute()
 
 // Accessibility Audit Detection (Clean Strategy)
 const isAuditMode = computed(() => route.query.audit === 'true')
 
 useSeoMeta({
-  ogSiteName: 'Vicket Support Showcase',
+  ogSiteName: () => t('site.name'),
   ogType: 'website',
   twitterCard: 'summary_large_image'
 })
 
 useHead({
+  title: () => t('site.name'),
   bodyAttrs: {
     class: computed(() => isAuditMode.value ? 'a11y-audit-mode' : '')
   },
@@ -95,7 +96,7 @@ const items = computed(() => [
 
           <UButton
             to="/support"
-            label="Centre d'aide"
+            :label="$t('common.support_center')"
             variant="ghost"
             color="neutral"
             size="sm"
@@ -103,7 +104,7 @@ const items = computed(() => [
           />
 
           <UButton
-            label="Nouveau Ticket"
+            :label="$t('common.new_ticket')"
             icon="i-lucide-plus"
             size="sm"
             class="rounded-full px-4 hidden md:flex shadow-md shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
@@ -118,7 +119,7 @@ const items = computed(() => [
         <div class="p-4 space-y-4">
           <UButton
             to="/support"
-            label="Centre d'aide"
+            :label="$t('common.support_center')"
             variant="ghost"
             color="neutral"
             block
@@ -126,7 +127,7 @@ const items = computed(() => [
             icon="i-lucide-life-buoy"
           />
           <UButton
-            label="Nouveau Ticket"
+            :label="$t('common.new_ticket')"
             icon="i-lucide-plus"
             block
             class="rounded-xl py-3 shadow-lg"
@@ -135,10 +136,10 @@ const items = computed(() => [
           />
           
           <div class="pt-8 border-t border-[var(--ui-border)]">
-            <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-muted)] mb-4 px-2">Apparence</p>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-muted)] mb-4 px-2">{{ $t('common.appearance') }}</p>
             <div class="flex items-center gap-4 px-2">
               <UColorModeButton />
-              <span class="text-sm font-medium">Mode Sombre / Clair</span>
+              <span class="text-sm font-medium">{{ $t('common.dark_light_mode') }}</span>
             </div>
           </div>
         </div>
@@ -182,7 +183,7 @@ const items = computed(() => [
           <UButton
             block
             size="lg"
-            label="Ouvrir un ticket"
+            :label="$t('common.open_ticket')"
             icon="i-lucide-message-square"
             class="rounded-xl shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_15%,transparent)]"
             :ui="{ label: 'text-inverted font-bold' }"

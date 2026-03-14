@@ -35,39 +35,39 @@ export default defineAppConfig({
   // --- Landing Page Data (OCP) ---
   landing: {
     stats: [
-      { label: 'Utilisateurs', value: '18+' },
-      { label: 'Gain de temps', value: '50%+' },
-      { label: 'Satisfaction', value: '99%' }
+      { label: 'landing.stats.users', value: '18+' },
+      { label: 'landing.stats.time_save', value: '50%+' },
+      { label: 'landing.stats.satisfaction', value: '99%' }
     ],
     features: [
       {
-        title: 'Support White-Label',
-        desc: 'Des composants UI personnalisables qui se fondent nativement dans votre produit.',
+        title: 'landing.features.white_label.title',
+        desc: 'landing.features.white_label.desc',
         icon: 'i-lucide-palette'
       },
       {
-        title: 'Workflows Automatisés',
-        desc: 'Intégrez des processus temporels et manuels pour automatiser votre support client.',
+        title: 'landing.features.workflows.title',
+        desc: 'landing.features.workflows.desc',
         icon: 'i-lucide-git-branch'
       },
       {
-        title: 'Scoring Intelligent',
-        desc: 'Algorithme de priorité basé sur des signaux réels pour traiter l\'urgent en priorité.',
+        title: 'landing.features.scoring.title',
+        desc: 'landing.features.scoring.desc',
         icon: 'i-lucide-brain-circuit'
       },
       {
-        title: 'Visibilité par Équipe',
-        desc: 'Compartimentez le support par départements (Engineering, Sales, Support L1).',
+        title: 'landing.features.teams.title',
+        desc: 'landing.features.teams.desc',
         icon: 'i-lucide-users-2'
       },
       {
-        title: 'Base de Connaissances',
-        desc: 'Réduisez le volume de tickets en permettant le self-service client intelligent.',
+        title: 'landing.features.knowledge.title',
+        desc: 'landing.features.knowledge.desc',
         icon: 'i-lucide-book-open'
       },
       {
-        title: 'Developer-First',
-        desc: 'Architecture SOLID et documentation riche pour une intégration en quelques minutes.',
+        title: 'landing.features.developer_first.title',
+        desc: 'landing.features.developer_first.desc',
         icon: 'i-lucide-code-2'
       }
     ]

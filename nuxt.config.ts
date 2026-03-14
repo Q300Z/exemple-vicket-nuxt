@@ -85,15 +85,13 @@ export default defineNuxtConfig({
 
   i18n: {
     locales: [
-      { code: 'fr', language: 'fr-FR', name: 'Français' },
-      { code: 'en', language: 'en-US', name: 'English' }
+      { code: 'fr', language: 'fr-FR', name: 'Français', file: 'fr.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' }
     ],
+    lazy: true,
+    langDir: 'locales',
     defaultLocale: 'fr',
-    strategy: 'no_prefix',
-    bundle: {
-      runtimeOnly: true,
-      fullInstall: false
-    }
+    strategy: 'no_prefix'
   },
 
   colorMode: { classSuffix: '' },

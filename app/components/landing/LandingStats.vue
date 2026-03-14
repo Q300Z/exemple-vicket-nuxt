@@ -19,8 +19,8 @@ defineProps<{ stats: Stat[] }>()
       <dd class="text-2xl font-bold text-[var(--ui-text-highlighted)]">
         {{ s.value }}
       </dd>
-      <dt class="text-[11px] font-bold uppercase tracking-widest text-gray-950 dark:text-gray-200">
-        {{ s.label }}
+      <dt class="text-[11px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+        {{ $t(s.label) }}
       </dt>
     </div>
   </dl>
