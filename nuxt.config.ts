@@ -74,7 +74,7 @@ export default defineNuxtConfig({
 
   colorMode: { classSuffix: '' },
   future: { compatibilityVersion: 4 },
-  ssr: process.env.NUXT_SSR !== 'false',
+  ssr: true,
   experimental: {
     viewTransition: true,
     componentDetection: true,

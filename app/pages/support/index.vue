@@ -25,9 +25,10 @@ const { data: faqsData, status: faqsStatus, refresh: refreshFaqs } = await fetch
 /* ── Computed ── */
 const articles = computed(() => {
   const allResults = (articlesData.value?.data || [])
-  // Filter out FAQs because they are displayed in a separate section below (SRP)
   return allResults.filter((item: { type?: string }) => item.type !== 'faq')
 })
+
+const hasResults = computed(() => articles.value.length > 0)
 const faqs = computed(() => faqsData.value?.data || [])
 const isLoading = computed(() => articlesStatus.value === 'pending' || faqsStatus.value === 'pending')
 

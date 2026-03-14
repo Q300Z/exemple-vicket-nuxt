@@ -65,10 +65,18 @@ const { stripHtml } = useContent()
 
         <template v-else>
           <div class="flex justify-between items-start mb-4">
-            <UBadge v-if="article.category" size="xs" variant="soft" class="rounded-lg px-2.5 py-1">
+            <UBadge 
+              v-if="article.category" 
+              size="xs" 
+              variant="subtle" 
+              class="rounded-lg px-2.5 py-1 font-bold text-primary-700 dark:text-primary-300"
+            >
               {{ article.category }}
             </UBadge>
-            <div class="p-2 rounded-xl bg-[var(--ui-bg-accented)] text-[var(--ui-text-muted)] group-hover:text-[var(--ui-primary)] transition-colors">
+            <div 
+              class="p-2 rounded-xl bg-[var(--ui-bg-accented)] text-[var(--ui-text-muted)] group-hover:text-[var(--ui-primary)] transition-colors"
+              aria-hidden="true"
+            >
               <UIcon name="i-lucide-arrow-right" class="w-4 h-4 transform group-hover:translate-x-1" />
             </div>
           </div>

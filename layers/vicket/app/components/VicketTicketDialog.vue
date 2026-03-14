@@ -136,6 +136,7 @@ defineShortcuts({
               variant="ghost"
               color="neutral"
               class="flex items-center justify-start gap-4 p-4 rounded-2xl group"
+              :aria-label="`Sélectionner la catégorie ${tpl.label}`"
               @click="selectTemplate(tpl)"
             >
               <template #leading>

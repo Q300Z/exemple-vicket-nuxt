@@ -30,7 +30,9 @@ test.describe('Ticket Dialog Multi-step Flow', () => {
     await expect(page.getByRole('heading', { name: /aide|aider/i })).toBeVisible({ timeout: 15000 })
     
     // 3. Select a category (template)
-    await page.getByText('Tech Support').click({ force: true })
+    // We search for any button containing 'Tech Support' or the first available template
+    const templateBtn = page.locator('button').filter({ hasText: /Tech Support|Bug|Technique/i }).first()
+    await templateBtn.click({ force: true })
     
     // 4. Check we are at step: form
     await expect(page.getByRole('button', { name: /Envoyer|Soumettre/i })).toBeVisible({ timeout: 15000 })

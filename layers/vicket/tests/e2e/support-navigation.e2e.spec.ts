@@ -24,6 +24,17 @@ test.describe('Vicket Support Navigation', () => {
       })
     })
 
+    await page.route('**/api/vicket/articles/configurer-vicket*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: { id: 'a1', title: 'Comment configurer Vicket', slug: 'configurer-vicket', content: '<h2>Etape 1</h2><p>Contenu config.</p>', category: 'Technique' }
+        })
+      })
+    })
+
     // 2. Navigation
     await page.goto('/support')
     await expect(page.getByRole('heading', { name: /aide|aider/i })).toBeVisible({ timeout: 15000 })

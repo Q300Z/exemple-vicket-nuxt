@@ -5,7 +5,43 @@ import { test, expect } from '@playwright/test'
  */
 test.describe('Vicket Full Support Journey', () => {
   test('should allow a user to search, fail to find an article, and create a ticket', async ({ page }) => {
-    // 1. Arrival on Homepage
+    // 1. Setup dynamic mock BEFORE navigation
+    await page.route('**/api/vicket/articles*', async (route) => {
+      const url = route.request().url()
+      // If the query contains our 'non-existent' string, return empty
+      if (url.includes('XYZ-NON-EXISTENT-STUFF')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ success: true, data: [] })
+        })
+      } else {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            success: true,
+            data: [{ id: '1', title: 'Existing Article', slug: 'test', category: 'Support' }]
+          })
+        })
+      }
+    })
+
+    // Mock init for templates
+    await page.route('**/api/vicket/init*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: {
+            website: { name: 'Vicket' },
+            templates: [{ id: 't1', name: 'Tech Support', icon: 'i-lucide-wrench' }]
+          }
+        })
+      })
+    })
+
     await page.goto('/')
     await expect(page).toHaveTitle(/Vicket/)
 
