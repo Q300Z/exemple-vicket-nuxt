@@ -23,8 +23,12 @@ const formattedSize = computed(() => {
       v-if="previewUrl"
       class="w-12 h-12 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800 shrink-0"
     >
-      <img
+      <NuxtImg
         :src="previewUrl"
+        width="48"
+        height="48"
+        fit="cover"
+        format="webp"
         class="w-full h-full object-cover"
         :alt="file.name"
       />
@@ -43,10 +47,10 @@ const formattedSize = computed(() => {
 
     <!-- Meta -->
     <div class="flex-1 min-w-0">
-      <p class="text-sm font-bold truncate text-gray-900 dark:text-white">
+      <p class="text-sm font-bold truncate text-[var(--ui-text-highlighted)]">
         {{ file.name }}
       </p>
-      <p class="text-[10px] font-medium text-gray-500 uppercase tracking-wider">
+      <p class="text-[10px] font-medium text-[var(--ui-text-muted)] uppercase tracking-wider">
         {{ formattedSize }}
       </p>
     </div>

@@ -40,10 +40,10 @@ const reportError = () => {
     </div>
 
     <div class="space-y-1">
-      <p class="font-bold text-gray-900 dark:text-white">
+      <p class="font-bold text-[var(--ui-text-highlighted)]">
         {{ title }}
       </p>
-      <p class="text-xs text-gray-500 max-w-xs mx-auto">
+      <p class="text-xs text-[var(--ui-text-muted)] max-w-xs mx-auto">
         {{ description }}
       </p>
     </div>

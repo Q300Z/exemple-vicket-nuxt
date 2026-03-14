@@ -9,10 +9,12 @@ const logo = branding.logo
 
 <template>
   <div class="flex items-center">
-    <img
+    <NuxtImg
       v-if="logo.type === 'image' && logo.src"
       :src="logo.src"
       :alt="logo.alt"
+      height="32"
+      format="webp"
       class="h-8 w-auto object-contain"
     />
     <svg

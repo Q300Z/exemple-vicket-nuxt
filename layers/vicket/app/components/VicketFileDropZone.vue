@@ -66,10 +66,10 @@ const onFileSelect = (e: Event) => {
         />
       </div>
       <div>
-        <p class="text-base font-bold text-gray-900 dark:text-white">
+        <p class="text-base font-bold text-[var(--ui-text-highlighted)]">
           Cliquer ou glisser vos fichiers
         </p>
-        <p class="text-sm text-gray-500 mt-1">
+        <p class="text-sm text-[var(--ui-text-muted)] mt-1">
           Images, PDF, documents (Max 10MB)
         </p>
       </div>

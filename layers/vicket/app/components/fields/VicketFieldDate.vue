@@ -55,8 +55,9 @@ const formattedDisplay = computed(() => {
 
       <template #content>
         <div class="p-1 bg-[var(--ui-bg-default)] border border-[var(--ui-border-accented)] rounded-lg shadow-xl dark:shadow-primary/10">
+          <!-- @ts-ignore - DateValue type mismatch in UCalendar -->
           <UCalendar
-            v-model="dateValue as any"
+            v-model="dateValue"
             color="primary"
             class="p-1"
           />

@@ -20,15 +20,15 @@
 
         <h2 class="text-4xl font-bold text-[var(--ui-text-highlighted)] leading-tight">
           Personnalisation <br />
-          <span class="text-[var(--ui-text-muted)] dark:text-[var(--ui-text-default)]">au runtime.</span>
+          <span class="text-gray-600 dark:text-[var(--ui-text-default)]">au runtime.</span>
         </h2>
 
-        <p class="text-[var(--ui-text-default)] dark:text-gray-200 text-lg leading-relaxed">
-          Grâce à une architecture modulaire et aux <span class="text-[#4a47ff] dark:text-primary-400 font-semibold">CSS Variables</span> de Nuxt UI, votre centre d'aide s'adapte à n'importe quelle identité visuelle.
+        <p class="text-[var(--ui-text-default)] text-lg leading-relaxed">
+          Vicket a été conçu avec une approche <span class="text-[var(--ui-primary)] font-semibold">Contract-First</span>. Grâce à une architecture modulaire et aux CSS Variables, votre centre d'aide s'adapte à n'importe quelle identité visuelle tout en garantissant une stabilité totale.
         </p>
 
         <ul class="space-y-4">
-          <li v-for="item in ['Architecture SOLID & Repository Pattern', 'Mise en page dynamique (Grille/Liste)', 'Optimisé pour Nuxt 4 & Layers']" :key="item" class="flex items-center gap-3 text-sm text-[var(--ui-text-default)] dark:text-gray-300">
+          <li v-for="item in ['Architecture SOLID & Repository Pattern', 'Workflows et Triggers automatisés', 'Scoring intelligent de priorité']" :key="item" class="flex items-center gap-3 text-sm text-[var(--ui-text-default)]">
             <UIcon name="i-lucide-check-circle-2" class="w-5 h-5 text-[var(--ui-primary)]" />
             {{ item }}
           </li>
@@ -56,7 +56,7 @@
               <div class="w-3 h-3 rounded-full bg-[var(--ui-warning)] opacity-50" />
               <div class="w-3 h-3 rounded-full bg-[var(--ui-success)] opacity-50" />
             </div>
-            <div class="ml-4 text-[10px] font-mono text-[var(--ui-text-muted)] dark:text-gray-400 uppercase tracking-widest">Theme CSS</div>
+            <div class="ml-4 text-[10px] font-mono text-[var(--ui-text-muted)] uppercase tracking-widest">Theme CSS</div>
           </div>
           <pre class="font-mono text-xs leading-relaxed"><code class="text-[var(--ui-primary)] dark:text-primary-400"><span class="text-[var(--ui-text-muted)] dark:text-gray-500">/* Le moteur injecte automatiquement */</span>
 <span class="text-[var(--ui-text-highlighted)] dark:text-white">:root</span> {

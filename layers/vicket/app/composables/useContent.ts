@@ -8,10 +8,9 @@ export const useContent = () => {
    */
   const sanitize = (html: string) => {
     if (!html) return ''
-    // Re-using the logic from the scaffold but centralized
     return html
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/\son\w+="[^"]*"/gi, '')
+      .replace(/\son\w+(=[^\s>]+)?/gi, '') // More robust event handler removal
   }
 
   /**

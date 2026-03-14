@@ -29,15 +29,26 @@ describe('Vicket Zod Schemas', () => {
     expect(schema.safeParse(invalidData).success).toBe(false)
   })
 
-  it('handles lowercase checkbox type correctly', () => {
+  it('handles boolean checkbox correctly', () => {
     const questions = [
-      { id: 'q1', label: 'Choices', required: true, type: 'checkbox' } // lowercase
+      { id: 'q1', label: 'Agree', required: true, type: 'CHECKBOX' }
     ]
     const schema = createTicketSchema(questions)
     
-    // Should accept array and valid title (min 3 chars)
+    const validData = { title: 'Test Title', email: 'a@b.com', q1: true }
+    expect(schema.safeParse(validData).success).toBe(true)
+
+    const invalidData = { title: 'Test Title', email: 'a@b.com', q1: false } // Required checkbox must be true
+    expect(schema.safeParse(invalidData).success).toBe(false)
+  })
+
+  it('handles array checkboxes correctly', () => {
+    const questions = [
+      { id: 'q1', label: 'Choices', required: true, type: 'CHECKBOXES' }
+    ]
+    const schema = createTicketSchema(questions)
+    
     const validData = { title: 'Test Title', email: 'a@b.com', q1: ['opt1', 'opt2'] }
-    const result = schema.safeParse(validData)
-    expect(result.success).toBe(true)
+    expect(schema.safeParse(validData).success).toBe(true)
   })
 })

@@ -34,13 +34,18 @@ export const createTicketSchema = (
     }
 
     const type = q.type?.toUpperCase()
-    const isArrayType = type === 'CHECKBOX' || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
+    const isArrayType = type === 'CHECKBOXES' || type === 'MULTI_SELECT'
+    const isBooleanType = type === 'CHECKBOX'
 
     if (isArrayType) {
       const base = z.array(z.string())
       shape[q.id] = q.required 
         ? base.min(1, `Veuillez sélectionner au moins une option pour "${q.label}"`)
         : base.default([])
+    } else if (isBooleanType) {
+      shape[q.id] = q.required
+        ? z.boolean().refine(val => val === true, `Le champ "${q.label}" doit être coché`)
+        : z.boolean().optional()
     } else if (type === 'FILE') {
       // Stricter File Validation
       const base = z.any().refine((files) => {

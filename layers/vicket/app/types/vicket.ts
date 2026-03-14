@@ -1,65 +1,90 @@
-export interface ArticleSummary {
-  id: string
-  title: string
-  slug: string
-  category?: string
-  type?: 'article' | 'faq'
-  content?: string
-}
+import { z } from 'zod'
 
-export interface ArticleFull extends ArticleSummary {
-  content: string
-  category: string
-}
+/**
+ * Zod Schemas for API Validation (Industrial Hardening).
+ * Ensures that API contract changes don't break the UI.
+ */
 
-export interface TicketQuestion {
-  id: string
-  label: string
-  type: string
-  required: boolean
-  options?: { value: string, label: string }[]
-}
+export const ArticleSummarySchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  category: z.string().optional(),
+  type: z.enum(['article', 'faq']).optional(),
+  content: z.string().optional()
+})
 
-export interface TicketTemplate {
-  id: string
-  label: string
-  icon?: string
-  description?: string
-  questions: TicketQuestion[]
-}
+export const ArticleFullSchema = ArticleSummarySchema.extend({
+  content: z.string(),
+  category: z.string()
+})
 
-export interface TicketAttachment {
-  id: string
-  url: string
-  original_filename: string
-  mime_type: string
-}
+export const TicketQuestionSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  type: z.string(),
+  required: z.boolean(),
+  options: z.array(z.object({
+    value: z.string(),
+    label: z.string()
+  })).optional()
+})
 
-export interface TicketMessage {
-  id: string
-  content: string
-  author_type: 'reporter' | 'agent'
-  author_name: string
-  created_at: string
-  attachments?: TicketAttachment[]
-}
+export const TicketTemplateSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  icon: z.string().optional(),
+  description: z.string().optional(),
+  questions: z.array(TicketQuestionSchema)
+})
 
-export interface TicketThread {
-  id: string
-  token: string
-  subject: string
-  status: string
-  messages: TicketMessage[]
-}
+export const TicketAttachmentSchema = z.object({
+  id: z.string(),
+  url: z.string(),
+  original_filename: z.string(),
+  mime_type: z.string()
+})
 
-export interface SupportInitResponse {
-  success: boolean
-  data: {
-    website?: { name?: string }
-    templates: TicketTemplate[]
-    articles?: ArticleSummary[]
-    faqs?: { question: string, answer: string }[]
-  }
-}
+export const TicketMessageSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  author_type: z.enum(['reporter', 'agent', 'system']),
+  author_name: z.string(),
+  created_at: z.string(),
+  attachments: z.array(TicketAttachmentSchema).optional()
+})
+
+export const TicketThreadSchema = z.object({
+  id: z.string(),
+  token: z.string(),
+  subject: z.string(),
+  status: z.object({ label: z.string() }).optional(),
+  priority: z.object({ label: z.string() }).optional(),
+  messages: z.array(TicketMessageSchema)
+})
+
+export const SupportInitResponseSchema = z.object({
+  success: z.boolean(),
+  data: z.object({
+    website: z.object({ name: z.string().optional() }).optional(),
+    templates: z.array(TicketTemplateSchema),
+    articles: z.array(ArticleSummarySchema).optional(),
+    faqs: z.array(z.object({
+      question: z.string(),
+      answer: z.string()
+    })).optional(),
+    isFallback: z.boolean().optional()
+  })
+})
+
+/* ── TypeScript Types (Inferred from Zod) ── */
+export type ArticleSummary = z.infer<typeof ArticleSummarySchema>
+export type ArticleFull = z.infer<typeof ArticleFullSchema>
+export type TicketQuestion = z.infer<typeof TicketQuestionSchema>
+export type TicketTemplate = z.infer<typeof TicketTemplateSchema>
+export type TicketAttachment = z.infer<typeof TicketAttachmentSchema>
+export type TicketMessage = z.infer<typeof TicketMessageSchema>
+export type TicketThread = z.infer<typeof TicketThreadSchema>
+export type SupportInitResponse = z.infer<typeof SupportInitResponseSchema>
 
 export type LayoutMode = 'grid' | 'list' | 'minimal'

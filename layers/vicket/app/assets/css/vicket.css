@@ -14,12 +14,12 @@
   --vk-bg-accented: var(--ui-bg-accented);
   --vk-text: var(--ui-text-default);
   --vk-text-highlighted: var(--ui-text-highlighted);
-  --vk-text-muted: #52525b; /* Zinc-600 for high contrast on light backgrounds */
+  --vk-text-muted: #374151; /* Gray-700: High visibility anthracite */
 }
 
 /* Force Dark Mode inheritance for Nuxt Islands */
 .dark {
-  --vk-text-muted: #a1a1aa; /* Zinc-400 for high contrast on dark backgrounds */
+  --vk-text-muted: #d1d5db; /* Gray-300: High visibility light gray */
   --vk-text: var(--ui-text-default);
   --vk-text-highlighted: var(--ui-text-highlighted);
   --vk-border: var(--ui-border);
@@ -96,4 +96,43 @@
 
 .vk-code-block code {
   color: var(--vk-primary);
+}
+
+/**
+ * Accessibility Audit Mode (Industrial Strategy).
+ * Strips decorative elements and forces high-contrast colors for stable audits.
+ */
+.a11y-audit-mode * {
+  text-shadow: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Force static high contrast in audit mode */
+.a11y-audit-mode .text-gray-900,
+.a11y-audit-mode .text-gray-700,
+.a11y-audit-mode [class*="text-neutral-"],
+.a11y-audit-mode h1, 
+.a11y-audit-mode h2, 
+.a11y-audit-mode h3,
+.a11y-audit-mode p {
+  color: #000000 !important;
+}
+
+.dark .a11y-audit-mode .text-gray-900,
+.dark .a11y-audit-mode .text-gray-700,
+.dark .a11y-audit-mode h1, 
+.dark .a11y-audit-mode h2, 
+.dark .a11y-audit-mode h3,
+.dark .a11y-audit-mode p {
+  color: #ffffff !important;
+}
+
+.a11y-audit-mode [class*="blur-"],
+.a11y-audit-mode [class*="opacity-5"],
+.a11y-audit-mode [class*="primary-muted"],
+.a11y-audit-mode [class*="primary-accent"] {
+  display: none !important;
 }

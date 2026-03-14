@@ -139,8 +139,8 @@ export const useSupportData = () => {
         throw new Error('Invalid structure')
       } catch {
         return [
-          { id: 't1', label: 'Support Technique', icon: 'i-lucide-wrench', description: 'Un problème avec le produit ?', questions: [] },
-          { id: 't2', label: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.', questions: [] }
+          { id: 't1', name: 'Support Technique', icon: 'i-lucide-wrench', description: 'Un problème avec le produit ?', questions: [] },
+          { id: 't2', name: 'Facturation', icon: 'i-lucide-credit-card', description: 'Questions sur vos factures.', questions: [] }
         ]
       }
     }

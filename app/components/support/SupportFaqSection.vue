@@ -40,10 +40,10 @@ watch(() => route.hash, (hash) => {
       <div class="inline-flex p-3 rounded-2xl bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] text-[var(--ui-primary)] mb-2 shadow-sm ring-1 ring-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]">
         <UIcon name="i-lucide-help-circle" class="w-8 h-8" />
       </div>
-      <h2 class="text-4xl font-black tracking-tight text-neutral-900 dark:text-white">
+      <h2 class="text-4xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
         Foire Aux <span class="primary-gradient-text italic">Questions</span>
       </h2>
-      <p class="text-neutral-500 dark:text-neutral-400 max-w-xl mx-auto text-lg">
+      <p class="text-[var(--ui-text-muted)] max-w-xl mx-auto text-lg">
         Tout ce que vous devez savoir pour démarrer sereinement avec Vicket.
       </p>
     </div>
@@ -72,24 +72,23 @@ watch(() => route.hash, (hash) => {
             class="w-full text-left p-6 md:p-8 flex items-center justify-between gap-6 focus:outline-none"
             @click="toggle(index)"
           >
-            <span 
+            <span
               class="text-lg md:text-xl font-bold transition-colors duration-300"
-              :class="[openIndex === index ? 'text-[var(--ui-primary)]' : 'text-neutral-900 dark:text-white']"
+              :class="[openIndex === index ? 'text-[var(--ui-primary)]' : 'text-[var(--ui-text-highlighted)]']"
             >
               <VicketHighlightedText :text="item.label" :query="searchQuery" />
             </span>
-            
-            <div 
+
+            <div
               class="shrink-0 w-10 h-10 rounded-full flex items-center justify-center border border-[var(--ui-border)] transition-all duration-500"
-              :class="[openIndex === index ? 'bg-[var(--ui-primary)] border-transparent rotate-180 text-white' : 'group-hover:border-[var(--ui-primary)] group-hover:text-[var(--ui-primary)] text-neutral-500 dark:text-neutral-400']"
-            >
-              <UIcon name="i-lucide-chevron-down" class="w-5 h-5" />
+              :class="[openIndex === index ? 'bg-[var(--ui-primary)] border-transparent rotate-180 text-white' : 'group-hover:border-[var(--ui-primary)] group-hover:text-[var(--ui-primary)] text-[var(--ui-text-muted)]']"
+            >              <UIcon name="i-lucide-chevron-down" class="w-5 h-5" />
             </div>
           </button>
 
           <template #content>
             <div class="px-6 md:px-8 pb-8 animate-in slide-in-from-top-2 duration-300">
-              <div class="text-neutral-600 dark:text-neutral-300 text-base md:text-lg leading-relaxed border-t border-[var(--ui-border)] pt-6">
+              <div class="text-[var(--ui-text-default)] text-base md:text-lg leading-relaxed border-t border-[var(--ui-border)] pt-6">
                 <VicketHighlightedText :text="item.content" :query="searchQuery" />
               </div>
             </div>
@@ -99,7 +98,7 @@ watch(() => route.hash, (hash) => {
     </div>
 
     <div class="pt-8 text-center">
-      <p class="text-neutral-500 dark:text-neutral-400 text-sm font-medium">
+      <p class="text-[var(--ui-text-muted)] text-sm font-medium">
         D'autres questions ? 
         <UButton
           variant="link"

@@ -127,7 +127,13 @@ defineShortcuts({
     description="Remplissez ce formulaire pour contacter nos experts."
   >
     <template #content>
-      <section class="vk-dialog-content p-1" aria-label="Formulaire de support">
+      <section 
+        v-motion 
+        class="vk-dialog-content p-1"
+        aria-label="Formulaire de support"
+        :initial="{ opacity: 0, y: 20 }"
+        :enter="{ opacity: 1, y: 0 }"
+      >
         <!-- STEP: CATEGORY -->
         <div v-if="step === 'category'" class="p-6 space-y-6">
           <div class="text-center">
@@ -135,61 +141,57 @@ defineShortcuts({
             <p class="text-sm text-[var(--ui-text-muted)] mt-1">Choisissez une catégorie pour votre demande.</p>
           </div>
 
-          <div class="grid gap-2">
-            <UButton
+          <div class="grid gap-3">
+            <button
               v-for="tpl in templates"
               :key="tpl.id"
-              variant="ghost"
-              color="neutral"
-              class="flex items-center justify-start gap-4 p-4 rounded-2xl group"
-              :aria-label="`Sélectionner la catégorie ${tpl.label}`"
-              @click="selectTemplate(tpl as any)"
+              class="w-full flex items-center justify-start gap-4 p-4 rounded-2xl transition-all border border-gray-200 dark:border-gray-800 hover:border-[var(--ui-primary)] hover:bg-[var(--ui-primary)]/5 text-left group"
+              :aria-label="`Sélectionner la catégorie ${tpl.name}`"
+              @click="selectTemplate(tpl)"
             >
-              <template #leading>
-                <div class="w-10 h-10 rounded-xl bg-[var(--ui-bg-accented)] flex items-center justify-center text-[var(--ui-primary)]">
-                  <UIcon name="i-lucide-message-square" class="w-5 h-5" />
-                </div>
-              </template>
-              <div class="text-left">
-                <p class="font-bold text-[var(--ui-text-highlighted)]">{{ tpl.label }}</p>
-                <p class="text-xs text-[var(--ui-text-muted)] line-clamp-1">{{ stripHtml(tpl.description || '') }}</p>
+              <div class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-[var(--ui-primary)] shrink-0">
+                <UIcon name="i-lucide-message-square" class="w-5 h-5" />
               </div>
-              <template #trailing>
-                <UIcon name="i-lucide-chevron-right" class="ms-auto w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </template>
-            </UButton>
+              <div class="grow min-w-0">
+                <p class="font-bold text-gray-900 dark:text-white truncate">{{ tpl.name }}</p>
+                <p class="text-xs text-gray-700 dark:text-gray-300 line-clamp-1 mt-0.5">{{ stripHtml(tpl.description || '') }}</p>
+              </div>
+              <UIcon name="i-lucide-chevron-right" class="ms-auto w-4 h-4 text-gray-400 group-hover:text-[var(--ui-primary)] transition-colors" />
+            </button>
           </div>
         </div>
 
         <!-- STEP: FORM -->
-        <div v-else-if="step === 'form'" class="p-6">
-          <div class="flex items-center gap-4 mb-6">
+        <div v-else-if="step === 'form'" class="flex flex-col max-h-[80vh]">
+          <div class="p-6 border-b border-[var(--ui-border)] shrink-0 flex items-center gap-4">
             <UButton
               variant="ghost"
               color="neutral"
               icon="i-lucide-arrow-left"
               @click="step = 'category'"
             />
-            <span class="font-bold">{{ selectedTemplate?.label }}</span>
+            <span class="font-bold">{{ selectedTemplate?.name }}</span>
           </div>
 
-          <UForm :schema="schema" :state="formData" class="space-y-6" @submit="onSubmit">
-            <VicketFieldFactory
-              v-for="field in selectedTemplate?.questions"
-              :key="field.id"
-              v-model="formData[field.id]"
-              :question="field"
-              @files-added="addFiles('ticket', $event)"
-            />
-            <UButton
-              type="submit"
-              block
-              size="lg"
-              label="Envoyer"
-              :loading="isSubmitting"
-              class="rounded-xl"
-            />
-          </UForm>
+          <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+            <UForm :schema="schema" :state="formData" class="space-y-6" @submit="onSubmit">
+              <VicketFieldFactory
+                v-for="field in selectedTemplate?.questions"
+                :key="field.id"
+                v-model="formData[field.id]"
+                :question="field"
+                @files-added="addFiles('ticket', $event)"
+              />
+              <UButton
+                type="submit"
+                block
+                size="lg"
+                label="Envoyer"
+                :loading="isSubmitting"
+                class="rounded-xl mt-8"
+              />
+            </UForm>
+          </div>
         </div>
 
         <!-- SUCCESS / ERROR -->

@@ -1,6 +1,37 @@
 <script setup lang="ts">
 const { isDialogOpen, templates, openDialog } = useSupportState()
 const { locale, locales, setLocale } = useI18n()
+const route = useRoute()
+
+// Accessibility Audit Detection (Clean Strategy)
+const isAuditMode = computed(() => route.query.audit === 'true')
+
+useHead({
+  bodyAttrs: {
+    class: computed(() => isAuditMode.value ? 'a11y-audit-mode' : '')
+  },
+  style: computed(() => isAuditMode.value ? [
+    { innerHTML: `
+      .a11y-audit-mode, .a11y-audit-mode * { 
+        color: #000000 !important; 
+        background-color: #ffffff !important;
+        background-image: none !important;
+        border-color: #000000 !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+        filter: none !important;
+        backdrop-filter: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+      .dark .a11y-audit-mode, .dark .a11y-audit-mode * {
+        color: #ffffff !important;
+        background-color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+    ` }
+  ] : [])
+})
 
 // Centralized DIP Injection (Clean Architecture)
 useVicketInjection()
@@ -26,6 +57,9 @@ const items = computed(() => [
     <!-- A11y Announcer (KISS Strategy for ARIA) -->
     <div id="vicket-a11y-announcer" class="sr-only" aria-live="polite" aria-atomic="true" />
 
+
+    <!-- API Health Status (Industrial Transparency) -->
+    <VicketApiBanner />
 
     <UHeader class="sticky top-0 z-50 border-b glass-effect border-[var(--ui-border)]">
 
@@ -120,10 +154,6 @@ const items = computed(() => [
           />
         </template>
       </VicketSupportLauncher>
-      
-      <template #fallback>
-        <VicketSupportSkeleton />
-      </template>
     </ClientOnly>
 
     <LazyVicketTicketDialog />

@@ -4,11 +4,38 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
+    '@nuxt/image',
     '@nuxt/eslint',
+    'nuxt-security',
+    '@vueuse/motion/nuxt',
     '@nuxtjs/seo',
     '@nuxtjs/i18n',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    '@nuxt/a11y'
   ],
+
+  // --- Security & Hardening (Industrial Standards) ---
+  security: {
+    headers: {
+      contentSecurityPolicy: {
+        'img-src': ['\'self\'', 'data:', 'blob:', 'https://api.vicket.app'],
+        'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://*.qalpuch.cc'],
+        'connect-src': ['\'self\'', 'https://api.vicket.app']
+      }
+    },
+    rateLimiter: {
+      tokensPerInterval: 10,
+      interval: 'hour',
+      headers: true
+    }
+  },
+
+  // --- Performance & Scalability (ISR/SWR) ---
+  routeRules: {
+    '/support/**': { swr: 3600 },
+    '/api/vicket/tickets': { security: { rateLimiter: { tokensPerInterval: 5, interval: 'minute' } } },
+    '/api/vicket/**': { cache: { maxAge: 60 } }
+  },
 
   // --- OPTIMISATION ICONES ULTIME : Remote API ---
   icon: {
@@ -42,7 +69,6 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    // @ts-expect-error - ZeroRuntime type in sitemap module
     zeroRuntime: true,
     autoLastmod: true,
     sources: ['/api/vicket/sitemap-urls']
@@ -75,7 +101,7 @@ export default defineNuxtConfig({
   ssr: true,
   experimental: {
     viewTransition: true,
-    payloadExtraction: true 
+    payloadExtraction: process.env.NODE_ENV === 'production'
   },
 
   compatibilityDate: '2025-01-15',

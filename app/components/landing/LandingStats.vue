@@ -16,10 +16,10 @@ defineProps<{ stats: Stat[] }>()
       :key="s.label"
       class="space-y-1"
     >
-      <dd class="text-2xl font-bold text-neutral-900 dark:text-white">
+      <dd class="text-2xl font-bold text-[var(--ui-text-highlighted)]">
         {{ s.value }}
       </dd>
-      <dt class="text-[11px] font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+      <dt class="text-[11px] font-bold uppercase tracking-widest text-gray-950 dark:text-gray-200">
         {{ s.label }}
       </dt>
     </div>
