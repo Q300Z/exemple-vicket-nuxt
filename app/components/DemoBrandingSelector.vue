@@ -6,8 +6,28 @@ import type { LayoutMode } from '../composables/useLayoutManager'
  * Demonstrates the 100% modular architecture of Vicket.
  * Allows runtime control over Colors, Border Radius and View Modes.
  */
-const { availableColors, availableRadii, currentPrimary, currentRadius, setPrimaryColor, setRadius } = useBranding()
+const { availableColors, currentPrimary, setPrimaryColor } = useBranding()
 const { layout, layouts, setView } = useLayoutManager()
+
+const colorMap: Record<string, string> = {
+  blue: '#3b82f6',
+  indigo: '#6366f1',
+  violet: '#8b5cf6',
+  purple: '#a855f7',
+  fuchsia: '#d946ef',
+  pink: '#ec4899',
+  rose: '#f43f5e',
+  red: '#ef4444',
+  orange: '#f97316',
+  amber: '#f59e0b',
+  yellow: '#eab308',
+  lime: '#84cc16',
+  green: '#22c55e',
+  emerald: '#10b981',
+  teal: '#14b8a6',
+  cyan: '#06b6d4',
+  sky: '#0ea5e9'
+}
 
 interface DropdownItem {
   label: string
@@ -26,15 +46,6 @@ const items = computed<DropdownItem[][]>(() => [
     icon: l.icon,
     onSelect: () => setView(l.id as LayoutMode),
     checked: layout.value === l.id,
-    type: 'checkbox' as const
-  })),
-
-  // --- SECTION: RADIUS (Design Tokens) ---
-  availableRadii.map(r => ({
-    label: r.label,
-    icon: 'i-lucide-radius',
-    onSelect: () => setRadius(r.value),
-    checked: currentRadius.value === r.value,
     type: 'checkbox' as const
   })),
 
@@ -63,21 +74,21 @@ const items = computed<DropdownItem[][]>(() => [
       aria-label="Personnaliser l'apparence"
     >
       <ClientOnly>
-        <span class="hidden lg:inline-block capitalize font-bold text-xs">{{ currentPrimary }} • {{ currentRadius }}</span>
+        <span class="hidden lg:inline-block capitalize font-bold text-xs">{{ currentPrimary }}</span>
       </ClientOnly>
     </UButton>
 
-    <!-- Custom leading for colors section -->
+    <!-- Custom leading for sections -->
     <template #item-leading="{ item }">
       <div
         v-if="item.color"
-        class="w-3 h-3 rounded-full shrink-0 shadow-xs border border-black/10 dark:border-white/20"
-        :style="{ backgroundColor: `var(--ui-color-${item.color}-500)` }"
+        class="w-4 h-4 rounded-full shrink-0 shadow-sm border border-black/10 dark:border-white/20"
+        :style="{ backgroundColor: colorMap[item.color] || 'var(--ui-primary)' }"
       />
       <UIcon
         v-else
         :name="item.icon"
-        class="w-4 h-4"
+        class="w-4 h-4 text-[var(--ui-text-muted)]"
       />
     </template>
   </UDropdownMenu>
