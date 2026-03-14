@@ -15,7 +15,10 @@ useSeoMeta({
   description: 'Découvrez comment intégrer la puissance de Vicket dans vos applications Nuxt 4 avec une architecture industrielle et une marque blanche totale.',
   ogTitle: 'Vicket Nuxt Showcase - Industrial Grade',
   ogDescription: 'Le futur du support client est ici. Intégrez Vicket.app dans votre stack Nuxt en quelques minutes.',
-  ogImage: '/og-image.png'
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Vicket Nuxt Showcase',
+  twitterDescription: 'Le support client White-Label réinventé pour Nuxt 4.'
 })
 </script>
 

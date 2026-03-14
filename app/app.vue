@@ -6,6 +6,12 @@ const route = useRoute()
 // Accessibility Audit Detection (Clean Strategy)
 const isAuditMode = computed(() => route.query.audit === 'true')
 
+useSeoMeta({
+  ogSiteName: 'Vicket Support Showcase',
+  ogType: 'website',
+  twitterCard: 'summary_large_image'
+})
+
 useHead({
   bodyAttrs: {
     class: computed(() => isAuditMode.value ? 'a11y-audit-mode' : '')
@@ -62,7 +68,6 @@ const items = computed(() => [
     <VicketApiBanner />
 
     <UHeader class="sticky top-0 z-50 border-b glass-effect border-[var(--ui-border)]">
-
       <template #left>
         <NuxtLink to="/" class="flex items-center gap-2 group">
           <div class="w-8 h-8 rounded-[var(--ui-radius)] bg-[var(--ui-primary)] flex items-center justify-center text-inverted font-bold transition-transform group-hover:scale-110 shadow-lg shadow-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]">
@@ -105,6 +110,37 @@ const items = computed(() => [
             :ui="{ label: 'text-inverted font-bold' }"
             @click="isDialogOpen = true; if (templates.length === 0) openDialog()"
           />
+        </div>
+      </template>
+
+      <!-- Mobile Menu Content -->
+      <template #content>
+        <div class="p-4 space-y-4">
+          <UButton
+            to="/support"
+            label="Centre d'aide"
+            variant="ghost"
+            color="neutral"
+            block
+            class="justify-start text-lg"
+            icon="i-lucide-life-buoy"
+          />
+          <UButton
+            label="Nouveau Ticket"
+            icon="i-lucide-plus"
+            block
+            class="rounded-xl py-3 shadow-lg"
+            :ui="{ label: 'text-inverted font-bold' }"
+            @click="isDialogOpen = true; if (templates.length === 0) openDialog()"
+          />
+          
+          <div class="pt-8 border-t border-[var(--ui-border)]">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-muted)] mb-4 px-2">Apparence</p>
+            <div class="flex items-center gap-4 px-2">
+              <UColorModeButton />
+              <span class="text-sm font-medium">Mode Sombre / Clair</span>
+            </div>
+          </div>
         </div>
       </template>
     </UHeader>

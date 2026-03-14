@@ -8,8 +8,12 @@ import { KNOWLEDGE_REPOSITORY_KEY } from '#vicket/types/repository'
 const knowledge = inject(KNOWLEDGE_REPOSITORY_KEY)
 if (!knowledge) throw new Error('Knowledge Repository not provided')
 
-useHead({
-  title: 'Centre d\'aide'
+// --- SEO (Nuxt 4 Best Practice) ---
+useSeoMeta({
+  title: 'Centre d\'aide',
+  description: 'Trouvez des réponses à vos questions ou contactez notre support technique.',
+  ogTitle: 'Vicket Support - Centre d\'aide',
+  ogType: 'website'
 })
 
 const { fetchArticles, fetchFaqs } = knowledge
