@@ -43,7 +43,7 @@ const navItems = computed<INavigable[]>(() => {
         name="i-lucide-sparkles"
         class="w-4 h-4"
       />
-      <span class="text-[10px] font-extrabold uppercase tracking-widest text-[var(--ui-text-muted)]">Articles suggérés</span>
+      <span class="text-[10px] font-extrabold uppercase tracking-widest text-[var(--ui-text-muted)]">{{ $t('support.article.suggested_articles') }}</span>
     </div>
 
     <div class="space-y-3">
@@ -57,7 +57,7 @@ const navItems = computed<INavigable[]>(() => {
           {{ item.label }}
         </p>
         <div class="flex items-center gap-1 mt-2 text-[9px] font-bold text-[var(--ui-text-muted)] uppercase tracking-wider">
-          <span>Lire la suite</span>
+          <span>{{ $t('support.article.read_more') }}</span>
           <UIcon
             v-if="item.icon"
             :name="item.icon"

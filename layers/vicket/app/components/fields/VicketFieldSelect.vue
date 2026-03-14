@@ -7,16 +7,20 @@ interface Props {
   question: { id: string, label: string, options?: { label: string, value: string }[] }
 }
 
-defineProps<Props>()
-defineEmits(['update:modelValue'])
+const props = defineProps<Props>()
+const emit = defineEmits(['update:modelValue'])
+
+const internalValue = computed({
+  get: () => props.modelValue,
+  set: (val) => emit('update:modelValue', val)
+})
 </script>
 
 <template>
   <USelect
-    :model-value="String(modelValue || '')"
+    v-model="internalValue"
     :items="question.options?.map(o => ({ label: o.label, value: o.value })) || []"
     size="lg"
     class="w-full"
-    @update:model-value="$emit('update:modelValue', $event)"
   />
 </template>

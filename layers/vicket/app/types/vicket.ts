@@ -75,6 +75,8 @@ export const TicketThreadSchema = z.object({
 export const TicketCreateResponseSchema = z.object({
   success: z.boolean(),
   data: z.object({
+    id: z.string().optional(),
+    token: z.string().optional(),
     email_limit_reached: z.boolean().optional(),
     warning: z.string().optional()
   }).optional()

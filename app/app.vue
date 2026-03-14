@@ -160,10 +160,10 @@ const items = computed(() => [
               />
               
               <div class="pt-8 border-t border-[var(--ui-border)]">
-                <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-muted)] mb-4 px-2">{{ $t('common.appearance') }}</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 mb-4 px-2">{{ $t('common.appearance') }}</p>
                 <div class="flex items-center gap-4 px-2">
-                  <UColorModeButton />
-                  <span class="text-sm font-medium">{{ $t('common.dark_light_mode') }}</span>
+                  <UColorModeButton size="lg" />
+                  <span class="text-sm font-bold text-gray-900 dark:text-white">{{ $t('common.dark_light_mode') }}</span>
                 </div>
               </div>
             </div>

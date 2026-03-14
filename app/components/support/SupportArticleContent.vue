@@ -28,10 +28,10 @@ defineEmits(['open-ticket'])
           
           <div class="relative z-10 space-y-3 text-center md:text-left">
             <h2 class="text-3xl font-black tracking-tight text-[var(--ui-text-highlighted)]">
-              Cet article a-t-il été <span class="primary-gradient-text italic">utile ?</span>
+              {{ $t('support.article.feedback_question') }}
             </h2>
             <p class="text-gray-700 dark:text-gray-300 text-lg max-w-md">
-              Votre avis compte énormément pour nous permettre d'améliorer notre support.
+              {{ $t('support.article.feedback_desc') }}
             </p>
           </div>
 
@@ -45,13 +45,13 @@ defineEmits(['open-ticket'])
     <!-- Need More Help? Bridge -->
     <div class="relative p-10 rounded-[40px] bg-[var(--ui-bg-accented)] border border-[var(--ui-border)] flex flex-col md:flex-row items-center justify-between gap-8">
       <div class="space-y-2 text-center md:text-left">
-        <p class="text-2xl font-bold text-[var(--ui-text-highlighted)]">Toujours bloqué ?</p>
-        <p class="text-gray-700 dark:text-gray-300">Ouvrez un ticket et nos experts reviendront vers vous sous 24h.</p>
+        <p class="text-2xl font-bold text-[var(--ui-text-highlighted)]">{{ $t('support.article.still_blocked') }}</p>
+        <p class="text-gray-700 dark:text-gray-300">{{ $t('support.article.still_blocked_desc') }}</p>
       </div>
       
       <UButton
         v-if="templates.length > 0"
-        label="Contacter le support"
+        :label="$t('support.article.contact_support')"
         icon="i-lucide-message-square"
         size="xl"
         class="rounded-2xl px-10 shadow-2xl hover:scale-105 active:scale-95 transition-all shadow-[color-mix(in_srgb,var(--ui-primary)_20%,transparent)]"
@@ -67,7 +67,7 @@ defineEmits(['open-ticket'])
         icon="i-lucide-arrow-left"
         variant="ghost"
         color="neutral"
-        label="Découvrir d'autres guides"
+        :label="$t('support.article.discover_more')"
         class="rounded-full px-8 hover:bg-[color-mix(in_srgb,var(--ui-primary)_10%,transparent)] font-bold text-xs uppercase tracking-widest"
       />
     </div>

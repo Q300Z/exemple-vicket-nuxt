@@ -3,7 +3,7 @@
  * Component responsible for premium date selection (SRP).
  * Uses UCalendar inside a UPopover for a consistent Nuxt UI experience.
  */
-import { CalendarDate, parseDate } from '@internationalized/date'
+import { parseDate } from '@internationalized/date'
 
 interface Props {
   modelValue: string | undefined | null

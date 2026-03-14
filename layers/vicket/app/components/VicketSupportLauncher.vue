@@ -24,6 +24,7 @@ const vicket = computed(() => (appConfig.vicket as any) || {
 const websiteName = computed(() => tickets?.websiteName?.value || vicket.value.name || 'Vicket')
 
 const { stripHtml } = useContent()
+const { ticketHistory } = useTicketHistory()
 
 const isOpen = ref(false)
 const searchQuery = ref('')
@@ -130,6 +131,29 @@ const goToArticle = (article: { id: string, slug?: string, type?: string }) => {
 
         <!-- Content -->
         <div class="overflow-y-auto max-h-[350px] p-2 space-y-1 bg-[var(--ui-bg-accented)]/30">
+          <!-- Ticket History (Showcase Feature) -->
+          <div v-if="ticketHistory.length > 0 && !isSearching" class="mb-4">
+            <p class="px-3 py-2 text-[10px] font-bold text-[var(--ui-primary)] uppercase tracking-widest flex items-center gap-2">
+              <UIcon name="i-lucide-history" class="w-3 h-3" />
+              {{ $t('vicket.my_requests') }}
+            </p>
+            <div class="space-y-1">
+              <NuxtLink
+                v-for="ticket in ticketHistory"
+                :key="ticket.id"
+                :to="`/ticket?token=${ticket.token}`"
+                class="block px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors border border-transparent hover:border-primary/10 group"
+                @click="isOpen = false"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-xs font-bold text-[var(--ui-text-highlighted)] group-hover:text-primary transition-colors truncate">{{ ticket.title }}</span>
+                  <span class="text-[9px] font-mono opacity-50">#{{ ticket.id.slice(0, 6) }}</span>
+                </div>
+              </NuxtLink>
+            </div>
+            <div class="mx-3 mt-2 border-b border-[var(--ui-border)] opacity-50" />
+          </div>
+
           <p v-if="displayArticles.length > 0" class="px-3 py-2 text-[10px] font-bold text-[var(--ui-text-muted)] uppercase tracking-widest">
             {{ isSearching ? $t('common.search_results') : $t('common.popular_articles') }}
           </p>

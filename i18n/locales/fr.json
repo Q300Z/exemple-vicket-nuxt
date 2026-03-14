@@ -19,6 +19,7 @@
     "language": "Changer la langue",
     "appearance": "Apparence",
     "dark_light_mode": "Mode Sombre / Clair",
+    "confirm_close": "Vous avez des modifications non enregistrées. Voulez-vous vraiment fermer ?",
     "retry": "Réessayer",
     "close": "Fermer",
     "send": "Envoyer",
@@ -40,6 +41,7 @@
     "link_copied": "Lien copié !",
     "link_copied_desc": "L'URL de l'article a été ajoutée à votre presse-papier.",
     "report_error": "Envoyer un rapport",
+    "shortcut_submit": "Appuyez sur ⌘ + Entrée pour envoyer",
     "view_faq": "Voir la FAQ",
     "select_date": "Sélectionner une date"
   },
@@ -68,9 +70,16 @@
       "toc_title": "Sommaire",
       "specific_question": "Une question spécifique ?",
       "expert_assistance": "Nos ingénieurs support sont disponibles en direct pour vous débloquer.",
-      "feedback_question": "Cet article vous a-t-il aidé ?",
+      "feedback_question": "Cet article a-t-il été utile ?",
+      "feedback_desc": "Votre avis compte énormément pour nous permettre d'améliorer notre support.",
       "feedback_thanks": "Merci pour votre retour !",
-      "share_text": "Découvrez cet article sur Vicket : {title}"
+      "share_text": "Découvrez cet article sur Vicket : {title}",
+      "still_blocked": "Toujours bloqué ?",
+      "still_blocked_desc": "Ouvrez un ticket et nos experts reviendront vers vous sous 24h.",
+      "contact_support": "Contacter le support",
+      "discover_more": "Découvrir d'autres guides",
+      "suggested_articles": "Articles suggérés",
+      "read_more": "Lire la suite"
     }
   },
   "landing": {
@@ -149,6 +158,7 @@
     "reply_failed": "Envoi échoué.",
     "api_not_configured": "API non configurée (Mode Démo)",
     "questions_on_billing": "Questions sur vos factures",
+    "my_requests": "Mes demandes récentes",
     "kb_update": "Notre base de connaissances est en cours de mise à jour.",
     "reply_placeholder": "Écrivez votre message de réponse...",
     "send_reply": "Envoyer la réponse",

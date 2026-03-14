@@ -16,20 +16,21 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
 
+// Ensure we have a valid initial state for validation (KISS)
+onMounted(() => {
+  if (isGroup.value && !Array.isArray(props.modelValue)) {
+    emit('update:modelValue', [])
+  }
+})
+
 const isGroup = computed(() => {
   const type = props.question.type?.toUpperCase()
   return (props.question.options && props.question.options.length > 0) || type === 'CHECKBOXES' || type === 'MULTI_SELECT'
 })
 
-// Handle Array for Group
-const groupValue = computed({
-  get: () => Array.isArray(props.modelValue) ? props.modelValue : [],
-  set: (val) => emit('update:modelValue', val)
-})
-
-// Handle Boolean for Single
-const singleValue = computed({
-  get: () => typeof props.modelValue === 'boolean' ? props.modelValue : !!props.modelValue,
+// Use a direct computed for bidirectional binding
+const internalValue = computed({
+  get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val)
 })
 
@@ -46,7 +47,7 @@ const options = computed(() => {
     <!-- Multiple Options Group -->
     <UCheckboxGroup
       v-if="isGroup"
-      v-model="groupValue"
+      v-model="internalValue"
       :items="options"
       class="gap-3"
     />
@@ -54,7 +55,7 @@ const options = computed(() => {
     <!-- Single Boolean Toggle -->
     <UCheckbox
       v-else
-      v-model="singleValue"
+      v-model="internalValue"
       :label="question.label"
     />
   </div>
