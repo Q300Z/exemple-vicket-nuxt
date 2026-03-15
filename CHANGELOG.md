@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.2](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.1.0...v1.3.2) (2026-03-15)
+
+
+### Features
+
+* **showcase:** implement local ticket history and final UX refinements ([1bdf88f](https://github.com/Q300Z/exemple-vicket-nuxt/commit/1bdf88ffe4d41f25f4222e861027fd6da2cdf9a0))
+* **showcase:** industrialize Vicket layer for Nuxt 4 ([e2fb90c](https://github.com/Q300Z/exemple-vicket-nuxt/commit/e2fb90c9e9a5965ac4e62ffe72c5b5678ac39762))
+* **wizard:** industrialize support dialog and state management ([74125da](https://github.com/Q300Z/exemple-vicket-nuxt/commit/74125dad0c7e2e29b1871e15ee919de78b66bdde))
+
 ## [1.3.1](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.0...v1.3.1) (2026-03-14)
 
 # [1.3.0](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.1.0...v1.3.0) (2026-03-14)
