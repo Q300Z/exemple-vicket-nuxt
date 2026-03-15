@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.3...v1.3.4) (2026-03-15)
+
+
+### Bug Fixes
+
+* **security:** disable SRI to resolve conflicts with Cloudflare modifications ([e1535fc](https://github.com/Q300Z/exemple-vicket-nuxt/commit/e1535fc180d3beb419d6006f5063bc690f4cbad6))
+
 ## [1.3.3](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.2...v1.3.3) (2026-03-15)
 
 ## [1.3.2](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.1.0...v1.3.2) (2026-03-15)
