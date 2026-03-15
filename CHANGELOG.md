@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.6](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.5...v1.3.6) (2026-03-15)
+
+
+### Bug Fixes
+
+* **api:** align all endpoints with official vicket documentation (march 2026) ([40869e4](https://github.com/Q300Z/exemple-vicket-nuxt/commit/40869e4c04099b400a1aa68348954044967e1299))
+
 ## [1.3.5](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.4...v1.3.5) (2026-03-15)
 
 
