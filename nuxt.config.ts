@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   ],
   // --- Security & Hardening (Industrial Standards) ---
   security: {
+    sri: false,
     headers: {
       contentSecurityPolicy: {
         'img-src': ['\'self\'', 'data:', 'blob:', 'https://api.vicket.app'],
