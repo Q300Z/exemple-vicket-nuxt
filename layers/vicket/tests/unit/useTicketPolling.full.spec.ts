@@ -19,7 +19,7 @@ describe('useTicketPolling (Industrial Logic)', () => {
     
     const TestComponent = defineComponent({
       setup() {
-        polling = useTicketPolling(ref('tok'), vi.fn()) as any // Internal cast for test setup
+        polling = useTicketPolling(ref('tok'), vi.fn()) as unknown as { isPolling: Ref<boolean>, startPolling: () => void, stopPolling: () => void }
         return () => h('div')
       }
     })
@@ -47,7 +47,7 @@ describe('useTicketPolling (Industrial Logic)', () => {
     let polling: { isPolling: Ref<boolean>, startPolling: () => void } | undefined
     const TestComponent = defineComponent({
       setup() {
-        polling = useTicketPolling(ref('tok'), vi.fn()) as any
+        polling = useTicketPolling(ref('tok'), vi.fn()) as unknown as { isPolling: Ref<boolean>, startPolling: () => void }
         return () => h('div')
       }
     })

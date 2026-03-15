@@ -72,7 +72,7 @@ describe('VicketTicketDialog (God Mode)', () => {
     step.value = 'form'
     
     // Bypass the guard clause via public methods or casting to unknown if needed
-    const vm = wrapper.vm as unknown as { selectedTemplate: any, onSubmit: () => Promise<void> }
+    const vm = wrapper.vm as unknown as { selectedTemplate: unknown, onSubmit: () => Promise<void> }
     if (vm.selectedTemplate !== undefined) {
       vm.selectedTemplate = { id: 't1', name: 'Tech', questions: [] }
     }
