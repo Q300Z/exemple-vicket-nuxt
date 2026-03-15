@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.4...v1.3.5) (2026-03-15)
+
+
+### Bug Fixes
+
+* **api:** use singular 'ticket' endpoint for creation to avoid 404 ([aab97cd](https://github.com/Q300Z/exemple-vicket-nuxt/commit/aab97cd56913d3f18ba407844c832115a3e9a059))
+
 ## [1.3.4](https://github.com/Q300Z/exemple-vicket-nuxt/compare/v1.3.3...v1.3.4) (2026-03-15)
 
 
