@@ -170,7 +170,7 @@ export const useSupportData = () => {
         }
       }
 
-      return $fetch<TicketCreateResponse>('/api/vicket/tickets', { 
+      return $fetch<TicketCreateResponse>('/api/vicket/ticket', { 
         method: 'POST', 
         body 
       })
