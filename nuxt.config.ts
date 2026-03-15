@@ -67,7 +67,10 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'fr'
       },
-      title: 'Vicket Support'
+      title: 'Vicket Support',
+      link: [
+        { rel: 'preconnect', href: 'https://static.cloudflareinsights.com' }
+      ]
     }
   },
 
@@ -109,6 +112,23 @@ export default defineNuxtConfig({
     viewTransition: true,
     componentIslands: true,
     payloadExtraction: process.env.NODE_ENV === 'production'
+  },
+
+  runtimeConfig: {
+    public: {
+      buildVersion: String(Date.now())
+    }
+  },
+
+  sourcemap: {
+    server: true,
+    client: true
+  },
+
+  nitro: {
+    routeRules: {
+      '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } }
+    }
   },
 
   compatibilityDate: '2025-01-15',

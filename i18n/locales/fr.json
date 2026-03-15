@@ -142,6 +142,12 @@
     "choose_category": "Choisissez une catégorie pour votre demande.",
     "select_category": "Sélectionner la catégorie {name}",
     "form_subtitle": "Remplissez ce formulaire pour contacter nos experts.",
+    "validation": {
+      "required_field": "Ce champ est obligatoire",
+      "required_choice": "Veuillez cocher au moins une option",
+      "required_file": "Veuillez joindre un fichier",
+      "invalid_email": "Format d'email incorrect"
+    },
     "request_sent": "Demande envoyée !",
     "request_sent_desc": "Vérifiez vos emails pour suivre l'avancement de votre ticket.",
     "email_limit_warning": "Ticket créé, mais la limite d'emails quotidienne est atteinte. Vérifiez vos spams ou l'onglet 'Mes Tickets'.",

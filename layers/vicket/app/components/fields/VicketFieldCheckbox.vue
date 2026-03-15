@@ -30,7 +30,12 @@ const isGroup = computed(() => {
 
 // Use a direct computed for bidirectional binding
 const internalValue = computed({
-  get: () => props.modelValue,
+  get: () => {
+    if (isGroup.value) {
+      return Array.isArray(props.modelValue) ? props.modelValue : []
+    }
+    return !!props.modelValue
+  },
   set: (val) => emit('update:modelValue', val)
 })
 

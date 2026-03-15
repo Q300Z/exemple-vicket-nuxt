@@ -15,7 +15,7 @@ defineEmits(['open-ticket'])
       <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--ui-text-highlighted)]">{{ $t('landing.hero.badge') }}</span>
     </div>
 
-    <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-[var(--ui-text-highlighted)] leading-[0.9] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700 motion-safe:delay-150">
+    <h1 class="text-6xl sm:text-8xl font-black tracking-tighter text-[var(--ui-text-highlighted)] leading-[0.9] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8 motion-safe:duration-700">
       {{ $t('landing.hero.title_1') }} <br/>
       <span class="text-transparent bg-clip-text bg-linear-to-r from-[var(--ui-primary)] to-[color-mix(in_srgb,var(--ui-primary)_70%,var(--ui-text-highlighted))]">
         {{ $t('landing.hero.title_2') }}
