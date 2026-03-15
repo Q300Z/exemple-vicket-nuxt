@@ -170,7 +170,7 @@ export const useSupportData = () => {
         }
       }
 
-      return $fetch<TicketCreateResponse>('/api/vicket/ticket', { 
+      return $fetch<TicketCreateResponse>('/api/vicket/tickets', { 
         method: 'POST', 
         body 
       })
@@ -195,7 +195,9 @@ export const useSupportData = () => {
         error?: string
         error_code?: string
         data?: TicketThread
-      }>(`/api/vicket/thread?token=${encodeURIComponent(token)}`)
+      }>('/api/vicket/ticket', {
+        query: { token }
+      })
 
       if (!payload?.success || !payload?.data) {
         if (payload?.error_code === 'ticket-link-expired') {
@@ -206,7 +208,7 @@ export const useSupportData = () => {
       return payload.data
     },
     sendReply: async (token: string, content: string, files: File[]) => {
-      const url = `/api/vicket/messages?token=${encodeURIComponent(token)}`
+      const url = '/api/vicket/ticket/messages'
       let body: RequestInit['body']
 
       if (files.length > 0) {
@@ -220,6 +222,7 @@ export const useSupportData = () => {
 
       const res = await $fetch<{ success?: boolean, error?: string, error_code?: string }>(url, {
         method: 'POST',
+        query: { token },
         body
       })
 

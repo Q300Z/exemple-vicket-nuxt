@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   // --- Performance & Scalability (ISR/SWR) ---
   routeRules: {
     '/support/**': { swr: 3600 },
-    '/api/vicket/ticket': { security: { rateLimiter: { tokensPerInterval: 5, interval: 'minute' } } },
+    '/api/vicket/tickets': { security: { rateLimiter: { tokensPerInterval: 5, interval: 'minute' } } },
     '/api/vicket/**': { cache: { maxAge: 60 } },
     // Force long cache for static assets (Fix Lighthouse insight)
     '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } }

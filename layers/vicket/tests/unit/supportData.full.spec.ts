@@ -49,7 +49,7 @@ describe('SupportData Repository (Full Logic Coverage)', () => {
         email: 'a@b.c', title: 'T', templateId: '1', answers: {} 
       })
       expect(res.success).toBe(true)
-      expect(mockFetch).toHaveBeenCalledWith('/api/vicket/ticket', expect.objectContaining({
+      expect(mockFetch).toHaveBeenCalledWith('/api/vicket/tickets', expect.objectContaining({
         method: 'POST'
       }))
     })

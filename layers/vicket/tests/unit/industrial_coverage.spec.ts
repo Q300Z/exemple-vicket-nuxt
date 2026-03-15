@@ -73,7 +73,7 @@ describe('Support Repository (Deep Logic Coverage)', () => {
     })
 
     const call = mockFetch.mock.calls[0]
-    expect(call[0]).toBe('/api/vicket/ticket')
+    expect(call[0]).toBe('/api/vicket/tickets')
     expect(call[1].body instanceof FormData).toBe(true)
     
     const formData = call[1].body as FormData
